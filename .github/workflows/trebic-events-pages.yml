@@ -7,11 +7,14 @@ on:
       - main
       - master
     paths:
+      - '.github/workflows/trebic-events-pages.yml'
       - 'scripts/update-trebic-events.ps1'
       - 'scripts/publish-trebic-events-site.ps1'
       - 'trebic-events.settings.json'
       - 'README.md'
-      - 'data/trebic-events-location-cache.json'
+      - 'data/**'
+      - 'docs/**'
+      - 'report/**'
   schedule:
     - cron: '0 13 * * *'
     - cron: '0 14 * * *'
