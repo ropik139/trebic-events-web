@@ -58,19 +58,6 @@ jobs:
         shell: powershell
         run: .\scripts\publish-trebic-events-site.ps1 -SkipUpdate
 
-      - name: Commit refreshed data
-        if: steps.prague_time.outputs.should_run == 'true'
-        shell: powershell
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs data report scripts README.md trebic-events.settings.json
-          git diff --cached --quiet
-          if ($LASTEXITCODE -ne 0) {
-            git commit -m "Automaticka aktualizace Trebic events"
-            git push
-          }
-
       - name: Configure Pages
         if: steps.prague_time.outputs.should_run == 'true'
         uses: actions/configure-pages@v5
