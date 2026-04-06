@@ -710,6 +710,24 @@ function Merge-EventItems {
     @($map.Values)
 }
 
+function Get-PreviewText {
+    param(
+        [string]$Text,
+        [int]$MaxLength = 220
+    )
+
+    $clean = Normalize-Whitespace -Value $Text
+    if ([string]::IsNullOrWhiteSpace($clean)) { return "" }
+    if ($clean.Length -le $MaxLength) { return $clean }
+
+    $cut = $clean.Substring(0, $MaxLength)
+    $lastSpace = $cut.LastIndexOf(' ')
+    if ($lastSpace -ge 120) {
+        $cut = $cut.Substring(0, $lastSpace)
+    }
+    "$($cut.Trim())..."
+}
+
 function Convert-ItemsToHtml {
     param(
         [object[]]$Items,
@@ -728,7 +746,7 @@ body{margin:0;font-family:'Segoe UI',Arial,sans-serif;color:var(--ink);backgroun
 .wrap{max-width:1120px;margin:0 auto;padding:14px 14px 40px}
 .hero{padding:20px 18px;border-radius:22px;background:linear-gradient(135deg,var(--hero-a),var(--hero-b));color:#fff;box-shadow:0 14px 34px rgba(29,42,52,.14)}
 .hero h1{margin:0 0 8px;font-size:28px;line-height:1.08}
-.hero p{margin:0;font-size:15px;line-height:1.45;max-width:760px}
+.hero p{margin:0;font-size:15px;line-height:1.45;max-width:980px}
 .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
 .pill{padding:7px 11px;border-radius:999px;background:rgba(255,255,255,.18);font-size:12px;font-weight:700}
 .next-box{margin-top:16px;padding:14px 15px;border-radius:18px;background:rgba(255,255,255,.14);backdrop-filter:blur(2px)}
@@ -745,7 +763,10 @@ body{margin:0;font-family:'Segoe UI',Arial,sans-serif;color:var(--ink);backgroun
 .thumb{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:14px;margin:0 0 12px;background:#f0e7db}
 .date{font-size:13px;font-weight:800;letter-spacing:.03em;color:var(--accent)}
 .card h3{margin:8px 0 10px;font-size:18px;line-height:1.15}
-.summary{color:var(--muted);font-size:14px;line-height:1.45;margin:10px 0 0}
+.summary{color:var(--muted);font-size:14px;line-height:1.45;margin:10px 0 0;max-height:8.7em;overflow:hidden}
+.summary.is-expanded{max-height:none;overflow:visible}
+.summary-toggle{margin-top:8px;padding:0;border:0;background:none;color:var(--accent);font-size:13px;font-weight:800;cursor:pointer}
+.summary-toggle:hover{text-decoration:underline}
 .detail{margin-top:10px;color:var(--ink);font-size:14px;line-height:1.35}
 .detail strong{color:var(--accent-2)}
 .links{margin-top:14px;display:flex}
@@ -775,13 +796,45 @@ body{margin:0;font-family:'Segoe UI',Arial,sans-serif;color:var(--ink);backgroun
     } else {
         $bodyHtml = (($itemList | Group-Object genre | Sort-Object Name) | ForEach-Object {
             $cards = ($_.Group | Sort-Object sortAt, endAt, title | ForEach-Object {
-                $summary = if ([string]::IsNullOrWhiteSpace($_.summary)) { "" } else { "<div class='summary'>$([System.Net.WebUtility]::HtmlEncode($_.summary))</div>" }
+                $fullSummary = Normalize-Whitespace -Value $_.summary
+                $previewSummary = Get-PreviewText -Text $fullSummary -MaxLength 220
+                $summaryId = "summary-$([Math]::Abs($_.dedupeKey.GetHashCode()))"
+                $summary = if ([string]::IsNullOrWhiteSpace($previewSummary)) {
+                    ""
+                } elseif ($fullSummary.Length -gt $previewSummary.Length) {
+                    "<div id='$summaryId' class='summary' data-full='$([System.Net.WebUtility]::HtmlEncode($fullSummary))' data-preview='$([System.Net.WebUtility]::HtmlEncode($previewSummary))'>$([System.Net.WebUtility]::HtmlEncode($previewSummary))</div><button class='summary-toggle' type='button' data-summary-id='$summaryId' aria-expanded='false'>Zobrazit vice</button>"
+                } else {
+                    "<div class='summary'>$([System.Net.WebUtility]::HtmlEncode($previewSummary))</div>"
+                }
                 $image = if ([string]::IsNullOrWhiteSpace($_.imageUrl)) { "" } else { "<img class='thumb' src='$([System.Net.WebUtility]::HtmlEncode($_.imageUrl))' alt='$([System.Net.WebUtility]::HtmlEncode($_.title))'>" }
                 "<article class='card'>$image<div class='date'>$([System.Net.WebUtility]::HtmlEncode($_.startText))</div><h3>$([System.Net.WebUtility]::HtmlEncode($_.title))</h3><div class='detail'><strong>M&#237;sto:</strong> $([System.Net.WebUtility]::HtmlEncode($_.venue))</div><div class='detail'><strong>Obec:</strong> $([System.Net.WebUtility]::HtmlEncode($_.municipality))</div><div class='detail'><strong>Vzd&#225;lenost:</strong> $([System.Net.WebUtility]::HtmlEncode(('{0:N1} km' -f $_.distanceKm)))</div><div class='detail'><strong>Term&#237;n:</strong> $([System.Net.WebUtility]::HtmlEncode($_.dateLabel))</div>$summary<div class='links'><a class='btn' href='$([System.Net.WebUtility]::HtmlEncode($_.detailLink))' target='_blank' rel='noreferrer'>Otev&#345;&#237;t detail</a></div></article>"
             }) -join "`n"
             "<section class='genre-section'><div class='genre-header'><h2>$(Get-GenreDisplayHtml -Genre $_.Name)</h2><span>$($_.Count) akc&#237;</span></div><div class='grid'>$cards</div></section>"
         }) -join "`n"
     }
+
+    $script = @"
+<script>
+document.addEventListener('click', function (event) {
+  var button = event.target.closest('.summary-toggle');
+  if (!button) return;
+  var summary = document.getElementById(button.getAttribute('data-summary-id'));
+  if (!summary) return;
+  var expanded = button.getAttribute('aria-expanded') === 'true';
+  if (expanded) {
+    summary.textContent = summary.getAttribute('data-preview');
+    summary.classList.remove('is-expanded');
+    button.setAttribute('aria-expanded', 'false');
+    button.textContent = 'Zobrazit vice';
+  } else {
+    summary.textContent = summary.getAttribute('data-full');
+    summary.classList.add('is-expanded');
+    button.setAttribute('aria-expanded', 'true');
+    button.textContent = 'Zobrazit mene';
+  }
+});
+</script>
+"@
 
     @"
 <!DOCTYPE html>
@@ -805,6 +858,7 @@ body{margin:0;font-family:'Segoe UI',Arial,sans-serif;color:var(--ink);backgroun
     </section>
     $bodyHtml
   </div>
+  $script
 </body>
 </html>
 "@
