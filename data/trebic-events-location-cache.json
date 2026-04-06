@@ -1,0 +1,26 @@
+﻿{
+    "jaromerice nad rokytnou":  {
+                                    "latitude":  49.0943503,
+                                    "longitude":  15.8932579,
+                                    "source":  "nominatim",
+                                    "display":  "Jaroměřice nad Rokytnou, SO POÚ Jaroměřice nad Rokytnou, SO ORP Třebíč, okres Třebíč, Kraj Vysočina, Jihovýchod, 675 51, Česko"
+                                },
+    "jemnice":  {
+                    "latitude":  49.0192524,
+                    "longitude":  15.5698865,
+                    "source":  "nominatim",
+                    "display":  "Jemnice, SO POÚ Jemnice, SO ORP Moravské Budějovice, okres Třebíč, Kraj Vysočina, Jihovýchod, 675 31, Česko"
+                },
+    "moravske budejovice":  {
+                                "latitude":  49.0525768,
+                                "longitude":  15.8092797,
+                                "source":  "nominatim",
+                                "display":  "Moravské Budějovice, SO POÚ Moravské Budějovice, SO ORP Moravské Budějovice, okres Třebíč, Kraj Vysočina, Jihovýchod, 676 02, Česko"
+                            },
+    "namest nad oslavou":  {
+                               "latitude":  49.2073771,
+                               "longitude":  16.1577984,
+                               "source":  "nominatim",
+                               "display":  "Náměšť nad Oslavou, SO POÚ Náměšť nad Oslavou, SO ORP Náměšť nad Oslavou, okres Třebíč, Kraj Vysočina, Jihovýchod, 675 71, Česko"
+                           }
+}

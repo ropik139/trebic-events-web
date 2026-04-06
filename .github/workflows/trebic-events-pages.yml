@@ -1,0 +1,87 @@
+name: Trebic events Pages
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - 'scripts/update-trebic-events.ps1'
+      - 'scripts/publish-trebic-events-site.ps1'
+      - 'trebic-events.settings.json'
+      - 'README.md'
+      - 'data/trebic-events-location-cache.json'
+  schedule:
+    - cron: '0 13 * * *'
+    - cron: '0 14 * * *'
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: trebic-events-pages
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: windows-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Decide whether this is 15:00 in Prague
+        id: prague_time
+        shell: powershell
+        run: |
+          $tz = [System.TimeZoneInfo]::FindSystemTimeZoneById("Central Europe Standard Time")
+          $pragueNow = [System.TimeZoneInfo]::ConvertTimeFromUtc([datetime]::UtcNow, $tz)
+          if ("${{ github.event_name }}" -eq "schedule" -and $pragueNow.Hour -ne 15) {
+            "should_run=false" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          } else {
+            "should_run=true" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          }
+          "prague_now=$($pragueNow.ToString('yyyy-MM-dd HH:mm'))" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+
+      - name: Run update script
+        if: steps.prague_time.outputs.should_run == 'true'
+        shell: powershell
+        run: .\scripts\update-trebic-events.ps1
+
+      - name: Prepare Pages site
+        if: steps.prague_time.outputs.should_run == 'true'
+        shell: powershell
+        run: .\scripts\publish-trebic-events-site.ps1 -SkipUpdate
+
+      - name: Commit refreshed data
+        if: steps.prague_time.outputs.should_run == 'true'
+        shell: powershell
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs data report scripts README.md trebic-events.settings.json
+          git diff --cached --quiet
+          if ($LASTEXITCODE -ne 0) {
+            git commit -m "Automaticka aktualizace Trebic events"
+            git push
+          }
+
+      - name: Configure Pages
+        if: steps.prague_time.outputs.should_run == 'true'
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        if: steps.prague_time.outputs.should_run == 'true'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./docs
+
+      - name: Deploy to GitHub Pages
+        if: steps.prague_time.outputs.should_run == 'true'
+        id: deployment
+        uses: actions/deploy-pages@v4

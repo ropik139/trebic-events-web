@@ -1,0 +1,143 @@
+{
+  "timezone": "Europe/Prague",
+  "center": {
+    "name": "Trebic",
+    "latitude": 49.2151907,
+    "longitude": 15.8816091
+  },
+  "radiusKm": 10,
+  "horizonDays": 14,
+  "output": {
+    "reportPath": "report\\trebic-events.html",
+    "itemsPath": "data\\trebic-events-items.json",
+    "runLogPath": "data\\trebic-events-last-run.json",
+    "locationCachePath": "data\\trebic-events-location-cache.json"
+  },
+  "sources": [
+    {
+      "key": "region_calendar",
+      "label": "Regionalni kalendar Trebicsko-Moravska Vysocina",
+      "type": "region_calendar",
+      "listUrl": "https://kalendar.trebicsko-moravskavysocina.cz/iframe.php?zobrazeni=1&f_obec=&f_datum_od=&f_datum_do=&f_druh_udalosti=&f_pb_akce=0"
+    },
+    {
+      "key": "mks_divadlo",
+      "label": "MKS Trebic",
+      "type": "mks_category",
+      "genre": "Divadlo",
+      "url": "https://www.mkstrebic.cz/divadlo/"
+    },
+    {
+      "key": "mks_koncerty",
+      "label": "MKS Trebic",
+      "type": "mks_category",
+      "genre": "Koncerty",
+      "url": "https://www.mkstrebic.cz/koncerty/"
+    },
+    {
+      "key": "mks_vystavy",
+      "label": "MKS Trebic",
+      "type": "mks_category",
+      "genre": "Vystavy",
+      "url": "https://www.mkstrebic.cz/vystavy/"
+    },
+    {
+      "key": "mks_kino",
+      "label": "MKS Trebic",
+      "type": "mks_category",
+      "genre": "Kino",
+      "url": "https://www.mkstrebic.cz/kino/"
+    },
+    {
+      "key": "mks_deti",
+      "label": "MKS Trebic",
+      "type": "mks_category",
+      "genre": "Pro deti",
+      "url": "https://www.mkstrebic.cz/porady-pro-deti-a-mladez/"
+    },
+    {
+      "key": "mks_zabava",
+      "label": "MKS Trebic",
+      "type": "mks_category",
+      "genre": "Zabava a talk show",
+      "url": "https://www.mkstrebic.cz/zabavne-porady/"
+    },
+    {
+      "key": "mks_ostatni",
+      "label": "MKS Trebic",
+      "type": "mks_category",
+      "genre": "Ostatni kultura",
+      "url": "https://www.mkstrebic.cz/ostatni/"
+    },
+    {
+      "key": "unesco_trebic",
+      "label": "UNESCO Czech Trebic",
+      "type": "unesco_articles",
+      "url": "https://www.unesco-czech.cz/trebic/akce/"
+    },
+    {
+      "key": "ddm_trebic",
+      "label": "DDM Trebic",
+      "type": "ddm_catalog",
+      "url": "https://www.ddmtrebic.cz/akce"
+    },
+    {
+      "key": "muzeum_akce",
+      "label": "Muzeum Vysociny Trebic",
+      "type": "muzeum_schedule",
+      "url": "https://www.muzeumtr.cz/muzeum-vysociny-trebic-zamek/akce-v-muzeu"
+    },
+    {
+      "key": "roxy_program",
+      "label": "ROXY Club Trebic",
+      "type": "roxy_program",
+      "url": "https://www.roxy-club.cz/#program"
+    }
+  ],
+  "knownPlaces": {
+    "Trebic": {
+      "latitude": 49.2151907,
+      "longitude": 15.8816091
+    },
+    "Starec": {
+      "latitude": 49.1972445,
+      "longitude": 15.8265240
+    },
+    "Kozichovice": {
+      "latitude": 49.1998616,
+      "longitude": 15.9219212
+    },
+    "Krahulov": {
+      "latitude": 49.2229056,
+      "longitude": 15.8081380
+    },
+    "Okresice": {
+      "latitude": 49.2592483,
+      "longitude": 15.8516719
+    },
+    "Pocoucov": {
+      "latitude": 49.2425092,
+      "longitude": 15.8952369
+    },
+    "Budikovice": {
+      "latitude": 49.2556622,
+      "longitude": 15.8725374
+    },
+    "Mastnik": {
+      "latitude": 49.1801917,
+      "longitude": 15.8278301
+    },
+    "Ptacov": {
+      "latitude": 49.2288511,
+      "longitude": 15.9270831
+    },
+    "Vladislav": {
+      "latitude": 49.2108282,
+      "longitude": 15.9905820
+    },
+    "Okrisky": {
+      "latitude": 49.2455475,
+      "longitude": 15.7692189
+    }
+  }
+}
