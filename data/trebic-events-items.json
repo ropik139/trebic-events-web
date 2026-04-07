@@ -1,5 +1,5 @@
 ﻿{
-    "generatedAt":  "2026-04-06T20:55:58.0016347+02:00",
+    "generatedAt":  "2026-04-07T16:46:48.7472755+02:00",
     "center":  {
                    "name":  "Trebic",
                    "latitude":  49.2151907,
@@ -526,7 +526,7 @@
                       "startAt":  "2026-04-16T18:00:00.0000000",
                       "endAt":  "2026-04-16T21:00:00.0000000",
                       "dateLabel":  "16.04.2026",
-                      "summary":  "JITKA ČECHOVÁ – klavír, MARKÉTA JANOUŠKOVÁ – housle,, JAN PÁLENÍČEK – violoncello \n\n \n Smetanovo trio, jehož tradice sahá do roku 1934, patří k předním českým komorním souborům a je ceněno pro precizní souhru a výrazovou hloubku doma i v zahraničí. \n\n Cena normal: 220 Cena senioři: 180 Předprodej od: 19.03.2026 Předprodej do: 16.04.2026",
+                      "summary":  "JITKA ČECHOVÁ – klavír, MARKÉTA JANOUŠKOVÁ – housle,, JAN PÁLENÍČEK – violoncello \n\n \n Smetanovo trio, jehož tradice sahá do roku 1934, patří k předním českým komorním souborům a je ceněno pro precizní souhru a výrazovou hloubku doma i v zahraničí. \n\n Cena normal: 220 Cena senioři: 180 Předprodej od: 19.03.2026 Předprodej do: 16.04.2026 Předprodej",
                       "distanceKm":  0,
                       "link":  "https://www.mkstrebic.cz/koncerty/smetanovo-trio/",
                       "detailLink":  "https://kalendar.trebicsko-moravskavysocina.cz/iframe.php?cid=2648",
@@ -605,8 +605,23 @@
                       "distanceKm":  0,
                       "link":  "https://www.roxy-club.cz/akce/dance-vibes/",
                       "detailLink":  "https://www.roxy-club.cz/akce/dance-vibes/",
-                      "imageUrl":  "https://www.roxy-club.cz/wp-content/uploads/2026/04/Dance-3.png",
+                      "imageUrl":  "https://www.roxy-club.cz/wp-content/uploads/2026/04/17.4.-2300.png",
                       "sourceLabel":  "ROXY Club Trebic"
+                  },
+                  {
+                      "title":  "MEZINÁRODNÍ DEN PAMÁTEK A HISTORICKÝCH SÍDEL",
+                      "genre":  "Ostatni kultura",
+                      "municipality":  "Třebíč",
+                      "venue":  "Třebíč",
+                      "startAt":  "2026-04-18T00:00:00.0000000",
+                      "endAt":  "2026-04-18T23:59:59.0000000",
+                      "dateLabel":  "18.04.2026",
+                      "summary":  "Oslavu Mezinárodního dne památek a historických sídel navrhla Mezinárodní rada pro památky již v roce 1982, rok nato tento „památkový svátek“ přijala i organizace UNESCO. \n\n \n \n\n \n Zdarma budou otevřeny expozice a výstava v těchto historických sídlech: \n\n \n \n\n \n Malovaný dům: Výstavní síň s výstavou spolku výtvarných umělců Vysočiny v čase 10:00-12:00 a 13:00-17:00 \n\n \n Národní dům: Expozice Franta v čase 9:00-17:00 \n\n \n Předzámčí: Expozice Zmizelá Třebíč v čase 9:00-17:00 \n\n \n \n\n \n Kontakt: TIC Národní dům, Karlovo nám. 58/47, 674 01 Třebíč, el.: 568 610 021, 775 707 503, e-mail: info@mkstrebic.cz \n\n \n \n\n Cena zdarma",
+                      "distanceKm":  0,
+                      "link":  "https://www.mkstrebic.cz/ostatni/mezinarodni-den-pamatek-a-historickych-sidel/",
+                      "detailLink":  "https://kalendar.trebicsko-moravskavysocina.cz/iframe.php?cid=2910",
+                      "imageUrl":  "https://kalendar.trebicsko-moravskavysocina.cz/data_1/2910normal.png",
+                      "sourceLabel":  "MKS Trebic"
                   },
                   {
                       "title":  "SUPER MARIO GALAKTICKÝ FILM",
@@ -622,6 +637,21 @@
                       "detailLink":  "https://www.mkstrebic.cz/kino/super-mario-galakticky-film-900-5/",
                       "imageUrl":  "https://www.mkstrebic.cz/data_5/900mini.png?t=1774513107",
                       "sourceLabel":  "MKS Trebic"
+                  },
+                  {
+                      "title":  "JARNÍ KONCERT s Virtuosi Trebicenses",
+                      "genre":  "Koncerty",
+                      "municipality":  "Třebíč",
+                      "venue":  "Kamenný sál, Zámek Třebíč",
+                      "startAt":  "2026-04-19T18:00:00.0000000",
+                      "endAt":  "2026-04-19T19:15:00.0000000",
+                      "dateLabel":  "19.04.2026",
+                      "summary":  "V podání souboru Virtuosi Trebicenses zazní díla významných skladatelů, mimo jiné Wolfganga Amadea Mozarta, Erika Satieho, Philipa Glasse, Ástora Piazzolly, Benjamina Brittena, Clauda Debussyho a Georga Philippa Telemanna. Publikum se může těšit na slavné skladby jako Allegro z Mozartova Divertimenta KV 251, jemnou a meditativní Gymnopédii č. 1 Erika Satieho, minimalistickou hudbu Philipa Glasse Mishima. Vrcholem večera bude Telemannův Koncert pro tři housle a orchestr F dur. \n \nSólových partů se ujmou Adam Caha, Leo Nemchenko a Vít Coufal, cembalo doprovodí Ivana Šumpelová. \n \nPřijďte si vychutnat jedinečný večer plný elegance, virtuozity a hudební rozmanitosti v podání mladých talentů i zkušených interpretů. Těšíme se na setkání s vámi!",
+                      "distanceKm":  0,
+                      "link":  "https://www.smsticket.cz/vstupenky/68704-jarni-koncert-s-virtuosi-trebicenses-kamenny-sal-zamek-trebic",
+                      "detailLink":  "https://kalendar.trebicsko-moravskavysocina.cz/iframe.php?cid=2909",
+                      "imageUrl":  "https://kalendar.trebicsko-moravskavysocina.cz/data_1/2909normal.jpg",
+                      "sourceLabel":  "Regionalni kalendar Trebicsko-Moravska Vysocina"
                   },
                   {
                       "title":  "LEE CRONIN: MUMIE",
@@ -682,6 +712,21 @@
                       "detailLink":  "https://kalendar.trebicsko-moravskavysocina.cz/iframe.php?cid=2658",
                       "imageUrl":  "https://kalendar.trebicsko-moravskavysocina.cz/data_1/2658normal.jpg",
                       "sourceLabel":  "MKS Trebic"
+                  },
+                  {
+                      "title":  "Jak mluvit s dětmi o sexualitě?",
+                      "genre":  "Ostatni",
+                      "municipality":  "Třebíč",
+                      "venue":  "Komunitní centrum Moravia, Třebíč",
+                      "startAt":  "2026-04-21T16:00:00.0000000",
+                      "endAt":  "2026-04-21T18:00:00.0000000",
+                      "dateLabel":  "21.04.2026",
+                      "summary":  "",
+                      "distanceKm":  0,
+                      "link":  "https://www.stred.info/program_kc/",
+                      "detailLink":  "https://kalendar.trebicsko-moravskavysocina.cz/iframe.php?cid=2881",
+                      "imageUrl":  "https://kalendar.trebicsko-moravskavysocina.cz/data_1/2881normal.jpg",
+                      "sourceLabel":  "Regionalni kalendar Trebicsko-Moravska Vysocina"
                   }
               ]
 }
