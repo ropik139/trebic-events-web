@@ -56,6 +56,13 @@
       "url": "https://www.mkstrebic.cz/porady-pro-deti-a-mladez/"
     },
     {
+      "key": "mks_pronajmy",
+      "label": "MKS Trebic",
+      "type": "mks_category",
+      "genre": "",
+      "url": "https://www.mkstrebic.cz/pronajmy/"
+    },
+    {
       "key": "mks_zabava",
       "label": "MKS Trebic",
       "type": "mks_category",

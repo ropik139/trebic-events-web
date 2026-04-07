@@ -447,13 +447,20 @@ function Get-MksCategoryItems {
 
         $title = Normalize-Whitespace -Value $match.Groups["title"].Value
         $subtitle = Normalize-Whitespace -Value $match.Groups["subtitle"].Value
+        $venue = Normalize-Whitespace -Value $match.Groups["venue"].Value
+        $detailUrl = Resolve-AbsoluteUrl -Url $match.Groups["href"].Value -BaseUrl $Url
+        $effectiveGenre = if ([string]::IsNullOrWhiteSpace($Genre)) {
+            Get-GenreFromText -Title $title -Keywords $subtitle -ShortCode "" -Summary $subtitle -DeclaredGenre "" -Venue $venue -Link $detailUrl
+        } else {
+            $Genre
+        }
         $items.Add([pscustomobject]@{
             sourceKey    = $SourceKey
             sourceLabel  = $SourceLabel
             title        = $title
-            genre        = $Genre
+            genre        = $effectiveGenre
             municipality = "Trebic"
-            venue        = Normalize-Whitespace -Value $match.Groups["venue"].Value
+            venue        = $venue
             startAt      = $range.startAt
             endAt        = $range.endAt
             startText    = $range.startAt.ToString("d. M. yyyy HH:mm")
@@ -461,9 +468,9 @@ function Get-MksCategoryItems {
             dateLabel    = $dateText
             timeLabel    = $timeText
             summary      = $subtitle
-            keywords     = $Genre
-            link         = Resolve-AbsoluteUrl -Url $match.Groups["href"].Value -BaseUrl $Url
-            detailLink   = Resolve-AbsoluteUrl -Url $match.Groups["href"].Value -BaseUrl $Url
+            keywords     = if ([string]::IsNullOrWhiteSpace($Genre)) { $subtitle } else { $Genre }
+            link         = $detailUrl
+            detailLink   = $detailUrl
             imageUrl     = Resolve-AbsoluteUrl -Url $match.Groups["image"].Value -BaseUrl $Url
             dedupeKey    = "$($range.startAt.ToString("yyyy-MM-dd"))|$((Get-NormalizedPlaceKey -Value $title))"
         })
@@ -698,6 +705,7 @@ function Merge-EventItems {
             $mergedStartAt = if ($otherItem.startAt.TimeOfDay.TotalMinutes -gt 0) { $otherItem.startAt } else { $regionItem.startAt }
             $mergedEndAt = if ($otherItem.endAt.TimeOfDay.TotalMinutes -gt 0) { $otherItem.endAt } else { $regionItem.endAt }
             $mergedImageUrl = if (-not [string]::IsNullOrWhiteSpace($regionItem.imageUrl)) { $regionItem.imageUrl } else { $otherItem.imageUrl }
+            $preferredLink = Get-PreferredEventLink -Candidates @($otherItem.detailLink, $otherItem.link, $regionItem.link, $regionItem.detailLink)
             $map[$item.dedupeKey] = [pscustomobject]@{
                 sourceKey    = $otherItem.sourceKey
                 sourceLabel  = $otherItem.sourceLabel
@@ -713,8 +721,8 @@ function Merge-EventItems {
                 timeLabel    = $otherItem.timeLabel
                 summary      = if (-not [string]::IsNullOrWhiteSpace($regionItem.summary)) { $regionItem.summary } else { $otherItem.summary }
                 keywords     = $regionItem.keywords
-                link         = $otherItem.link
-                detailLink   = $regionItem.detailLink
+                link         = $preferredLink
+                detailLink   = $preferredLink
                 imageUrl     = $mergedImageUrl
                 dedupeKey    = $item.dedupeKey
             }
@@ -722,6 +730,63 @@ function Merge-EventItems {
     }
 
     @($map.Values)
+}
+
+function Test-IsGenericEventLink {
+    param([string]$Url)
+
+    if ([string]::IsNullOrWhiteSpace($Url)) { return $true }
+
+    try {
+        $uri = [System.Uri]$Url
+    } catch {
+        return $false
+    }
+
+    $segments = @($uri.Segments | ForEach-Object { $_.Trim('/') } | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+    if ($segments.Count -eq 0) { return $true }
+
+    $genericPaths = @(
+        'kino',
+        'divadlo',
+        'koncerty',
+        'vystavy',
+        'ostatni',
+        'pronajmy',
+        'porady-pro-deti-a-mladez',
+        'zabavne-porady',
+        'pro-verejnost',
+        'akce',
+        'kalendar-akci'
+    )
+
+    if ($segments.Count -eq 1 -and $genericPaths -contains $segments[0].ToLowerInvariant()) {
+        return $true
+    }
+
+    $false
+}
+
+function Get-PreferredEventLink {
+    param([string[]]$Candidates)
+
+    $normalized = @($Candidates | Where-Object { -not [string]::IsNullOrWhiteSpace($_) } | Select-Object -Unique)
+    if ($normalized.Count -eq 0) { return "" }
+
+    $preferred = $normalized | Where-Object {
+        $_ -notmatch 'kalendar\.trebicsko-moravskavysocina\.cz/iframe\.php\?cid=' -and
+        -not (Test-IsGenericEventLink -Url $_)
+    } | Select-Object -First 1
+    if (-not [string]::IsNullOrWhiteSpace($preferred)) {
+        return $preferred
+    }
+
+    $nonAggregator = $normalized | Where-Object { $_ -notmatch 'kalendar\.trebicsko-moravskavysocina\.cz/iframe\.php\?cid=' } | Select-Object -First 1
+    if (-not [string]::IsNullOrWhiteSpace($nonAggregator)) {
+        return $nonAggregator
+    }
+
+    [string]$normalized[0]
 }
 
 function Get-PreviewText {
@@ -806,7 +871,8 @@ body{margin:0;font-family:'Segoe UI',Arial,sans-serif;color:var(--ink);backgroun
     $nextItemsHtml = if ($itemList.Count -gt 0) {
         $nearestItems = $itemList | Where-Object { $_.startAt -ge $Now } | Sort-Object startAt, endAt, title | Select-Object -First 10
         $rows = ($nearestItems | ForEach-Object {
-            "<li><span class='next-date'>$([System.Net.WebUtility]::HtmlEncode((Get-DateLabelWithOptionalTime -Value $_.startAt)))</span><a class='next-link' href='$([System.Net.WebUtility]::HtmlEncode($_.detailLink))' target='_blank' rel='noreferrer'>$([System.Net.WebUtility]::HtmlEncode($_.title))</a></li>"
+            $preferredLink = Get-PreferredEventLink -Candidates @($_.link, $_.detailLink)
+            "<li><span class='next-date'>$([System.Net.WebUtility]::HtmlEncode((Get-DateLabelWithOptionalTime -Value $_.startAt)))</span><a class='next-link' href='$([System.Net.WebUtility]::HtmlEncode($preferredLink))' target='_blank' rel='noreferrer'>$([System.Net.WebUtility]::HtmlEncode($_.title))</a></li>"
         }) -join "`n"
         if ([string]::IsNullOrWhiteSpace($rows)) {
             "<div class='next-box'><h2>10 nejbli&#382;&#353;&#237;ch akc&#237;</h2><div>V nejblizsich dnech ted nejsou zadne budouci akce.</div></div>"
@@ -834,7 +900,8 @@ body{margin:0;font-family:'Segoe UI',Arial,sans-serif;color:var(--ink);backgroun
                 }
                 $image = if ([string]::IsNullOrWhiteSpace($_.imageUrl)) { "" } else { "<img class='thumb' src='$([System.Net.WebUtility]::HtmlEncode($_.imageUrl))' alt='$([System.Net.WebUtility]::HtmlEncode($_.title))'>" }
                 $distanceDetail = if ([double]$_.distanceKm -gt 0.04) { "<div class='detail'><strong>Vzd&#225;lenost:</strong> $([System.Net.WebUtility]::HtmlEncode(('{0:N1} km' -f $_.distanceKm)))</div>" } else { "" }
-                "<article class='card'>$image<div class='date'>$([System.Net.WebUtility]::HtmlEncode($_.startText))</div><h3>$([System.Net.WebUtility]::HtmlEncode($_.title))</h3><div class='detail'><strong>M&#237;sto:</strong> $([System.Net.WebUtility]::HtmlEncode($_.venue))</div><div class='detail'><strong>Obec:</strong> $([System.Net.WebUtility]::HtmlEncode($_.municipality))</div>$distanceDetail<div class='detail'><strong>Term&#237;n:</strong> $([System.Net.WebUtility]::HtmlEncode($_.dateLabel))</div>$summary<div class='links'><a class='btn' href='$([System.Net.WebUtility]::HtmlEncode($_.detailLink))' target='_blank' rel='noreferrer'>Otev&#345;&#237;t detail</a></div></article>"
+                $preferredLink = Get-PreferredEventLink -Candidates @($_.link, $_.detailLink)
+                "<article class='card'>$image<div class='date'>$([System.Net.WebUtility]::HtmlEncode($_.startText))</div><h3>$([System.Net.WebUtility]::HtmlEncode($_.title))</h3><div class='detail'><strong>M&#237;sto:</strong> $([System.Net.WebUtility]::HtmlEncode($_.venue))</div><div class='detail'><strong>Obec:</strong> $([System.Net.WebUtility]::HtmlEncode($_.municipality))</div>$distanceDetail<div class='detail'><strong>Term&#237;n:</strong> $([System.Net.WebUtility]::HtmlEncode($_.dateLabel))</div>$summary<div class='links'><a class='btn' href='$([System.Net.WebUtility]::HtmlEncode($preferredLink))' target='_blank' rel='noreferrer'>Otev&#345;&#237;t detail</a></div></article>"
             }) -join "`n"
             "<section class='genre-section'><div class='genre-header'><h2>$(Get-GenreDisplayHtml -Genre $_.Name)</h2><span>$($_.Count) akc&#237;</span></div><div class='grid'>$cards</div></section>"
         }) -join "`n"
