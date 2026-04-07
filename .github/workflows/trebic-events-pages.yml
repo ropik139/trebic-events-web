@@ -17,7 +17,13 @@ on:
       - 'report/**'
   schedule:
     - cron: '0 13 * * *'
+    - cron: '15 13 * * *'
+    - cron: '30 13 * * *'
+    - cron: '45 13 * * *'
     - cron: '0 14 * * *'
+    - cron: '15 14 * * *'
+    - cron: '30 14 * * *'
+    - cron: '45 14 * * *'
 
 permissions:
   contents: write
@@ -44,7 +50,8 @@ jobs:
         run: |
           $tz = [System.TimeZoneInfo]::FindSystemTimeZoneById("Central Europe Standard Time")
           $pragueNow = [System.TimeZoneInfo]::ConvertTimeFromUtc([datetime]::UtcNow, $tz)
-          if ("${{ github.event_name }}" -eq "schedule" -and $pragueNow.Hour -ne 15) {
+          $isUpdateWindow = ($pragueNow.Hour -eq 15 -and $pragueNow.Minute -lt 45)
+          if ("${{ github.event_name }}" -eq "schedule" -and -not $isUpdateWindow) {
             "should_run=false" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
           } else {
             "should_run=true" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
