@@ -783,9 +783,9 @@ body{margin:0;font-family:'Segoe UI',Arial,sans-serif;color:var(--ink);backgroun
             "<li><span class='next-date'>$([System.Net.WebUtility]::HtmlEncode($_.startAt.ToString('d. M. yyyy')))</span><span>$([System.Net.WebUtility]::HtmlEncode($_.title))</span></li>"
         }) -join "`n"
         if ([string]::IsNullOrWhiteSpace($rows)) {
-            "<div class='next-box'><h2>10 nejblizsich akci</h2><div>V nejblizsich dnech ted nejsou zadne budouci akce.</div></div>"
+            "<div class='next-box'><h2>10 nejbli&#382;&#353;&#237;ch akc&#237;</h2><div>V nejblizsich dnech ted nejsou zadne budouci akce.</div></div>"
         } else {
-            "<div class='next-box'><h2>10 nejblizsich akci</h2><ul class='next-list'>$rows</ul></div>"
+            "<div class='next-box'><h2>10 nejbli&#382;&#353;&#237;ch akc&#237;</h2><ul class='next-list'>$rows</ul></div>"
         }
     } else {
         ""
