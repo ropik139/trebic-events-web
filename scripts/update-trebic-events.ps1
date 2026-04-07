@@ -25,6 +25,20 @@ function Resolve-PathFromBase {
     [System.IO.Path]::GetFullPath((Join-Path $BasePath $RelativePath))
 }
 
+function Get-TimeZoneInfoSafe {
+    param([string]$PreferredId)
+
+    foreach ($id in @($PreferredId, "Europe/Prague", "Central Europe Standard Time")) {
+        if ([string]::IsNullOrWhiteSpace($id)) { continue }
+        try {
+            return [System.TimeZoneInfo]::FindSystemTimeZoneById($id)
+        } catch {
+        }
+    }
+
+    [System.TimeZoneInfo]::Local
+}
+
 function Ensure-Directory {
     param([string]$Path)
     if (-not (Test-Path -LiteralPath $Path)) {
@@ -728,6 +742,16 @@ function Get-PreviewText {
     "$($cut.Trim())..."
 }
 
+function Get-DateLabelWithOptionalTime {
+    param([datetime]$Value)
+
+    if ($Value.TimeOfDay.TotalMinutes -gt 0) {
+        return $Value.ToString("d. M. yyyy HH:mm")
+    }
+
+    $Value.ToString("d. M. yyyy")
+}
+
 function Convert-ItemsToHtml {
     param(
         [object[]]$Items,
@@ -752,8 +776,10 @@ body{margin:0;font-family:'Segoe UI',Arial,sans-serif;color:var(--ink);backgroun
 .next-box{margin-top:16px;padding:14px 15px;border-radius:18px;background:rgba(255,255,255,.14);backdrop-filter:blur(2px)}
 .next-box h2{margin:0 0 10px;font-size:18px}
 .next-list{margin:0;padding:0;list-style:none}
-.next-list li{display:grid;grid-template-columns:112px 1fr;gap:10px;padding:4px 0;font-size:14px;line-height:1.35}
+.next-list li{display:grid;grid-template-columns:140px 1fr;gap:10px;padding:4px 0;font-size:14px;line-height:1.35}
 .next-date{font-weight:700}
+.next-link{color:#fff;text-decoration:none}
+.next-link:hover{text-decoration:underline}
 .genre-section{margin-top:22px}
 .genre-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
 .genre-header h2{margin:0;font-size:22px}
@@ -780,7 +806,7 @@ body{margin:0;font-family:'Segoe UI',Arial,sans-serif;color:var(--ink);backgroun
     $nextItemsHtml = if ($itemList.Count -gt 0) {
         $nearestItems = $itemList | Where-Object { $_.startAt -ge $Now } | Sort-Object startAt, endAt, title | Select-Object -First 10
         $rows = ($nearestItems | ForEach-Object {
-            "<li><span class='next-date'>$([System.Net.WebUtility]::HtmlEncode($_.startAt.ToString('d. M. yyyy')))</span><span>$([System.Net.WebUtility]::HtmlEncode($_.title))</span></li>"
+            "<li><span class='next-date'>$([System.Net.WebUtility]::HtmlEncode((Get-DateLabelWithOptionalTime -Value $_.startAt)))</span><a class='next-link' href='$([System.Net.WebUtility]::HtmlEncode($_.detailLink))' target='_blank' rel='noreferrer'>$([System.Net.WebUtility]::HtmlEncode($_.title))</a></li>"
         }) -join "`n"
         if ([string]::IsNullOrWhiteSpace($rows)) {
             "<div class='next-box'><h2>10 nejbli&#382;&#353;&#237;ch akc&#237;</h2><div>V nejblizsich dnech ted nejsou zadne budouci akce.</div></div>"
@@ -807,7 +833,8 @@ body{margin:0;font-family:'Segoe UI',Arial,sans-serif;color:var(--ink);backgroun
                     "<div class='summary'>$([System.Net.WebUtility]::HtmlEncode($previewSummary))</div>"
                 }
                 $image = if ([string]::IsNullOrWhiteSpace($_.imageUrl)) { "" } else { "<img class='thumb' src='$([System.Net.WebUtility]::HtmlEncode($_.imageUrl))' alt='$([System.Net.WebUtility]::HtmlEncode($_.title))'>" }
-                "<article class='card'>$image<div class='date'>$([System.Net.WebUtility]::HtmlEncode($_.startText))</div><h3>$([System.Net.WebUtility]::HtmlEncode($_.title))</h3><div class='detail'><strong>M&#237;sto:</strong> $([System.Net.WebUtility]::HtmlEncode($_.venue))</div><div class='detail'><strong>Obec:</strong> $([System.Net.WebUtility]::HtmlEncode($_.municipality))</div><div class='detail'><strong>Vzd&#225;lenost:</strong> $([System.Net.WebUtility]::HtmlEncode(('{0:N1} km' -f $_.distanceKm)))</div><div class='detail'><strong>Term&#237;n:</strong> $([System.Net.WebUtility]::HtmlEncode($_.dateLabel))</div>$summary<div class='links'><a class='btn' href='$([System.Net.WebUtility]::HtmlEncode($_.detailLink))' target='_blank' rel='noreferrer'>Otev&#345;&#237;t detail</a></div></article>"
+                $distanceDetail = if ([double]$_.distanceKm -gt 0.04) { "<div class='detail'><strong>Vzd&#225;lenost:</strong> $([System.Net.WebUtility]::HtmlEncode(('{0:N1} km' -f $_.distanceKm)))</div>" } else { "" }
+                "<article class='card'>$image<div class='date'>$([System.Net.WebUtility]::HtmlEncode($_.startText))</div><h3>$([System.Net.WebUtility]::HtmlEncode($_.title))</h3><div class='detail'><strong>M&#237;sto:</strong> $([System.Net.WebUtility]::HtmlEncode($_.venue))</div><div class='detail'><strong>Obec:</strong> $([System.Net.WebUtility]::HtmlEncode($_.municipality))</div>$distanceDetail<div class='detail'><strong>Term&#237;n:</strong> $([System.Net.WebUtility]::HtmlEncode($_.dateLabel))</div>$summary<div class='links'><a class='btn' href='$([System.Net.WebUtility]::HtmlEncode($_.detailLink))' target='_blank' rel='noreferrer'>Otev&#345;&#237;t detail</a></div></article>"
             }) -join "`n"
             "<section class='genre-section'><div class='genre-header'><h2>$(Get-GenreDisplayHtml -Genre $_.Name)</h2><span>$($_.Count) akc&#237;</span></div><div class='grid'>$cards</div></section>"
         }) -join "`n"
@@ -887,7 +914,8 @@ foreach ($property in $config.knownPlaces.PSObject.Properties) {
 }
 
 $locationCache = Get-CacheMap -CacheObject (Read-JsonFile -Path $locationCachePath)
-$now = Get-Date
+$timezoneInfo = Get-TimeZoneInfoSafe -PreferredId ([string]$config.timezone)
+$now = [System.TimeZoneInfo]::ConvertTimeFromUtc([datetime]::UtcNow, $timezoneInfo)
 $windowEnd = $now.AddDays([int]$config.horizonDays)
 $items = New-Object System.Collections.Generic.List[object]
 
