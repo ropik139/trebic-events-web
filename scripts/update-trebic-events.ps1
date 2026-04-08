@@ -149,8 +149,25 @@ function Get-GenreDisplayHtml {
         "Prednasky a workshopy" { return "P&#345;edn&#225;&#353;ky a workshopy" }
         "Festivaly a slavnosti" { return "Festivaly a slavnosti" }
         "Zabava a talk show" { return "Z&#225;bava a talk show" }
+        "Ostatni kultura" { return "Ostatn&#237; kultura" }
         default { return "Ostatn&#237;" }
     }
+}
+
+function Get-GenreSlug {
+    param([string]$Genre)
+
+    if ([string]::IsNullOrWhiteSpace($Genre)) {
+        return "ostatni"
+    }
+
+    $normalized = Get-NormalizedPlaceKey -Value $Genre
+    $slug = ($normalized -replace '[^a-z0-9]+', '-').Trim('-')
+    if ([string]::IsNullOrWhiteSpace($slug)) {
+        return "ostatni"
+    }
+
+    $slug
 }
 
 function Parse-CzechDateText {
@@ -845,6 +862,10 @@ body{margin:0;font-family:'Segoe UI',Arial,sans-serif;color:var(--ink);backgroun
 .next-date{font-weight:700}
 .next-link{color:#fff;text-decoration:none}
 .next-link:hover{text-decoration:underline}
+.section-filter-wrap{display:flex;justify-content:flex-end;margin-top:16px}
+.section-filter{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.9);box-shadow:0 8px 20px rgba(29,42,52,.05)}
+.section-filter label{font-size:14px;font-weight:700;color:var(--ink)}
+.section-filter select{min-width:230px;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);font-size:14px}
 .genre-section{margin-top:22px}
 .genre-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
 .genre-header h2{margin:0;font-size:22px}
@@ -864,10 +885,11 @@ body{margin:0;font-family:'Segoe UI',Arial,sans-serif;color:var(--ink);backgroun
 .btn{display:inline-block;width:100%;text-align:center;padding:12px 14px;border-radius:12px;background:var(--accent);color:#fff;text-decoration:none;font-weight:700}
 .empty{margin-top:20px;padding:20px;border-radius:18px;background:#fff;border:1px solid var(--line);color:var(--muted)}
 @media (min-width:721px){.wrap{padding:24px 18px 56px}.hero{padding:28px 26px}.hero h1{font-size:34px}.card h3{font-size:20px}}
-@media (max-width:720px){.next-list li{grid-template-columns:1fr}.next-date{margin-bottom:1px}.hero p{max-width:none}}
+@media (max-width:720px){.next-list li{grid-template-columns:1fr}.next-date{margin-bottom:1px}.hero p{max-width:none}.section-filter-wrap{justify-content:stretch}.section-filter{width:100%;flex-direction:column;align-items:stretch}.section-filter select{min-width:0;width:100%}}
 "@
 
     $itemList = [object[]]$Items
+    $genreGroups = @($itemList | Group-Object genre | Sort-Object Name)
     $nextItemsHtml = if ($itemList.Count -gt 0) {
         $nearestItems = $itemList | Where-Object { $_.startAt -ge $Now } | Sort-Object startAt, endAt, title | Select-Object -First 10
         $rows = ($nearestItems | ForEach-Object {
@@ -882,11 +904,21 @@ body{margin:0;font-family:'Segoe UI',Arial,sans-serif;color:var(--ink);backgroun
     } else {
         ""
     }
+    $filterOptionsHtml = if ($genreGroups.Count -gt 0) {
+        $options = @("<option value='all'>Vsechny sekce</option>")
+        foreach ($group in $genreGroups) {
+            $options += "<option value='$([System.Net.WebUtility]::HtmlEncode((Get-GenreSlug -Genre $group.Name)))'>$(Get-GenreDisplayHtml -Genre $group.Name)</option>"
+        }
+        "<div class='section-filter-wrap'><div class='section-filter'><label for='section-filter'>Zobrazit sekci</label><select id='section-filter'>$($options -join '')</select></div></div>"
+    } else {
+        ""
+    }
     $sourceText = [System.Net.WebUtility]::HtmlEncode(($SourceLabels | Sort-Object -Unique) -join " + ")
     if ($itemList.Count -eq 0) {
         $bodyHtml = "<div class='empty'>V zadanem okruhu a horizontu $HorizonDays dni ted nejsou zadne aktivni kulturni akce.</div>"
     } else {
-        $bodyHtml = (($itemList | Group-Object genre | Sort-Object Name) | ForEach-Object {
+        $bodyHtml = ($genreGroups | ForEach-Object {
+            $genreSlug = Get-GenreSlug -Genre $_.Name
             $cards = ($_.Group | Sort-Object sortAt, endAt, title | ForEach-Object {
                 $fullSummary = Normalize-Whitespace -Value $_.summary
                 $previewSummary = Get-PreviewText -Text $fullSummary -MaxLength 220
@@ -903,7 +935,7 @@ body{margin:0;font-family:'Segoe UI',Arial,sans-serif;color:var(--ink);backgroun
                 $preferredLink = Get-PreferredEventLink -Candidates @($_.link, $_.detailLink)
                 "<article class='card'>$image<div class='date'>$([System.Net.WebUtility]::HtmlEncode($_.startText))</div><h3>$([System.Net.WebUtility]::HtmlEncode($_.title))</h3><div class='detail'><strong>M&#237;sto:</strong> $([System.Net.WebUtility]::HtmlEncode($_.venue))</div><div class='detail'><strong>Obec:</strong> $([System.Net.WebUtility]::HtmlEncode($_.municipality))</div>$distanceDetail<div class='detail'><strong>Term&#237;n:</strong> $([System.Net.WebUtility]::HtmlEncode($_.dateLabel))</div>$summary<div class='links'><a class='btn' href='$([System.Net.WebUtility]::HtmlEncode($preferredLink))' target='_blank' rel='noreferrer'>Otev&#345;&#237;t detail</a></div></article>"
             }) -join "`n"
-            "<section class='genre-section'><div class='genre-header'><h2>$(Get-GenreDisplayHtml -Genre $_.Name)</h2><span>$($_.Count) akc&#237;</span></div><div class='grid'>$cards</div></section>"
+            "<section class='genre-section' data-genre='$([System.Net.WebUtility]::HtmlEncode($genreSlug))'><div class='genre-header'><h2>$(Get-GenreDisplayHtml -Genre $_.Name)</h2><span>$($_.Count) akc&#237;</span></div><div class='grid'>$cards</div></section>"
         }) -join "`n"
     }
 
@@ -927,6 +959,17 @@ document.addEventListener('click', function (event) {
     button.textContent = 'Zobrazit mene';
   }
 });
+
+var sectionFilter = document.getElementById('section-filter');
+if (sectionFilter) {
+  sectionFilter.addEventListener('change', function () {
+    var selectedGenre = sectionFilter.value;
+    document.querySelectorAll('.genre-section').forEach(function (section) {
+      var isVisible = selectedGenre === 'all' || section.getAttribute('data-genre') === selectedGenre;
+      section.style.display = isVisible ? '' : 'none';
+    });
+  });
+}
 </script>
 "@
 
@@ -950,6 +993,7 @@ document.addEventListener('click', function (event) {
       </div>
       $nextItemsHtml
     </section>
+    $filterOptionsHtml
     $bodyHtml
   </div>
   $script

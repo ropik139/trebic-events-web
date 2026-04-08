@@ -1,5 +1,5 @@
 ﻿{
-    "generatedAt":  "2026-04-08T18:52:55.0749159",
+    "generatedAt":  "2026-04-08T21:29:40.1448971",
     "center":  {
                    "name":  "Trebic",
                    "latitude":  49.2151907,
@@ -9,19 +9,19 @@
     "horizonDays":  14,
     "items":  [
                   {
-                      "title":  "Slavnostní vyřazení absolventů výtvarného oboru",
-                      "genre":  "Vystavy",
-                      "municipality":  "Třebíč",
-                      "venue":  "Foyer divadla Pasáž, Třebíč",
-                      "startAt":  "2026-04-08T17:00:00.0000000",
-                      "endAt":  "2026-04-08T19:00:00.0000000",
-                      "dateLabel":  "08.04.2026",
-                      "summary":  "Výstava prací absolventů výtvarného oboru Účinkují žáci VO a HO",
+                      "title":  "UCPANEJ SYSTÉM",
+                      "genre":  "Kino",
+                      "municipality":  "Trebic",
+                      "venue":  "Kino Pasáž",
+                      "startAt":  "2026-04-08T19:00:00.0000000",
+                      "endAt":  "2026-04-08T22:00:00.0000000",
+                      "dateLabel":  "8.04.2026",
+                      "summary":  "",
                       "distanceKm":  0,
-                      "link":  "https://www.zus-trebic.cz/",
-                      "detailLink":  "https://kalendar.trebicsko-moravskavysocina.cz/iframe.php?cid=2854",
-                      "imageUrl":  "https://kalendar.trebicsko-moravskavysocina.cz/data_1/2854normal.jpg",
-                      "sourceLabel":  "Regionalni kalendar Trebicsko-Moravska Vysocina"
+                      "link":  "https://www.mkstrebic.cz/kino/ucpanej-system/",
+                      "detailLink":  "https://www.mkstrebic.cz/kino/ucpanej-system/",
+                      "imageUrl":  "https://www.mkstrebic.cz/data_5/842mini.png?t=1774361965",
+                      "sourceLabel":  "MKS Trebic"
                   },
                   {
                       "title":  "Hynek Luňák – 100 let",
@@ -127,21 +127,6 @@
                       "detailLink":  "https://kalendar.trebicsko-moravskavysocina.cz/iframe.php?cid=2769",
                       "imageUrl":  "https://kalendar.trebicsko-moravskavysocina.cz/data_1/2769normal.jpg",
                       "sourceLabel":  "Regionalni kalendar Trebicsko-Moravska Vysocina"
-                  },
-                  {
-                      "title":  "UCPANEJ SYSTÉM",
-                      "genre":  "Kino",
-                      "municipality":  "Trebic",
-                      "venue":  "Kino Pasáž",
-                      "startAt":  "2026-04-08T19:00:00.0000000",
-                      "endAt":  "2026-04-08T22:00:00.0000000",
-                      "dateLabel":  "8.04.2026",
-                      "summary":  "",
-                      "distanceKm":  0,
-                      "link":  "https://www.mkstrebic.cz/kino/ucpanej-system/",
-                      "detailLink":  "https://www.mkstrebic.cz/kino/ucpanej-system/",
-                      "imageUrl":  "https://www.mkstrebic.cz/data_5/842mini.png?t=1774361965",
-                      "sourceLabel":  "MKS Trebic"
                   },
                   {
                       "title":  "Od kresby k malbě",
@@ -727,6 +712,21 @@
                       "detailLink":  "https://kalendar.trebicsko-moravskavysocina.cz/iframe.php?cid=2723",
                       "imageUrl":  "https://kalendar.trebicsko-moravskavysocina.cz/data_1/2723normal.jpg",
                       "sourceLabel":  "Regionalni kalendar Trebicsko-Moravska Vysocina"
+                  },
+                  {
+                      "title":  "ANNA K. \"VŽDYCKY SE BUDEME ZNÁT\"",
+                      "genre":  "Koncerty",
+                      "municipality":  "Trebic",
+                      "venue":  "Divadlo Pasáž",
+                      "startAt":  "2026-04-22T19:00:00.0000000",
+                      "endAt":  "2026-04-22T22:00:00.0000000",
+                      "dateLabel":  "22.04.2026",
+                      "summary":  "",
+                      "distanceKm":  0,
+                      "link":  "https://www.mkstrebic.cz/koncerty/anna-k/",
+                      "detailLink":  "https://www.mkstrebic.cz/koncerty/anna-k/",
+                      "imageUrl":  "https://www.mkstrebic.cz/data_4/555mini.png?t=1764577296",
+                      "sourceLabel":  "MKS Trebic"
                   }
               ]
 }
