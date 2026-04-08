@@ -44,41 +44,22 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Decide whether this is 15:00 in Prague
-        id: prague_time
-        shell: powershell
-        run: |
-          $tz = [System.TimeZoneInfo]::FindSystemTimeZoneById("Central Europe Standard Time")
-          $pragueNow = [System.TimeZoneInfo]::ConvertTimeFromUtc([datetime]::UtcNow, $tz)
-          $isUpdateWindow = ($pragueNow.Hour -eq 15 -and $pragueNow.Minute -lt 45)
-          if ("${{ github.event_name }}" -eq "schedule" -and -not $isUpdateWindow) {
-            "should_run=false" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
-          } else {
-            "should_run=true" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
-          }
-          "prague_now=$($pragueNow.ToString('yyyy-MM-dd HH:mm'))" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
-
       - name: Run update script
-        if: steps.prague_time.outputs.should_run == 'true'
         shell: powershell
         run: .\scripts\update-trebic-events.ps1
 
       - name: Prepare Pages site
-        if: steps.prague_time.outputs.should_run == 'true'
         shell: powershell
         run: .\scripts\publish-trebic-events-site.ps1 -SkipUpdate
 
       - name: Configure Pages
-        if: steps.prague_time.outputs.should_run == 'true'
         uses: actions/configure-pages@v5
 
       - name: Upload Pages artifact
-        if: steps.prague_time.outputs.should_run == 'true'
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./docs
 
       - name: Deploy to GitHub Pages
-        if: steps.prague_time.outputs.should_run == 'true'
         id: deployment
         uses: actions/deploy-pages@v4

@@ -1,5 +1,5 @@
 ﻿{
-    "generatedAt":  "2026-04-07T21:16:43.7230401",
+    "generatedAt":  "2026-04-08T18:52:55.0749159",
     "center":  {
                    "name":  "Trebic",
                    "latitude":  49.2151907,
@@ -9,34 +9,19 @@
     "horizonDays":  14,
     "items":  [
                   {
-                      "title":  "SIRÉNY NA CESTÁCH - volné pokračování",
-                      "genre":  "Zabava a talk show",
+                      "title":  "Slavnostní vyřazení absolventů výtvarného oboru",
+                      "genre":  "Vystavy",
                       "municipality":  "Třebíč",
-                      "venue":  "Divadlo Pasáž",
-                      "startAt":  "2026-04-07T19:00:00.0000000",
-                      "endAt":  "2026-04-07T22:00:00.0000000",
-                      "dateLabel":  "07.04.2026",
-                      "summary":  "Sirény na cestách je volné pokračování vystoupení trojice hereček a zpěvaček Sandry Pogodové, Jitky Asterové A Lindy Finkové. Jejich neotřelý smysl pro humor a vzájemná chuť si ze sebe utahovat vás rozhodně pobaví. Pořad je plný šťavnatých vyprávění a historek ze zákulisí natáčení a divadelního světa. To vše prošpikováno šansony a písněmi z muzikálů tvoří dokonalý program, na který budete dlouho vzpomínat s úsměvem na tváři. \n\n Cena normal: 490,-/550 Předprodej od: 1.12.2025 Předprodej do: 7.04.2026 Předprodej",
+                      "venue":  "Foyer divadla Pasáž, Třebíč",
+                      "startAt":  "2026-04-08T17:00:00.0000000",
+                      "endAt":  "2026-04-08T19:00:00.0000000",
+                      "dateLabel":  "08.04.2026",
+                      "summary":  "Výstava prací absolventů výtvarného oboru Účinkují žáci VO a HO",
                       "distanceKm":  0,
-                      "link":  "https://www.mkstrebic.cz/zabavne-porady/sireny-na-cestach/",
-                      "detailLink":  "https://www.mkstrebic.cz/zabavne-porady/sireny-na-cestach/",
-                      "imageUrl":  "https://kalendar.trebicsko-moravskavysocina.cz/data_1/2608normal.jpg",
-                      "sourceLabel":  "MKS Trebic"
-                  },
-                  {
-                      "title":  "BOUŘLIVÉ VÝŠINY",
-                      "genre":  "Kino",
-                      "municipality":  "Trebic",
-                      "venue":  "Kino Pasáž",
-                      "startAt":  "2026-04-07T19:30:00.0000000",
-                      "endAt":  "2026-04-07T22:30:00.0000000",
-                      "dateLabel":  "7.04.2026",
-                      "summary":  "Historické, romantické drama USA s titulky.",
-                      "distanceKm":  0,
-                      "link":  "https://www.mkstrebic.cz/kino/bourlive-vysiny/",
-                      "detailLink":  "https://www.mkstrebic.cz/kino/bourlive-vysiny/",
-                      "imageUrl":  "https://www.mkstrebic.cz/data_5/891mini.png?t=1774361949",
-                      "sourceLabel":  "MKS Trebic"
+                      "link":  "https://www.zus-trebic.cz/",
+                      "detailLink":  "https://kalendar.trebicsko-moravskavysocina.cz/iframe.php?cid=2854",
+                      "imageUrl":  "https://kalendar.trebicsko-moravskavysocina.cz/data_1/2854normal.jpg",
+                      "sourceLabel":  "Regionalni kalendar Trebicsko-Moravska Vysocina"
                   },
                   {
                       "title":  "Hynek Luňák – 100 let",
@@ -73,14 +58,14 @@
                       "genre":  "Vystavy",
                       "municipality":  "Třebíč",
                       "venue":  "Ekotechnické centrum Alternátor (Třebíč)",
-                      "startAt":  "2025-11-27T17:00:00.0000000",
+                      "startAt":  "2025-11-27T00:00:00.0000000",
                       "endAt":  "2026-04-30T23:59:59.0000000",
-                      "dateLabel":  "27.11.2025 - 30.04.2026",
-                      "summary":  "Vernisáž 27. 11. 2025 v 17:00 \n\n \n 27. 11. v 17:30 přednáška: Životní principy Tomáše Bati pro současnost. \n\n \n Vstup na vernisáž výstavy a přednášku je zdarma , nutná rezervace na: cr@trebic.cz",
+                      "dateLabel":  "čt 27.11.2025 17:00 - 30.4.2026",
+                      "summary":  "",
                       "distanceKm":  0,
                       "link":  "https://www.unesco-czech.cz/900_718214_vystava-nadace-tomase-bati-bud-prvnim",
                       "detailLink":  "https://www.unesco-czech.cz/900_718214_vystava-nadace-tomase-bati-bud-prvnim",
-                      "imageUrl":  "https://kalendar.trebicsko-moravskavysocina.cz/data_1/2548normal.jpg",
+                      "imageUrl":  "https://www.czecot.com/images/ac/100x100/327120.jpg",
                       "sourceLabel":  "UNESCO Czech Trebic"
                   },
                   {
@@ -141,36 +126,6 @@
                       "link":  "https://www.centrumtlk.cz/uvod/zpravy",
                       "detailLink":  "https://kalendar.trebicsko-moravskavysocina.cz/iframe.php?cid=2769",
                       "imageUrl":  "https://kalendar.trebicsko-moravskavysocina.cz/data_1/2769normal.jpg",
-                      "sourceLabel":  "Regionalni kalendar Trebicsko-Moravska Vysocina"
-                  },
-                  {
-                      "title":  "Jízda zručnosti",
-                      "genre":  "Ostatni",
-                      "municipality":  "Třebíč",
-                      "venue":  "Dětské dopravní hřiště - Bartuškova ul.",
-                      "startAt":  "2026-04-08T15:00:00.0000000",
-                      "endAt":  "2026-04-08T17:00:00.0000000",
-                      "dateLabel":  "08.04.2026",
-                      "summary":  "Nácvik ovládání jízdního kola s pomocí různých překážek. \n\n \n \n\n \n Hlavní vedoucí: Miloš Fiala",
-                      "distanceKm":  0,
-                      "link":  "https://www.ddmtrebic.cz/akce/produkt/150537-jizda-zrucnosti",
-                      "detailLink":  "https://kalendar.trebicsko-moravskavysocina.cz/iframe.php?cid=2824",
-                      "imageUrl":  "https://kalendar.trebicsko-moravskavysocina.cz/data_1/2824normal.jpg",
-                      "sourceLabel":  "Regionalni kalendar Trebicsko-Moravska Vysocina"
-                  },
-                  {
-                      "title":  "Slavnostní vyřazení absolventů výtvarného oboru",
-                      "genre":  "Vystavy",
-                      "municipality":  "Třebíč",
-                      "venue":  "Foyer divadla Pasáž, Třebíč",
-                      "startAt":  "2026-04-08T17:00:00.0000000",
-                      "endAt":  "2026-04-08T19:00:00.0000000",
-                      "dateLabel":  "08.04.2026",
-                      "summary":  "Výstava prací absolventů výtvarného oboru Účinkují žáci VO a HO",
-                      "distanceKm":  0,
-                      "link":  "https://www.zus-trebic.cz/",
-                      "detailLink":  "https://kalendar.trebicsko-moravskavysocina.cz/iframe.php?cid=2854",
-                      "imageUrl":  "https://kalendar.trebicsko-moravskavysocina.cz/data_1/2854normal.jpg",
                       "sourceLabel":  "Regionalni kalendar Trebicsko-Moravska Vysocina"
                   },
                   {
@@ -646,7 +601,7 @@
                       "startAt":  "2026-04-19T18:00:00.0000000",
                       "endAt":  "2026-04-19T19:15:00.0000000",
                       "dateLabel":  "19.04.2026",
-                      "summary":  "V podání souboru Virtuosi Trebicenses zazní díla významných skladatelů, mimo jiné Wolfganga Amadea Mozarta, Erika Satieho, Philipa Glasse, Ástora Piazzolly, Benjamina Brittena, Clauda Debussyho a Georga Philippa Telemanna. Publikum se může těšit na slavné skladby jako Allegro z Mozartova Divertimenta KV 251, jemnou a meditativní Gymnopédii č. 1 Erika Satieho, minimalistickou hudbu Philipa Glasse Mishima. Vrcholem večera bude Telemannův Koncert pro tři housle a orchestr F dur. \n \nSólových partů se ujmou Adam Caha, Leo Nemchenko a Vít Coufal, cembalo doprovodí Ivana Šumpelová. \n \nPřijďte si vychutnat jedinečný večer plný elegance, virtuozity a hudební rozmanitosti v podání mladých talentů i zkušených interpretů. Těšíme se na setkání s vámi!",
+                      "summary":  "V podání souboru Virtuosi Trebicenses zazní díla významných skladatelů, mimo jiné Wolfganga Amadea Mozarta, Erika Satieho, Philipa Glasse, Ástora Piazzolly, Benjamina Brittena, Clauda Debussyho a Georga Philippa Telemanna. Publikum se může těšit na slavné skladby jako Allegro z Mozartova Divertimenta KV 251, jemnou a meditativní Gymnopédii č. 1 Erika Satieho, minimalistickou hudbu Philipa Glasse Mishima. Vrcholem večera bude Telemannův Koncert pro tři housle a orchestr F dur. Sólových partů se ujmou Adam Caha, Leo Nemchenko a Vít Coufal, cembalo doprovodí Ivana Šumpelová. Přijďte si vychutnat jedinečný večer plný elegance, virtuozity a hudební rozmanitosti v podání mladých talentů i zkušených interpretů. Těšíme se na setkání s vámi!",
                       "distanceKm":  0,
                       "link":  "https://www.smsticket.cz/vstupenky/68704-jarni-koncert-s-virtuosi-trebicenses-kamenny-sal-zamek-trebic",
                       "detailLink":  "https://kalendar.trebicsko-moravskavysocina.cz/iframe.php?cid=2909",
@@ -742,6 +697,36 @@
                       "detailLink":  "https://www.mkstrebic.cz/koncerty/zalman-spol-/",
                       "imageUrl":  "https://kalendar.trebicsko-moravskavysocina.cz/data_1/2862normal.jpg",
                       "sourceLabel":  "MKS Trebic"
+                  },
+                  {
+                      "title":  "NEBOJ, DÝCHEJ, ČARUJ",
+                      "genre":  "Kino",
+                      "municipality":  "Trebic",
+                      "venue":  "Kino Pasáž",
+                      "startAt":  "2026-04-21T19:30:00.0000000",
+                      "endAt":  "2026-04-21T22:30:00.0000000",
+                      "dateLabel":  "21.04.2026",
+                      "summary":  "Dokument ČR.",
+                      "distanceKm":  0,
+                      "link":  "https://www.mkstrebic.cz/kino/neboj-dychej-caruj/",
+                      "detailLink":  "https://www.mkstrebic.cz/kino/neboj-dychej-caruj/",
+                      "imageUrl":  "https://www.mkstrebic.cz/data_5/902mini.png?t=1774515883",
+                      "sourceLabel":  "MKS Trebic"
+                  },
+                  {
+                      "title":  "Workshop modrotisku",
+                      "genre":  "Prednasky a workshopy",
+                      "municipality":  "Třebíč",
+                      "venue":  "Šmeralův statek, Třebíč",
+                      "startAt":  "2026-04-22T17:00:00.0000000",
+                      "endAt":  "2026-04-22T20:00:00.0000000",
+                      "dateLabel":  "22.04.2026",
+                      "summary":  "Zveme vás do Centra tradiční lidové kultury v Třebíči na modrotiskový workshop, kde si s pomocí tzv. tiskařské reservy (popu) vytvoříte rozmanitými výtvarnými technikami vlastní modrotiskový vzor na připravené plátno. Vaše dílo bude následně obarveno v modrotiskové dílně v Olešnici a vám se za krátký čas vrátí váš hotový originální modrotisk. \n\n \n Lektor: Milah Noha \n\n \n Cena: 350 Kč \n\n \n Prosíme o přihlášení předem na adrese: https://www.smsticket.cz/vstupenky/66203-modrotisk-smeraluv-statek-trebic",
+                      "distanceKm":  0,
+                      "link":  "https://www.smsticket.cz/vstupenky/66203-modrotisk-smeraluv-statek-trebic",
+                      "detailLink":  "https://kalendar.trebicsko-moravskavysocina.cz/iframe.php?cid=2723",
+                      "imageUrl":  "https://kalendar.trebicsko-moravskavysocina.cz/data_1/2723normal.jpg",
+                      "sourceLabel":  "Regionalni kalendar Trebicsko-Moravska Vysocina"
                   }
               ]
 }
