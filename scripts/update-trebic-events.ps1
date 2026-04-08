@@ -962,13 +962,32 @@ document.addEventListener('click', function (event) {
 
 var sectionFilter = document.getElementById('section-filter');
 if (sectionFilter) {
+  var sectionFilterContainer = sectionFilter.closest('.section-filter');
+  var syncSectionFilterPlacement = function () {
+    if (!sectionFilterContainer) return;
+    var visibleSection = Array.prototype.find.call(
+      document.querySelectorAll('.genre-section'),
+      function (section) {
+        return section.style.display !== 'none';
+      }
+    );
+    if (!visibleSection) return;
+    var targetHeader = visibleSection.querySelector('.genre-header');
+    if (targetHeader && sectionFilterContainer.parentElement !== targetHeader) {
+      targetHeader.appendChild(sectionFilterContainer);
+    }
+  };
+
   sectionFilter.addEventListener('change', function () {
     var selectedGenre = sectionFilter.value;
     document.querySelectorAll('.genre-section').forEach(function (section) {
       var isVisible = selectedGenre === 'all' || section.getAttribute('data-genre') === selectedGenre;
       section.style.display = isVisible ? '' : 'none';
     });
+    syncSectionFilterPlacement();
   });
+
+  syncSectionFilterPlacement();
 }
 </script>
 "@

@@ -52,7 +52,7 @@ body{margin:0;font-family:'Segoe UI',Arial,sans-serif;color:var(--ink);backgroun
       <h1>Kulturn&#237; akce v T&#345;eb&#237;&#269;i a okol&#237; do 10 km</h1>
       <p>Seznam je rozd&#283;len&#253; podle &#382;&#225;nru, &#345;azen&#253; od nejbli&#382;&#353;&#237; akce po nejpozd&#283;j&#353;&#237; a dr&#382;&#237; jen aktivn&#237; akce s horizontem 14 dn&#237; dop&#345;edu.</p>
       <div class="meta">
-        <span class="pill">Aktualizov&#225;no: 8. 4. 2026 21:40</span>
+        <span class="pill">Aktualizov&#225;no: 8. 4. 2026 21:43</span>
         <span class="pill">Zdroje: DDM Trebic + MKS Trebic + Muzeum Vysociny Trebic + Regionalni kalendar Trebicsko-Moravska Vysocina + ROXY Club Trebic + UNESCO Czech Trebic</span>
       </div>
       <div class='next-box'><h2>10 nejbli&#382;&#353;&#237;ch akc&#237;</h2><ul class='next-list'><li><span class='next-date'>9. 4. 2026 09:00</span><a class='next-link' href='https://www.muzeumtr.cz/uvod/zpravy/1323/vytvarny-krouzek-pro-seniory' target='_blank' rel='noreferrer'>Od kresby k malbě</a></li>
@@ -129,13 +129,32 @@ document.addEventListener('click', function (event) {
 
 var sectionFilter = document.getElementById('section-filter');
 if (sectionFilter) {
+  var sectionFilterContainer = sectionFilter.closest('.section-filter');
+  var syncSectionFilterPlacement = function () {
+    if (!sectionFilterContainer) return;
+    var visibleSection = Array.prototype.find.call(
+      document.querySelectorAll('.genre-section'),
+      function (section) {
+        return section.style.display !== 'none';
+      }
+    );
+    if (!visibleSection) return;
+    var targetHeader = visibleSection.querySelector('.genre-header');
+    if (targetHeader && sectionFilterContainer.parentElement !== targetHeader) {
+      targetHeader.appendChild(sectionFilterContainer);
+    }
+  };
+
   sectionFilter.addEventListener('change', function () {
     var selectedGenre = sectionFilter.value;
     document.querySelectorAll('.genre-section').forEach(function (section) {
       var isVisible = selectedGenre === 'all' || section.getAttribute('data-genre') === selectedGenre;
       section.style.display = isVisible ? '' : 'none';
     });
+    syncSectionFilterPlacement();
   });
+
+  syncSectionFilterPlacement();
 }
 </script>
 </body>
