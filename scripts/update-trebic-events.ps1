@@ -903,9 +903,9 @@ body{margin:0;font-family:'Segoe UI',Arial,sans-serif;color:var(--ink);backgroun
         ""
     }
     $filterOptionsHtml = if ($genreGroups.Count -gt 0) {
-        $options = @("<option value='all'>Vsechny sekce</option>")
+        $options = @("<option value='all'>Vsechny sekce ($($itemList.Count))</option>")
         foreach ($group in $genreGroups) {
-            $options += "<option value='$([System.Net.WebUtility]::HtmlEncode((Get-GenreSlug -Genre $group.Name)))'>$(Get-GenreDisplayHtml -Genre $group.Name)</option>"
+            $options += "<option value='$([System.Net.WebUtility]::HtmlEncode((Get-GenreSlug -Genre $group.Name)))'>$(Get-GenreDisplayHtml -Genre $group.Name) ($($group.Count))</option>"
         }
         "<div class='section-filter'><label for='section-filter'>Zobrazit sekci</label><select id='section-filter'>$($options -join '')</select></div>"
     } else {
