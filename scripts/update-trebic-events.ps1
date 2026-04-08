@@ -862,20 +862,12 @@ body{margin:0;font-family:'Segoe UI',Arial,sans-serif;color:var(--ink);backgroun
 .next-date{font-weight:700}
 .next-link{color:#fff;text-decoration:none}
 .next-link:hover{text-decoration:underline}
-.section-filter-wrap{display:flex;justify-content:flex-end;margin-top:16px}
-.section-filter{position:relative;display:grid;grid-template-columns:auto minmax(240px,280px);align-items:center;gap:12px;padding:12px 14px;border:1px solid rgba(13,122,112,.18);border-radius:18px;background:linear-gradient(135deg,rgba(255,255,255,.94),rgba(255,248,240,.92));box-shadow:0 14px 28px rgba(29,42,52,.08)}
-.section-filter::before{content:"";position:absolute;inset:0;border-radius:18px;background:linear-gradient(135deg,rgba(13,122,112,.08),rgba(213,90,31,.08));pointer-events:none}
-.section-filter > *{position:relative;z-index:1}
-.section-filter label{font-size:13px;font-weight:800;letter-spacing:.03em;text-transform:uppercase;color:var(--accent)}
-.section-filter-select{position:relative}
-.section-filter-select::after{content:"";position:absolute;right:15px;top:50%;width:10px;height:10px;border-right:2px solid var(--accent);border-bottom:2px solid var(--accent);transform:translateY(-65%) rotate(45deg);pointer-events:none}
-.section-filter select{appearance:none;-webkit-appearance:none;min-width:0;width:100%;padding:11px 42px 11px 14px;border:1px solid rgba(13,122,112,.18);border-radius:12px;background:rgba(255,255,255,.88);color:var(--ink);font-size:14px;font-weight:700;box-shadow:inset 0 1px 0 rgba(255,255,255,.65);transition:border-color .18s ease, box-shadow .18s ease, background-color .18s ease}
-.section-filter select:hover{border-color:rgba(13,122,112,.34);background:#fffdfa}
-.section-filter select:focus{outline:none;border-color:rgba(13,122,112,.52);box-shadow:0 0 0 4px rgba(13,122,112,.12)}
+.section-filter{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.9);box-shadow:0 8px 20px rgba(29,42,52,.05)}
+.section-filter label{font-size:14px;font-weight:700;font-family:'Segoe UI',Arial,sans-serif;color:var(--ink);white-space:nowrap}
+.section-filter select{min-width:230px;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);font-size:14px;font-weight:500;font-family:'Segoe UI',Arial,sans-serif}
 .genre-section{margin-top:22px}
 .genre-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
 .genre-header h2{margin:0;font-size:22px}
-.genre-header span{color:var(--muted);font-size:13px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:14px;box-shadow:0 8px 20px rgba(29,42,52,.05)}
 .thumb{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:14px;margin:0 0 12px;background:#f0e7db}
@@ -891,7 +883,7 @@ body{margin:0;font-family:'Segoe UI',Arial,sans-serif;color:var(--ink);backgroun
 .btn{display:inline-block;width:100%;text-align:center;padding:12px 14px;border-radius:12px;background:var(--accent);color:#fff;text-decoration:none;font-weight:700}
 .empty{margin-top:20px;padding:20px;border-radius:18px;background:#fff;border:1px solid var(--line);color:var(--muted)}
 @media (min-width:721px){.wrap{padding:24px 18px 56px}.hero{padding:28px 26px}.hero h1{font-size:34px}.card h3{font-size:20px}}
-@media (max-width:720px){.next-list li{grid-template-columns:1fr}.next-date{margin-bottom:1px}.hero p{max-width:none}.section-filter-wrap{justify-content:stretch}.section-filter{width:100%;grid-template-columns:1fr;padding:12px}.section-filter-select::after{right:14px}.section-filter select{min-width:0;width:100%}}
+@media (max-width:720px){.next-list li{grid-template-columns:1fr}.next-date{margin-bottom:1px}.hero p{max-width:none}.section-filter{width:100%;flex-direction:column;align-items:stretch}.section-filter select{min-width:0;width:100%}.genre-header{flex-direction:column;align-items:stretch}}
 "@
 
     $itemList = [object[]]$Items
@@ -915,7 +907,7 @@ body{margin:0;font-family:'Segoe UI',Arial,sans-serif;color:var(--ink);backgroun
         foreach ($group in $genreGroups) {
             $options += "<option value='$([System.Net.WebUtility]::HtmlEncode((Get-GenreSlug -Genre $group.Name)))'>$(Get-GenreDisplayHtml -Genre $group.Name)</option>"
         }
-        "<div class='section-filter-wrap'><div class='section-filter'><label for='section-filter'>Zobrazit sekci</label><div class='section-filter-select'><select id='section-filter'>$($options -join '')</select></div></div></div>"
+        "<div class='section-filter'><label for='section-filter'>Zobrazit sekci</label><select id='section-filter'>$($options -join '')</select></div>"
     } else {
         ""
     }
@@ -923,9 +915,10 @@ body{margin:0;font-family:'Segoe UI',Arial,sans-serif;color:var(--ink);backgroun
     if ($itemList.Count -eq 0) {
         $bodyHtml = "<div class='empty'>V zadanem okruhu a horizontu $HorizonDays dni ted nejsou zadne aktivni kulturni akce.</div>"
     } else {
-        $bodyHtml = ($genreGroups | ForEach-Object {
-            $genreSlug = Get-GenreSlug -Genre $_.Name
-            $cards = ($_.Group | Sort-Object sortAt, endAt, title | ForEach-Object {
+        $bodyHtml = for ($index = 0; $index -lt $genreGroups.Count; $index++) {
+            $group = $genreGroups[$index]
+            $genreSlug = Get-GenreSlug -Genre $group.Name
+            $cards = ($group.Group | Sort-Object sortAt, endAt, title | ForEach-Object {
                 $fullSummary = Normalize-Whitespace -Value $_.summary
                 $previewSummary = Get-PreviewText -Text $fullSummary -MaxLength 220
                 $summaryId = "summary-$([Math]::Abs($_.dedupeKey.GetHashCode()))"
@@ -941,8 +934,9 @@ body{margin:0;font-family:'Segoe UI',Arial,sans-serif;color:var(--ink);backgroun
                 $preferredLink = Get-PreferredEventLink -Candidates @($_.link, $_.detailLink)
                 "<article class='card'>$image<div class='date'>$([System.Net.WebUtility]::HtmlEncode($_.startText))</div><h3>$([System.Net.WebUtility]::HtmlEncode($_.title))</h3><div class='detail'><strong>M&#237;sto:</strong> $([System.Net.WebUtility]::HtmlEncode($_.venue))</div><div class='detail'><strong>Obec:</strong> $([System.Net.WebUtility]::HtmlEncode($_.municipality))</div>$distanceDetail<div class='detail'><strong>Term&#237;n:</strong> $([System.Net.WebUtility]::HtmlEncode($_.dateLabel))</div>$summary<div class='links'><a class='btn' href='$([System.Net.WebUtility]::HtmlEncode($preferredLink))' target='_blank' rel='noreferrer'>Otev&#345;&#237;t detail</a></div></article>"
             }) -join "`n"
-            "<section class='genre-section' data-genre='$([System.Net.WebUtility]::HtmlEncode($genreSlug))'><div class='genre-header'><h2>$(Get-GenreDisplayHtml -Genre $_.Name)</h2><span>$($_.Count) akc&#237;</span></div><div class='grid'>$cards</div></section>"
-        }) -join "`n"
+            $headerExtra = if ($index -eq 0) { $filterOptionsHtml } else { "" }
+            "<section class='genre-section' data-genre='$([System.Net.WebUtility]::HtmlEncode($genreSlug))'><div class='genre-header'><h2>$(Get-GenreDisplayHtml -Genre $group.Name)</h2>$headerExtra</div><div class='grid'>$cards</div></section>"
+        } -join "`n"
     }
 
     $script = @"
@@ -999,7 +993,6 @@ if (sectionFilter) {
       </div>
       $nextItemsHtml
     </section>
-    $filterOptionsHtml
     $bodyHtml
   </div>
   $script
