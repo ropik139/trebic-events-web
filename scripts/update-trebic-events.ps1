@@ -695,6 +695,129 @@ function Get-RoxyProgramItems {
     $items
 }
 
+function Get-TrebicLiveGenre {
+    param(
+        [string]$PrimaryGenre,
+        [string]$SecondaryGenre,
+        [string]$Title,
+        [string]$Summary,
+        [string]$Venue,
+        [string]$Link
+    )
+
+    $genreText = @($SecondaryGenre, $PrimaryGenre) -join " "
+    $normalized = Get-NormalizedPlaceKey -Value $genreText
+
+    switch -Regex ($normalized) {
+        'divadlo' { return 'Divadlo' }
+        'kino' { return 'Kino' }
+        'koncerty|vystoupeni' { return 'Koncerty' }
+        'prednasky|workshop' { return 'Prednasky a workshopy' }
+        'pro rodiny a deti' { return 'Pro deti' }
+        'plesy|zabavy|kluby a disco' { return 'Zabava a talk show' }
+        'vystavy' { return 'Vystavy' }
+        'sport' { return 'Ostatni' }
+        'seniori' { return 'Ostatni' }
+        'ostatni|dlouhodobe akce' {
+            return Get-GenreFromText -Title $Title -Keywords $genreText -ShortCode "" -Summary $Summary -DeclaredGenre "" -Venue $Venue -Link $Link
+        }
+        default {
+            return Get-GenreFromText -Title $Title -Keywords $genreText -ShortCode "" -Summary $Summary -DeclaredGenre "" -Venue $Venue -Link $Link
+        }
+    }
+}
+
+function Get-TrebicLiveDetailData {
+    param([string]$DetailUrl)
+
+    $response = Invoke-WebRequest -UseBasicParsing -Headers @{ "User-Agent" = "CodexTrebicEvents/1.0" } -Uri $DetailUrl
+    $html = $response.Content
+    $summary = ""
+
+    $summaryMatch = [regex]::Match($html, '<div class="post-content[^"]*"[^>]*>(?<value>.*?)</div>\s*</div>\s*</div>', [Text.RegularExpressions.RegexOptions]::Singleline)
+    if ($summaryMatch.Success) {
+        $summary = Convert-HtmlFragmentToText -Html $summaryMatch.Groups["value"].Value
+    }
+
+    $detailLinks = @($response.Links | ForEach-Object { $_.href } | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+    $preferredExternalLink = $detailLinks | Where-Object {
+        $_ -match '^https?://' -and
+        $_ -notmatch 'trebiclive\.cz' -and
+        $_ -notmatch 'google\.com/maps' -and
+        $_ -notmatch '^mailto:' -and
+        $_ -notmatch '^tel:' -and
+        $_ -notmatch 'facebook\.com|instagram\.com|youtube\.com|atlantic\.cz'
+    } | Select-Object -First 1
+
+    [pscustomobject]@{
+        summary = $summary
+        link    = if (-not [string]::IsNullOrWhiteSpace($preferredExternalLink)) { [string]$preferredExternalLink } else { $DetailUrl }
+    }
+}
+
+function Get-TrebicLiveItems {
+    param(
+        [string]$SourceKey,
+        [string]$SourceLabel,
+        [string]$Url
+    )
+
+    $html = Get-StringContent -Url $Url
+    $pattern = '<div class="col-md-4 event">.*?<div class="event-type"[^>]*>(?<genre>.*?)</div>.*?(?:<div class="dropdown-menu event-dropdown"[^>]*>.*?<span class="dropdown-item event-item">(?<subgenre>.*?)</span>.*?</div>)?.*?<a href="(?<href>https://www\.trebiclive\.cz/akce/[^"]+)">.*?<div class="event-image" style="background-image:url\((?<image>[^)]+)\);"></div>.*?<h3>(?<title>.*?)</h3>.*?<span class="date">(?<date>.*?)</span>.*?<div class="place">\s*(?<place>.*?)\s*</div>'
+    $matches = [regex]::Matches($html, $pattern, [Text.RegularExpressions.RegexOptions]::Singleline)
+    $items = New-Object System.Collections.Generic.List[object]
+
+    foreach ($match in $matches) {
+        $dateRaw = Normalize-Whitespace -Value $match.Groups["date"].Value
+        $startTimeText = ""
+        $endTimeText = ""
+        $dateValue = $dateRaw
+
+        if ($dateRaw -match '^Od:\s*(?<start>\d{1,2}\.\d{2}\.\d{4})\s*Do:\s*(?<end>\d{1,2}\.\d{2}\.\d{4})$') {
+            $dateValue = "$($Matches['start']) - $($Matches['end'])"
+        } elseif ($dateRaw -match '^(?<date>\d{1,2}\.\d{2}\.\d{4})\s+(?<time>\d{1,2}:\d{2})$') {
+            $dateValue = $Matches['date']
+            $startTimeText = $Matches['time']
+        }
+
+        $range = Parse-DateRange -Value $dateValue -StartTimeText $startTimeText -EndTimeText $endTimeText
+        if ($null -eq $range) { continue }
+
+        $detailUrl = Resolve-AbsoluteUrl -Url $match.Groups["href"].Value -BaseUrl $Url
+        $detailData = Get-TrebicLiveDetailData -DetailUrl $detailUrl
+        $title = Normalize-Whitespace -Value $match.Groups["title"].Value
+        $place = Normalize-Whitespace -Value $match.Groups["place"].Value
+        $primaryGenre = Normalize-Whitespace -Value $match.Groups["genre"].Value
+        $secondaryGenre = Normalize-Whitespace -Value $match.Groups["subgenre"].Value
+        $genreText = @($primaryGenre, $secondaryGenre) -join " "
+
+        $municipality = if ($place -match ',\s*(?<city>[^,]+)$') { Normalize-Whitespace -Value $Matches["city"] } else { "Trebic" }
+
+        $items.Add([pscustomobject]@{
+            sourceKey    = $SourceKey
+            sourceLabel  = $SourceLabel
+            title        = $title
+            genre        = Get-TrebicLiveGenre -PrimaryGenre $primaryGenre -SecondaryGenre $secondaryGenre -Title $title -Summary $detailData.summary -Venue $place -Link $detailData.link
+            municipality = $municipality
+            venue        = $place
+            startAt      = $range.startAt
+            endAt        = $range.endAt
+            startText    = $range.startAt.ToString("d. M. yyyy HH:mm")
+            endText      = $range.endAt.ToString("d. M. yyyy HH:mm")
+            dateLabel    = $dateRaw
+            timeLabel    = $startTimeText
+            summary      = $detailData.summary
+            keywords     = $genreText
+            link         = $detailData.link
+            detailLink   = $detailUrl
+            imageUrl     = Resolve-AbsoluteUrl -Url $match.Groups["image"].Value.Trim("'") -BaseUrl $Url
+            dedupeKey    = "$($range.startAt.ToString("yyyy-MM-dd"))|$((Get-NormalizedPlaceKey -Value $title))"
+        })
+    }
+
+    $items
+}
+
 function Merge-EventItems {
     param([object[]]$Items)
 
@@ -708,36 +831,36 @@ function Merge-EventItems {
         }
 
         $existing = $map[$item.dedupeKey]
-        $regionItem = $null
+        $secondaryItem = $null
         $otherItem = $null
-        if ($existing.sourceKey -eq "region_calendar" -and $item.sourceKey -ne "region_calendar") {
-            $regionItem = $existing
+        if (($existing.sourceKey -eq "region_calendar" -or $existing.sourceKey -eq "trebiclive_program") -and $item.sourceKey -ne $existing.sourceKey) {
+            $secondaryItem = $existing
             $otherItem = $item
-        } elseif ($item.sourceKey -eq "region_calendar" -and $existing.sourceKey -ne "region_calendar") {
-            $regionItem = $item
+        } elseif (($item.sourceKey -eq "region_calendar" -or $item.sourceKey -eq "trebiclive_program") -and $existing.sourceKey -ne $item.sourceKey) {
+            $secondaryItem = $item
             $otherItem = $existing
         }
 
-        if ($null -ne $regionItem -and $null -ne $otherItem) {
-            $mergedStartAt = if ($otherItem.startAt.TimeOfDay.TotalMinutes -gt 0) { $otherItem.startAt } else { $regionItem.startAt }
-            $mergedEndAt = if ($otherItem.endAt.TimeOfDay.TotalMinutes -gt 0) { $otherItem.endAt } else { $regionItem.endAt }
-            $mergedImageUrl = if (-not [string]::IsNullOrWhiteSpace($regionItem.imageUrl)) { $regionItem.imageUrl } else { $otherItem.imageUrl }
-            $preferredLink = Get-PreferredEventLink -Candidates @($otherItem.detailLink, $otherItem.link, $regionItem.link, $regionItem.detailLink)
+        if ($null -ne $secondaryItem -and $null -ne $otherItem) {
+            $mergedStartAt = if ($otherItem.startAt.TimeOfDay.TotalMinutes -gt 0) { $otherItem.startAt } else { $secondaryItem.startAt }
+            $mergedEndAt = if ($otherItem.endAt.TimeOfDay.TotalMinutes -gt 0) { $otherItem.endAt } else { $secondaryItem.endAt }
+            $mergedImageUrl = if (-not [string]::IsNullOrWhiteSpace($secondaryItem.imageUrl)) { $secondaryItem.imageUrl } else { $otherItem.imageUrl }
+            $preferredLink = Get-PreferredEventLink -Candidates @($otherItem.detailLink, $otherItem.link, $secondaryItem.link, $secondaryItem.detailLink)
             $map[$item.dedupeKey] = [pscustomobject]@{
                 sourceKey    = $otherItem.sourceKey
                 sourceLabel  = $otherItem.sourceLabel
                 title        = $otherItem.title
                 genre        = $otherItem.genre
-                municipality = $regionItem.municipality
-                venue        = if (-not [string]::IsNullOrWhiteSpace($otherItem.venue)) { $otherItem.venue } else { $regionItem.venue }
+                municipality = $secondaryItem.municipality
+                venue        = if (-not [string]::IsNullOrWhiteSpace($otherItem.venue)) { $otherItem.venue } else { $secondaryItem.venue }
                 startAt      = $mergedStartAt
                 endAt        = $mergedEndAt
                 startText    = $mergedStartAt.ToString("d. M. yyyy HH:mm")
                 endText      = $mergedEndAt.ToString("d. M. yyyy HH:mm")
-                dateLabel    = $regionItem.dateLabel
+                dateLabel    = $secondaryItem.dateLabel
                 timeLabel    = $otherItem.timeLabel
-                summary      = if (-not [string]::IsNullOrWhiteSpace($regionItem.summary)) { $regionItem.summary } else { $otherItem.summary }
-                keywords     = $regionItem.keywords
+                summary      = if (-not [string]::IsNullOrWhiteSpace($secondaryItem.summary)) { $secondaryItem.summary } else { $otherItem.summary }
+                keywords     = $secondaryItem.keywords
                 link         = $preferredLink
                 detailLink   = $preferredLink
                 imageUrl     = $mergedImageUrl
@@ -1085,6 +1208,12 @@ foreach ($source in @($config.sources | Where-Object { $_.type -eq "muzeum_sched
 
 foreach ($source in @($config.sources | Where-Object { $_.type -eq "roxy_program" })) {
     foreach ($item in @(Get-RoxyProgramItems -SourceKey $source.key -SourceLabel $source.label -Url $source.url)) {
+        $items.Add($item)
+    }
+}
+
+foreach ($source in @($config.sources | Where-Object { $_.type -eq "trebiclive_program" })) {
+    foreach ($item in @(Get-TrebicLiveItems -SourceKey $source.key -SourceLabel $source.label -Url $source.url)) {
         $items.Add($item)
     }
 }

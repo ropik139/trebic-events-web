@@ -99,6 +99,12 @@
       "label": "ROXY Club Trebic",
       "type": "roxy_program",
       "url": "https://www.roxy-club.cz/#program"
+    },
+    {
+      "key": "trebiclive_program",
+      "label": "TrebicLive.cz",
+      "type": "trebiclive_program",
+      "url": "https://www.trebiclive.cz/program/"
     }
   ],
   "knownPlaces": {
