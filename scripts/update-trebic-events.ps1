@@ -1146,6 +1146,101 @@ function Merge-EventItems {
     @($map.Values)
 }
 
+function Get-SignificantEventTitleWords {
+    param([string]$Title)
+
+    $stopWords = @(
+        'akce',
+        'trebic',
+        'trebici',
+        'mesto',
+        'dnech',
+        'nasledujicich',
+        'program'
+    )
+
+    $key = Get-NormalizedPlaceKey -Value $Title
+    @($key -split '\s+' | Where-Object {
+        $_.Length -ge 4 -and $stopWords -notcontains $_
+    } | Select-Object -Unique)
+}
+
+function Get-EventQualityScore {
+    param([object]$Item)
+
+    $score = 0
+    if ($Item.startAt.TimeOfDay.TotalMinutes -gt 0) { $score += 4 }
+    if (-not [string]::IsNullOrWhiteSpace($Item.summary)) { $score += 3 }
+
+    $venueKey = Get-NormalizedPlaceKey -Value $Item.venue
+    if (-not [string]::IsNullOrWhiteSpace($venueKey) -and @('trebic') -notcontains $venueKey) {
+        $score += 2
+    }
+
+    if (-not [string]::IsNullOrWhiteSpace($Item.detailLink) -and $Item.detailLink -notmatch 'kam%2Dv%2Dtrebici|kam-v-trebici') {
+        $score += 2
+    }
+
+    if (-not [string]::IsNullOrWhiteSpace($Item.imageUrl)) { $score += 1 }
+
+    $score
+}
+
+function Test-IsLowDetailMunicipalItem {
+    param([object]$Item)
+
+    $isMunicipalSource = $Item.sourceKey -eq 'trebic_mesto_aktuality' -or $Item.sourceLabel -eq 'Mesto Trebic - Aktuality'
+    if (-not $isMunicipalSource) { return $false }
+    if (-not [string]::IsNullOrWhiteSpace($Item.summary)) { return $false }
+    if ($Item.startAt.TimeOfDay.TotalMinutes -gt 0) { return $false }
+
+    $venueKey = Get-NormalizedPlaceKey -Value $Item.venue
+    if ($venueKey -ne 'trebic') { return $false }
+
+    $true
+}
+
+function Test-IsMunicipalAggregateItem {
+    param(
+        [object]$Item,
+        [object[]]$AllItems
+    )
+
+    if (-not (Test-IsLowDetailMunicipalItem -Item $Item)) { return $false }
+
+    $itemWords = @(Get-SignificantEventTitleWords -Title $Item.title)
+    if ($itemWords.Count -lt 2) { return $false }
+
+    $itemScore = Get-EventQualityScore -Item $Item
+    $matchingDetailedItems = 0
+    foreach ($candidate in $AllItems) {
+        if ([object]::ReferenceEquals($candidate, $Item)) { continue }
+        if (Test-IsLowDetailMunicipalItem -Item $candidate) { continue }
+        if ($candidate.startAt.Date -ne $Item.startAt.Date) { continue }
+        if ((Get-EventQualityScore -Item $candidate) -le $itemScore) { continue }
+
+        $candidateWords = @(Get-SignificantEventTitleWords -Title $candidate.title)
+        if ($candidateWords.Count -eq 0) { continue }
+
+        $overlap = @($candidateWords | Where-Object { $itemWords -contains $_ })
+        $requiredMatches = [Math]::Min(2, [int]$candidateWords.Count)
+        if ($overlap.Count -ge $requiredMatches) {
+            $matchingDetailedItems++
+        }
+    }
+
+    $matchingDetailedItems -ge 2
+}
+
+function Remove-AggregateEventItems {
+    param([object[]]$Items)
+
+    $itemList = [object[]]$Items
+    @($itemList | Where-Object {
+        -not (Test-IsMunicipalAggregateItem -Item $_ -AllItems $itemList)
+    })
+}
+
 function Test-IsGenericEventLink {
     param([string]$Url)
 
@@ -1559,7 +1654,7 @@ foreach ($item in $sortedMergedItems) {
     })
 }
 
-$finalItems = [System.Collections.Generic.List[object]]([object[]]($finalItems | Sort-Object sortAt, endAt, title))
+$finalItems = [System.Collections.Generic.List[object]]([object[]]((Remove-AggregateEventItems -Items ([object[]]$finalItems)) | Sort-Object sortAt, endAt, title))
 $generatedAtText = $now.ToString("d. M. yyyy HH:mm")
 $sourceLabels = [object[]]($config.sources | ForEach-Object { [string]$_.label })
 $reportHtml = Convert-ItemsToHtml -Items $finalItems -GeneratedAtText $generatedAtText -HorizonDays ([int]$config.horizonDays) -RadiusKm ([double]$config.radiusKm) -SourceLabels $sourceLabels -Now $now

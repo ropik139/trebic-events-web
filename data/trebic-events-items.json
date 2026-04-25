@@ -1,5 +1,5 @@
 ﻿{
-    "generatedAt":  "2026-04-25T08:59:45.1596076",
+    "generatedAt":  "2026-04-25T11:22:30.4091532",
     "center":  {
                    "name":  "Trebic",
                    "latitude":  49.2151907,
@@ -8,6 +8,21 @@
     "radiusKm":  10,
     "horizonDays":  14,
     "items":  [
+                  {
+                      "title":  "MINT Market",
+                      "genre":  "Festivaly a slavnosti",
+                      "municipality":  "Třebíč",
+                      "venue":  "Karlovo náměstí, Třebíč",
+                      "startAt":  "2026-04-25T10:00:00.0000000",
+                      "endAt":  "2026-04-25T18:00:00.0000000",
+                      "dateLabel":  "25.04.2026",
+                      "summary":  "Třebíč ožije v dubnu designem. MINT Market tu představí desítky českých tvůrců. \n\n \n Třebíč se v dubnu opět stane centrem nezávislé módy, originálních šperků a autorského designu. MINT Market Třebíč se vrátí na Karlovo náměstí. Ve sobotu 25. dubna tu představí svou tvorbu několik desítek značek z celé České republiky. Součástí navíc bude Street Food Fest , takže o skvělé jídlo nebude nouze. \n\n \n Návštěvníci se mohou těšit od 10:00 do 18:00 na pečlivě vybraný mix značek zaměřených na autorskou módu, designové šperky, keramiku, přírodní kosmetiku, ilustrace i originální doplňky. Chybět nebude ani přátelská atmosféra, která je pro MINT Market typická. Akce je vhodná pro všechny generace a vstup je zdarma. \n\n \n MINT Market působí už šestnáct let. Za tu dobu se stal důležitou platformou pro malé a začínající tvůrce, často přímo z Vysočiny, kteří zde dostávají prostor představit své výrobky široké veřejnosti. Obyvatelé Třebíče a okolí tak mají možnost nakoupit kvalitní produkty, které vznikají doslova pod rukama jejich sousedů – lokálně, udržitelně a s důrazem na poctivé řemeslo. \n\n \n MINT Market není jen o nakupování. Už od roku 2010 stojí za projektem tým lidí, kteří systematicky podporují malé a lokální značky a jako jediní vozí kvalitní český design do více než dvaceti měst po celé republice. Z původně malého projektu se postupně stala komunita čítající přes 1 500 kreativců a platforma, která má za sebou přes 450 uskutečněných akcí a více než 1,3 milionu návštěvníků. \n\n \n „Podpora malých a lokálních značek je od samého začátku jednou ze základních myšlenek našeho projektu,“ říká organizátorka Lenka Šašková a dodává: „ Snažíme se motivovat lidi k tomu, aby se nebáli postavit na vlastní nohy a živili se tím, co je baví. A my jim k tomu navíc dáme místo, kde můžou ukázat své výrobky a potkat se svými zákazníky. Protože osobní setkání nic nenahradí.“ \n\n \n Seznam prodejců, aktuality a bližší informace najdete na webu : https://www.mintmarket.cz/cs/trh/trebic-4 , ve Facebook ové události: https://fb.me/e/b3UY1KpiY nebo na Instagram u: www.instagram.com/mintmarket.cz. \n\n \n \n\n \n Kontakt: \n\n \n Adéla Štěpánková |PR Mint Market 739 218 359 pr@mint.com",
+                      "distanceKm":  0,
+                      "link":  "https://www.mintmarket.cz/cs/trh/trebic-4",
+                      "detailLink":  "https://kalendar.trebicsko-moravskavysocina.cz/iframe.php?cid=2848",
+                      "imageUrl":  "https://kalendar.trebicsko-moravskavysocina.cz/data_1/2848normal.png",
+                      "sourceLabel":  "Regionalni kalendar Trebicsko-Moravska Vysocina"
+                  },
                   {
                       "title":  "RETRO NIGHT",
                       "genre":  "Koncerty",
@@ -24,19 +39,19 @@
                       "sourceLabel":  "ROXY Club Trebic"
                   },
                   {
-                      "title":  "Street food festival a mint market",
+                      "title":  "Street Food Festival",
                       "genre":  "Festivaly a slavnosti",
-                      "municipality":  "Trebic",
-                      "venue":  "Trebic",
-                      "startAt":  "2026-04-25T00:00:00.0000000",
+                      "municipality":  "Třebíč",
+                      "venue":  "Karlovo nám. (Třebíč)",
+                      "startAt":  "2026-04-25T10:00:00.0000000",
                       "endAt":  "2026-04-25T23:59:59.0000000",
-                      "dateLabel":  "25.4.",
-                      "summary":  "",
+                      "dateLabel":  "25.04.2026",
+                      "summary":  "Zažij pravý autentický street food v Třebíči ! Hlavní prim hraje to nejlepší pouliční jídlo v ČR! Kuchařský um ve stáncích a foodtruckách!",
                       "distanceKm":  0,
-                      "link":  "https://www.trebic.cz/assets/File.ashx?id_org=16973\u0026amp;id_dokumenty=73976",
-                      "detailLink":  "https://www.trebic.cz/kam%2Dv%2Dtrebici%2Dv%2Dnasledujicich%2Ddnech/d-73965",
-                      "imageUrl":  "https://www.trebic.cz/assets/File.ashx?id_org=16973\u0026amp;id_dokumenty=73976",
-                      "sourceLabel":  "Mesto Trebic - Aktuality"
+                      "link":  "https://www.unesco-czech.cz/900_724967_street-food-festival",
+                      "detailLink":  "https://www.unesco-czech.cz/900_724967_street-food-festival",
+                      "imageUrl":  "https://kalendar.trebicsko-moravskavysocina.cz/data_1/2849normal.jpg",
+                      "sourceLabel":  "UNESCO Czech Trebic"
                   },
                   {
                       "title":  "Fošácká roadshow",
@@ -172,36 +187,6 @@
                       "detailLink":  "https://kalendar.trebicsko-moravskavysocina.cz/iframe.php?cid=2695",
                       "imageUrl":  "https://kalendar.trebicsko-moravskavysocina.cz/data_1/2695normal.png",
                       "sourceLabel":  "Regionalni kalendar Trebicsko-Moravska Vysocina"
-                  },
-                  {
-                      "title":  "MINT Market",
-                      "genre":  "Festivaly a slavnosti",
-                      "municipality":  "Třebíč",
-                      "venue":  "Karlovo náměstí, Třebíč",
-                      "startAt":  "2026-04-25T10:00:00.0000000",
-                      "endAt":  "2026-04-25T18:00:00.0000000",
-                      "dateLabel":  "25.04.2026",
-                      "summary":  "Třebíč ožije v dubnu designem. MINT Market tu představí desítky českých tvůrců. \n\n \n Třebíč se v dubnu opět stane centrem nezávislé módy, originálních šperků a autorského designu. MINT Market Třebíč se vrátí na Karlovo náměstí. Ve sobotu 25. dubna tu představí svou tvorbu několik desítek značek z celé České republiky. Součástí navíc bude Street Food Fest , takže o skvělé jídlo nebude nouze. \n\n \n Návštěvníci se mohou těšit od 10:00 do 18:00 na pečlivě vybraný mix značek zaměřených na autorskou módu, designové šperky, keramiku, přírodní kosmetiku, ilustrace i originální doplňky. Chybět nebude ani přátelská atmosféra, která je pro MINT Market typická. Akce je vhodná pro všechny generace a vstup je zdarma. \n\n \n MINT Market působí už šestnáct let. Za tu dobu se stal důležitou platformou pro malé a začínající tvůrce, často přímo z Vysočiny, kteří zde dostávají prostor představit své výrobky široké veřejnosti. Obyvatelé Třebíče a okolí tak mají možnost nakoupit kvalitní produkty, které vznikají doslova pod rukama jejich sousedů – lokálně, udržitelně a s důrazem na poctivé řemeslo. \n\n \n MINT Market není jen o nakupování. Už od roku 2010 stojí za projektem tým lidí, kteří systematicky podporují malé a lokální značky a jako jediní vozí kvalitní český design do více než dvaceti měst po celé republice. Z původně malého projektu se postupně stala komunita čítající přes 1 500 kreativců a platforma, která má za sebou přes 450 uskutečněných akcí a více než 1,3 milionu návštěvníků. \n\n \n „Podpora malých a lokálních značek je od samého začátku jednou ze základních myšlenek našeho projektu,“ říká organizátorka Lenka Šašková a dodává: „ Snažíme se motivovat lidi k tomu, aby se nebáli postavit na vlastní nohy a živili se tím, co je baví. A my jim k tomu navíc dáme místo, kde můžou ukázat své výrobky a potkat se svými zákazníky. Protože osobní setkání nic nenahradí.“ \n\n \n Seznam prodejců, aktuality a bližší informace najdete na webu : https://www.mintmarket.cz/cs/trh/trebic-4 , ve Facebook ové události: https://fb.me/e/b3UY1KpiY nebo na Instagram u: www.instagram.com/mintmarket.cz. \n\n \n \n\n \n Kontakt: \n\n \n Adéla Štěpánková |PR Mint Market 739 218 359 pr@mint.com",
-                      "distanceKm":  0,
-                      "link":  "https://www.mintmarket.cz/cs/trh/trebic-4",
-                      "detailLink":  "https://kalendar.trebicsko-moravskavysocina.cz/iframe.php?cid=2848",
-                      "imageUrl":  "https://kalendar.trebicsko-moravskavysocina.cz/data_1/2848normal.png",
-                      "sourceLabel":  "Regionalni kalendar Trebicsko-Moravska Vysocina"
-                  },
-                  {
-                      "title":  "Street Food Festival",
-                      "genre":  "Festivaly a slavnosti",
-                      "municipality":  "Třebíč",
-                      "venue":  "Karlovo nám. (Třebíč)",
-                      "startAt":  "2026-04-25T10:00:00.0000000",
-                      "endAt":  "2026-04-25T23:59:59.0000000",
-                      "dateLabel":  "25.04.2026",
-                      "summary":  "Zažij pravý autentický street food v Třebíči ! Hlavní prim hraje to nejlepší pouliční jídlo v ČR! Kuchařský um ve stáncích a foodtruckách!",
-                      "distanceKm":  0,
-                      "link":  "https://www.unesco-czech.cz/900_724967_street-food-festival",
-                      "detailLink":  "https://www.unesco-czech.cz/900_724967_street-food-festival",
-                      "imageUrl":  "https://kalendar.trebicsko-moravskavysocina.cz/data_1/2849normal.jpg",
-                      "sourceLabel":  "UNESCO Czech Trebic"
                   },
                   {
                       "title":  "ČARODĚJNICKÁ SOBOTA",
