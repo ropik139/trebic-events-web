@@ -1,5 +1,5 @@
 ﻿{
-    "generatedAt":  "2026-04-25T11:22:30.4091532",
+    "generatedAt":  "2026-04-25T11:26:29.6894102",
     "center":  {
                    "name":  "Trebic",
                    "latitude":  49.2151907,
@@ -294,21 +294,6 @@
                       "sourceLabel":  "UNESCO Czech Trebic"
                   },
                   {
-                      "title":  "Knižní veřer",
-                      "genre":  "Ostatni",
-                      "municipality":  "Trebic",
-                      "venue":  "Trebic",
-                      "startAt":  "2026-04-28T00:00:00.0000000",
-                      "endAt":  "2026-04-28T23:59:59.0000000",
-                      "dateLabel":  "28.4.",
-                      "summary":  "",
-                      "distanceKm":  0,
-                      "link":  "https://www.trebic.cz/assets/File.ashx?id_org=16973\u0026amp;id_dokumenty=73967",
-                      "detailLink":  "https://www.trebic.cz/kam%2Dv%2Dtrebici%2Dv%2Dnasledujicich%2Ddnech/d-73965",
-                      "imageUrl":  "https://www.trebic.cz/assets/File.ashx?id_org=16973\u0026amp;id_dokumenty=73967",
-                      "sourceLabel":  "Mesto Trebic - Aktuality"
-                  },
-                  {
                       "title":  "Jak na zdravé zoubky",
                       "genre":  "Pro deti",
                       "municipality":  "Trebic",
@@ -352,21 +337,6 @@
                       "detailLink":  "https://www.unesco-czech.cz/900_719113_knizni-vecer",
                       "imageUrl":  "https://kalendar.trebicsko-moravskavysocina.cz/data_1/2827normal.png",
                       "sourceLabel":  "UNESCO Czech Trebic"
-                  },
-                  {
-                      "title":  "Čarodějnická příprava",
-                      "genre":  "Ostatni",
-                      "municipality":  "Trebic",
-                      "venue":  "Trebic",
-                      "startAt":  "2026-04-29T00:00:00.0000000",
-                      "endAt":  "2026-04-29T23:59:59.0000000",
-                      "dateLabel":  "29.4.",
-                      "summary":  "",
-                      "distanceKm":  0,
-                      "link":  "https://www.trebic.cz/assets/File.ashx?id_org=16973\u0026amp;id_dokumenty=73966",
-                      "detailLink":  "https://www.trebic.cz/kam%2Dv%2Dtrebici%2Dv%2Dnasledujicich%2Ddnech/d-73965",
-                      "imageUrl":  "https://www.trebic.cz/assets/File.ashx?id_org=16973\u0026amp;id_dokumenty=73966",
-                      "sourceLabel":  "Mesto Trebic - Aktuality"
                   },
                   {
                       "title":  "Čarodějnická přípravka",

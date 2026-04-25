@@ -1165,6 +1165,52 @@ function Get-SignificantEventTitleWords {
     } | Select-Object -Unique)
 }
 
+function Get-StringEditDistance {
+    param(
+        [string]$Left,
+        [string]$Right
+    )
+
+    if ($Left -eq $Right) { return 0 }
+    if ([string]::IsNullOrEmpty($Left)) { return $Right.Length }
+    if ([string]::IsNullOrEmpty($Right)) { return $Left.Length }
+
+    $previous = New-Object int[] ($Right.Length + 1)
+    $current = New-Object int[] ($Right.Length + 1)
+    for ($j = 0; $j -le $Right.Length; $j++) {
+        $previous[$j] = $j
+    }
+
+    for ($i = 1; $i -le $Left.Length; $i++) {
+        $current[0] = $i
+        for ($j = 1; $j -le $Right.Length; $j++) {
+            $cost = if ($Left[$i - 1] -eq $Right[$j - 1]) { 0 } else { 1 }
+            $current[$j] = [Math]::Min(
+                [Math]::Min($current[$j - 1] + 1, $previous[$j] + 1),
+                $previous[$j - 1] + $cost
+            )
+        }
+
+        $temp = $previous
+        $previous = $current
+        $current = $temp
+    }
+
+    $previous[$Right.Length]
+}
+
+function Test-EventTitleWordMatch {
+    param(
+        [string]$Left,
+        [string]$Right
+    )
+
+    if ($Left -eq $Right) { return $true }
+    if ([Math]::Min($Left.Length, $Right.Length) -lt 5) { return $false }
+
+    (Get-StringEditDistance -Left $Left -Right $Right) -le 1
+}
+
 function Get-EventQualityScore {
     param([object]$Item)
 
@@ -1222,14 +1268,17 @@ function Test-IsMunicipalAggregateItem {
         $candidateWords = @(Get-SignificantEventTitleWords -Title $candidate.title)
         if ($candidateWords.Count -eq 0) { continue }
 
-        $overlap = @($candidateWords | Where-Object { $itemWords -contains $_ })
+        $overlap = @($candidateWords | Where-Object {
+            $candidateWord = $_
+            @($itemWords | Where-Object { Test-EventTitleWordMatch -Left $candidateWord -Right $_ }).Count -gt 0
+        })
         $requiredMatches = [Math]::Min(2, [int]$candidateWords.Count)
         if ($overlap.Count -ge $requiredMatches) {
             $matchingDetailedItems++
         }
     }
 
-    $matchingDetailedItems -ge 2
+    $matchingDetailedItems -ge 1
 }
 
 function Remove-AggregateEventItems {
