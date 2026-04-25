@@ -105,6 +105,12 @@
       "label": "TrebicLive.cz",
       "type": "trebiclive_program",
       "url": "https://www.trebiclive.cz/program/"
+    },
+    {
+      "key": "trebic_mesto_aktuality",
+      "label": "Mesto Trebic - Aktuality",
+      "type": "trebic_mesto_aktuality",
+      "url": "https://www.trebic.cz/aktuality/ds-1818/archiv=0"
     }
   ],
   "knownPlaces": {

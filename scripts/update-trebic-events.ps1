@@ -124,6 +124,67 @@ function Get-FirstMatchValue {
     ""
 }
 
+function Resolve-EventTitleFallback {
+    param(
+        [string]$PrimaryTitle,
+        [string]$SecondaryTitle,
+        [string]$Summary,
+        [string]$Link,
+        [string]$Venue
+    )
+
+    $primary = Normalize-Whitespace -Value $PrimaryTitle
+    if (-not [string]::IsNullOrWhiteSpace($primary)) {
+        return $primary
+    }
+
+    $secondary = Normalize-Whitespace -Value $SecondaryTitle
+    if (-not [string]::IsNullOrWhiteSpace($secondary)) {
+        return $secondary
+    }
+
+    $linkText = Normalize-Whitespace -Value $Link
+    $summaryText = Normalize-Whitespace -Value $Summary
+
+    if ($linkText -match 'mintmarket\.cz' -or $summaryText -match '(?i)\bmint market\b') {
+        return "MINT Market"
+    }
+
+    $namedSummaryPatterns = @(
+        '(?i)\b(?<value>MINT Market(?:\s+Trebic|\s+Třebíč)?)\b',
+        '(?i)\b(?<value>Street Food Festival)\b',
+        '(?i)\b(?<value>Street Food Fest)\b',
+        '(?i)\b(?<value>Osmany show)\b'
+    )
+    foreach ($pattern in $namedSummaryPatterns) {
+        $match = [regex]::Match($summaryText, $pattern)
+        if ($match.Success) {
+            return Normalize-Whitespace -Value $match.Groups["value"].Value
+        }
+    }
+
+    $firstSentence = ""
+    if ($summaryText -match '^(?<value>.+?[\.!\?])(?:\s|$)') {
+        $firstSentence = $matches["value"]
+    } else {
+        $firstSentence = $summaryText
+    }
+    $firstSentence = $firstSentence.Trim()
+    if (-not [string]::IsNullOrWhiteSpace($firstSentence)) {
+        if ($firstSentence.Length -gt 80) {
+            $firstSentence = $firstSentence.Substring(0, 80).Trim()
+        }
+        return $firstSentence
+    }
+
+    $venueText = Normalize-Whitespace -Value $Venue
+    if (-not [string]::IsNullOrWhiteSpace($venueText)) {
+        return "Akce v $venueText"
+    }
+
+    "Neupresnena akce"
+}
+
 function Get-NormalizedPlaceKey {
     param([string]$Value)
     $text = Normalize-Whitespace -Value $Value
@@ -135,6 +196,26 @@ function Get-NormalizedPlaceKey {
         }
     }
     (($builder.ToString().Normalize([Text.NormalizationForm]::FormC)) -replace '[^a-z0-9]+', ' ').Trim()
+}
+
+function Get-EventDedupeTitleKey {
+    param([string]$Title)
+
+    $key = Get-NormalizedPlaceKey -Value $Title
+    if ($key -match '\bbud prvnim\b' -and $key -match '\bnadace tomase bati\b') {
+        return 'bud prvnim vystava nadace tomase bati'
+    }
+
+    $key
+}
+
+function Get-EventDedupeKey {
+    param(
+        [datetime]$StartAt,
+        [string]$Title
+    )
+
+    "$($StartAt.ToString("yyyy-MM-dd"))|$(Get-EventDedupeTitleKey -Title $Title)"
 }
 
 function Get-GenreDisplayHtml {
@@ -420,6 +501,7 @@ function Get-RegionCalendarDetailItem {
     $shortCode = if ($parameterMap.ContainsKey("zkratka udalosti")) { $parameterMap["zkratka udalosti"] } else { "" }
     $summary = if ($parameterMap.ContainsKey("zkraceny vypis")) { $parameterMap["zkraceny vypis"] } elseif ($parameterMap.ContainsKey("text")) { $parameterMap["text"] } else { "" }
     $link = if ($parameterMap.ContainsKey("odkaz udalosti")) { $parameterMap["odkaz udalosti"] } else { $ListItem.detailUrl }
+    $title = Resolve-EventTitleFallback -PrimaryTitle $title -SecondaryTitle $ListItem.title -Summary $summary -Link $link -Venue $venue
 
     [pscustomobject]@{
         sourceKey    = $ListItem.sourceKey
@@ -439,7 +521,7 @@ function Get-RegionCalendarDetailItem {
         link         = $link
         detailLink   = $ListItem.detailUrl
         imageUrl     = if (-not [string]::IsNullOrWhiteSpace($detailImageUrl)) { Resolve-AbsoluteUrl -Url $detailImageUrl -BaseUrl $ListItem.detailUrl } else { $ListItem.imageUrl }
-        dedupeKey    = "$($range.startAt.ToString("yyyy-MM-dd"))|$((Get-NormalizedPlaceKey -Value $title))"
+        dedupeKey    = Get-EventDedupeKey -StartAt $range.startAt -Title $title
     }
 }
 
@@ -489,7 +571,7 @@ function Get-MksCategoryItems {
             link         = $detailUrl
             detailLink   = $detailUrl
             imageUrl     = Resolve-AbsoluteUrl -Url $match.Groups["image"].Value -BaseUrl $Url
-            dedupeKey    = "$($range.startAt.ToString("yyyy-MM-dd"))|$((Get-NormalizedPlaceKey -Value $title))"
+            dedupeKey    = Get-EventDedupeKey -StartAt $range.startAt -Title $title
         })
     }
 
@@ -542,7 +624,7 @@ function Get-UnescoItems {
             link         = $detailUrl
             detailLink   = $detailUrl
             imageUrl     = Resolve-AbsoluteUrl -Url $match.Groups["image"].Value -BaseUrl $Url
-            dedupeKey    = "$($range.startAt.ToString("yyyy-MM-dd"))|$((Get-NormalizedPlaceKey -Value $title))"
+            dedupeKey    = Get-EventDedupeKey -StartAt $range.startAt -Title $title
         })
     }
 
@@ -589,7 +671,7 @@ function Get-DdmItems {
             link         = Resolve-AbsoluteUrl -Url $match.Groups["href"].Value -BaseUrl $Url
             detailLink   = Resolve-AbsoluteUrl -Url $match.Groups["href"].Value -BaseUrl $Url
             imageUrl     = Resolve-AbsoluteUrl -Url ($match.Groups["image"].Value -replace '&amp;', '&') -BaseUrl $Url
-            dedupeKey    = "$($range.startAt.ToString("yyyy-MM-dd"))|$((Get-NormalizedPlaceKey -Value $title))"
+            dedupeKey    = Get-EventDedupeKey -StartAt $range.startAt -Title $title
         })
     }
 
@@ -638,7 +720,7 @@ function Get-MuzeumScheduleItems {
             link         = if ($entry.Groups["href"].Success) { Resolve-AbsoluteUrl -Url $entry.Groups["href"].Value -BaseUrl $Url } else { $Url }
             detailLink   = if ($entry.Groups["href"].Success) { Resolve-AbsoluteUrl -Url $entry.Groups["href"].Value -BaseUrl $Url } else { $Url }
             imageUrl     = if ($imageMap.ContainsKey((Get-NormalizedPlaceKey -Value $title))) { $imageMap[(Get-NormalizedPlaceKey -Value $title)] } else { "" }
-            dedupeKey    = "$($range.startAt.ToString("yyyy-MM-dd"))|$((Get-NormalizedPlaceKey -Value $title))"
+            dedupeKey    = Get-EventDedupeKey -StartAt $range.startAt -Title $title
         })
     }
 
@@ -688,7 +770,7 @@ function Get-RoxyProgramItems {
             link         = Resolve-AbsoluteUrl -Url $match.Groups["href"].Value -BaseUrl $Url
             detailLink   = Resolve-AbsoluteUrl -Url $match.Groups["href"].Value -BaseUrl $Url
             imageUrl     = Resolve-AbsoluteUrl -Url $match.Groups["image"].Value.Trim("'") -BaseUrl $Url
-            dedupeKey    = "$($range.startAt.ToString("yyyy-MM-dd"))|$((Get-NormalizedPlaceKey -Value $title))"
+            dedupeKey    = Get-EventDedupeKey -StartAt $range.startAt -Title $title
         })
     }
 
@@ -811,8 +893,200 @@ function Get-TrebicLiveItems {
             link         = $detailData.link
             detailLink   = $detailUrl
             imageUrl     = Resolve-AbsoluteUrl -Url $match.Groups["image"].Value.Trim("'") -BaseUrl $Url
-            dedupeKey    = "$($range.startAt.ToString("yyyy-MM-dd"))|$((Get-NormalizedPlaceKey -Value $title))"
+            dedupeKey    = Get-EventDedupeKey -StartAt $range.startAt -Title $title
         })
+    }
+
+    $items
+}
+
+function Get-DateClosestToReference {
+    param(
+        [int]$Day,
+        [int]$Month,
+        [datetime]$ReferenceDate
+    )
+
+    $candidates = New-Object System.Collections.Generic.List[datetime]
+    foreach ($year in @([int]($ReferenceDate.Year - 1), [int]$ReferenceDate.Year, [int]($ReferenceDate.Year + 1))) {
+        try {
+            $candidates.Add([datetime]::new($year, $Month, $Day, 0, 0, 0))
+        } catch {
+        }
+    }
+
+    if ($candidates.Count -eq 0) { return $null }
+
+    $bestCandidate = $null
+    $bestDistance = [double]::PositiveInfinity
+    foreach ($candidate in $candidates) {
+        $distance = [math]::Abs((New-TimeSpan -Start $candidate -End $ReferenceDate).TotalDays)
+        if ($distance -lt $bestDistance) {
+            $bestDistance = $distance
+            $bestCandidate = $candidate
+        }
+    }
+
+    $bestCandidate
+}
+
+function Parse-TrebicMunicipalAttachmentTitle {
+    param(
+        [string]$Value,
+        [datetime]$ReferenceDate
+    )
+
+    $normalized = Normalize-Whitespace -Value $Value
+    if ([string]::IsNullOrWhiteSpace($normalized)) { return $null }
+    $normalized = $normalized -replace '\s+', ' '
+
+    $match = [regex]::Match($normalized, '^(?<startDay>\d{1,2})\.\s*-\s*(?<endDay>\d{1,2})\.(?<month>\d{1,2})\.\s+(?<title>.+)$')
+    if ($match.Success) {
+        $startAt = Get-DateClosestToReference -Day ([int]$match.Groups["startDay"].Value) -Month ([int]$match.Groups["month"].Value) -ReferenceDate $ReferenceDate
+        $endAt = Get-DateClosestToReference -Day ([int]$match.Groups["endDay"].Value) -Month ([int]$match.Groups["month"].Value) -ReferenceDate $ReferenceDate
+        if ($null -ne $startAt -and $null -ne $endAt) {
+            return [pscustomobject]@{
+                title     = Normalize-Whitespace -Value ($match.Groups["title"].Value -replace '_\d+$', '')
+                startAt   = $startAt.Date
+                endAt     = $endAt.Date.AddHours(23).AddMinutes(59).AddSeconds(59)
+                dateLabel = "{0}.-{1}.{2}." -f $match.Groups["startDay"].Value, $match.Groups["endDay"].Value, $match.Groups["month"].Value
+            }
+        }
+    }
+
+    $match = [regex]::Match($normalized, '^(?<startDay>\d{1,2})\.(?<startMonth>\d{1,2})\.\s*-\s*(?<endDay>\d{1,2})\.(?<endMonth>\d{1,2})\.\s+(?<title>.+)$')
+    if ($match.Success) {
+        $startAt = Get-DateClosestToReference -Day ([int]$match.Groups["startDay"].Value) -Month ([int]$match.Groups["startMonth"].Value) -ReferenceDate $ReferenceDate
+        $endAt = Get-DateClosestToReference -Day ([int]$match.Groups["endDay"].Value) -Month ([int]$match.Groups["endMonth"].Value) -ReferenceDate $ReferenceDate
+        if ($null -ne $startAt -and $null -ne $endAt) {
+            return [pscustomobject]@{
+                title     = Normalize-Whitespace -Value ($match.Groups["title"].Value -replace '_\d+$', '')
+                startAt   = $startAt.Date
+                endAt     = $endAt.Date.AddHours(23).AddMinutes(59).AddSeconds(59)
+                dateLabel = "{0}.{1}.-{2}.{3}." -f $match.Groups["startDay"].Value, $match.Groups["startMonth"].Value, $match.Groups["endDay"].Value, $match.Groups["endMonth"].Value
+            }
+        }
+    }
+
+    $match = [regex]::Match($normalized, '^(?<startDay>\d{1,2})\.(?<startMonth>\d{1,2})\.(?<startYear>\d{4})\s*-\s*(?<endDay>\d{1,2})\.(?<endMonth>\d{1,2})\.(?<endYear>\d{4})\s+(?<title>.+)$')
+    if ($match.Success) {
+        try {
+            $startAt = [datetime]::new([int]$match.Groups["startYear"].Value, [int]$match.Groups["startMonth"].Value, [int]$match.Groups["startDay"].Value, 0, 0, 0)
+            $endAt = [datetime]::new([int]$match.Groups["endYear"].Value, [int]$match.Groups["endMonth"].Value, [int]$match.Groups["endDay"].Value, 23, 59, 59)
+            return [pscustomobject]@{
+                title     = Normalize-Whitespace -Value ($match.Groups["title"].Value -replace '_\d+$', '')
+                startAt   = $startAt
+                endAt     = $endAt
+                dateLabel = "{0}.{1}.{2} - {3}.{4}.{5}" -f $match.Groups["startDay"].Value, $match.Groups["startMonth"].Value, $match.Groups["startYear"].Value, $match.Groups["endDay"].Value, $match.Groups["endMonth"].Value, $match.Groups["endYear"].Value
+            }
+        } catch {
+        }
+    }
+
+    $match = [regex]::Match($normalized, '^(?<day>\d{1,2})\.(?<month>\d{1,2})\.(?<year>\d{4})?\s+(?<title>.+)$')
+    if ($match.Success) {
+        $eventDate = if ($match.Groups["year"].Success) {
+            try {
+                [datetime]::new([int]$match.Groups["year"].Value, [int]$match.Groups["month"].Value, [int]$match.Groups["day"].Value, 0, 0, 0)
+            } catch {
+                $null
+            }
+        } else {
+            Get-DateClosestToReference -Day ([int]$match.Groups["day"].Value) -Month ([int]$match.Groups["month"].Value) -ReferenceDate $ReferenceDate
+        }
+
+        if ($null -ne $eventDate) {
+            return [pscustomobject]@{
+                title     = Normalize-Whitespace -Value ($match.Groups["title"].Value -replace '_\d+$', '')
+                startAt   = $eventDate.Date
+                endAt     = $eventDate.Date.AddHours(23).AddMinutes(59).AddSeconds(59)
+                dateLabel = if ($match.Groups["year"].Success) { $eventDate.ToString("d. M. yyyy") } else { "{0}.{1}." -f $match.Groups["day"].Value, $match.Groups["month"].Value }
+            }
+        }
+    }
+
+    $null
+}
+
+function Get-TrebicMunicipalWeeklyDetailItems {
+    param(
+        [string]$SourceKey,
+        [string]$SourceLabel,
+        [string]$DetailUrl,
+        [datetime]$ReferenceDate
+    )
+
+    $html = Get-StringContent -Url $DetailUrl
+    $pattern = '<li class="t(?<fileClass>[a-z0-9]+)\s+typsouboru"><strong><a href="(?<href>[^"]+)">(?<title>.*?)</a></strong>\s*\[(?<fileInfo>[^\]]+)\]'
+    $matches = [regex]::Matches($html, $pattern, [Text.RegularExpressions.RegexOptions]::Singleline)
+    $items = New-Object System.Collections.Generic.List[object]
+
+    foreach ($match in $matches) {
+        $parsed = Parse-TrebicMunicipalAttachmentTitle -Value $match.Groups["title"].Value -ReferenceDate $ReferenceDate
+        if ($null -eq $parsed) { continue }
+
+        $attachmentUrl = Resolve-AbsoluteUrl -Url $match.Groups["href"].Value -BaseUrl $DetailUrl
+        $fileClass = $match.Groups["fileClass"].Value.ToLowerInvariant()
+        $imageUrl = if ($fileClass -in @("jpg", "jpeg", "png", "webp", "gif")) { $attachmentUrl } else { "" }
+        $title = $parsed.title
+
+        $items.Add([pscustomobject]@{
+            sourceKey    = $SourceKey
+            sourceLabel  = $SourceLabel
+            title        = $title
+            genre        = Get-GenreFromText -Title $title -Keywords "mesto trebic aktuality" -ShortCode "" -Summary "" -DeclaredGenre "" -Venue "Trebic" -Link $attachmentUrl
+            municipality = "Trebic"
+            venue        = "Trebic"
+            startAt      = $parsed.startAt
+            endAt        = $parsed.endAt
+            startText    = $parsed.startAt.ToString("d. M. yyyy HH:mm")
+            endText      = $parsed.endAt.ToString("d. M. yyyy HH:mm")
+            dateLabel    = $parsed.dateLabel
+            timeLabel    = ""
+            summary      = ""
+            keywords     = "mesto trebic aktuality"
+            link         = $attachmentUrl
+            detailLink   = $DetailUrl
+            imageUrl     = $imageUrl
+            dedupeKey    = Get-EventDedupeKey -StartAt $parsed.startAt -Title $title
+        })
+    }
+
+    $items
+}
+
+function Get-TrebicMunicipalAktualityItems {
+    param(
+        [string]$SourceKey,
+        [string]$SourceLabel,
+        [string]$Url
+    )
+
+    $items = New-Object System.Collections.Generic.List[object]
+    foreach ($pageNumber in 1..3) {
+        $pageUrl = if ($pageNumber -eq 1) {
+            $Url
+        } else {
+            "https://www.trebic.cz/aktuality/ds-1818/archiv=0&tzv=1&pocet=25&stranka=$pageNumber"
+        }
+
+        $html = Get-StringContent -Url $pageUrl
+        $pattern = '<li class="u"><strong><a href="(?<href>[^"]+)">(?:<img[^>]+>)?(?<title>.*?)</a>(?:\s*<span[^>]*>.*?</span>)?</strong>\s*<span>\((?<date>[^)]+)\)</span>'
+        $matches = [regex]::Matches($html, $pattern, [Text.RegularExpressions.RegexOptions]::Singleline)
+
+        foreach ($match in $matches) {
+            $title = Normalize-Whitespace -Value $match.Groups["title"].Value
+            $normalizedTitle = Get-NormalizedPlaceKey -Value $title
+            if ($normalizedTitle -ne "kam v trebici v nasledujicich dnech") { continue }
+
+            $detailUrl = Resolve-AbsoluteUrl -Url $match.Groups["href"].Value -BaseUrl $pageUrl
+            $referenceDate = Parse-CzechDateText -Value (Normalize-Whitespace -Value $match.Groups["date"].Value)
+            if ($null -eq $referenceDate) { $referenceDate = Get-Date }
+
+            foreach ($item in @(Get-TrebicMunicipalWeeklyDetailItems -SourceKey $SourceKey -SourceLabel $SourceLabel -DetailUrl $detailUrl -ReferenceDate $referenceDate)) {
+                $items.Add($item)
+            }
+        }
     }
 
     $items
@@ -833,10 +1107,10 @@ function Merge-EventItems {
         $existing = $map[$item.dedupeKey]
         $secondaryItem = $null
         $otherItem = $null
-        if (($existing.sourceKey -eq "region_calendar" -or $existing.sourceKey -eq "trebiclive_program") -and $item.sourceKey -ne $existing.sourceKey) {
+        if (($existing.sourceKey -eq "region_calendar" -or $existing.sourceKey -eq "trebiclive_program" -or $existing.sourceKey -eq "trebic_mesto_aktuality") -and $item.sourceKey -ne $existing.sourceKey) {
             $secondaryItem = $existing
             $otherItem = $item
-        } elseif (($item.sourceKey -eq "region_calendar" -or $item.sourceKey -eq "trebiclive_program") -and $existing.sourceKey -ne $item.sourceKey) {
+        } elseif (($item.sourceKey -eq "region_calendar" -or $item.sourceKey -eq "trebiclive_program" -or $item.sourceKey -eq "trebic_mesto_aktuality") -and $existing.sourceKey -ne $item.sourceKey) {
             $secondaryItem = $item
             $otherItem = $existing
         }
@@ -967,6 +1241,28 @@ function Convert-ItemsToHtml {
         [datetime]$Now
     )
 
+    $defaultImageSvg = @"
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 675' role='img' aria-label='Akce v T&#345;eb&#237;&#269;i'>
+  <defs>
+    <linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>
+      <stop offset='0' stop-color='#0d7a70'/>
+      <stop offset='1' stop-color='#d55a1f'/>
+    </linearGradient>
+    <pattern id='p' width='56' height='56' patternUnits='userSpaceOnUse'>
+      <path d='M0 56 L56 0' stroke='rgba(255,255,255,.16)' stroke-width='5'/>
+    </pattern>
+  </defs>
+  <rect width='1200' height='675' fill='#f7f2e9'/>
+  <rect width='1200' height='675' fill='url(#g)' opacity='.92'/>
+  <rect width='1200' height='675' fill='url(#p)'/>
+  <circle cx='1000' cy='120' r='150' fill='rgba(255,255,255,.18)'/>
+  <circle cx='180' cy='550' r='210' fill='rgba(255,255,255,.12)'/>
+  <text x='88' y='318' fill='white' font-family='Segoe UI, Arial, sans-serif' font-size='76' font-weight='800'>Akce v T&#345;eb&#237;&#269;i</text>
+  <text x='92' y='392' fill='rgba(255,255,255,.84)' font-family='Segoe UI, Arial, sans-serif' font-size='34' font-weight='600'>kulturn&#237; p&#345;ehled m&#283;sta a okol&#237;</text>
+</svg>
+"@
+    $defaultImageUrl = "data:image/svg+xml;charset=UTF-8,$([System.Uri]::EscapeDataString($defaultImageSvg))"
+
     $css = @"
 :root{--bg:#f7f2e9;--card:#fffdfa;--ink:#1d2a34;--muted:#66727f;--accent:#0d7a70;--accent-2:#d55a1f;--line:#eadfce;--hero-a:#0d7a70;--hero-b:#cf5a22}
 *{box-sizing:border-box}
@@ -1052,7 +1348,9 @@ body{margin:0;font-family:'Segoe UI',Arial,sans-serif;color:var(--ink);backgroun
                 } else {
                     "<div class='summary'>$([System.Net.WebUtility]::HtmlEncode($previewSummary))</div>"
                 }
-                $image = if ([string]::IsNullOrWhiteSpace($_.imageUrl)) { "" } else { "<img class='thumb' src='$([System.Net.WebUtility]::HtmlEncode($_.imageUrl))' alt='$([System.Net.WebUtility]::HtmlEncode($_.title))'>" }
+                $imageSource = if ([string]::IsNullOrWhiteSpace($_.imageUrl)) { $defaultImageUrl } else { $_.imageUrl }
+                $imageAlt = if ([string]::IsNullOrWhiteSpace($_.imageUrl)) { "Akce v T&#345;eb&#237;&#269;i" } else { [System.Net.WebUtility]::HtmlEncode($_.title) }
+                $image = "<img class='thumb' src='$([System.Net.WebUtility]::HtmlEncode($imageSource))' alt='$imageAlt' onerror=`"this.onerror=null;this.src='$([System.Net.WebUtility]::HtmlEncode($defaultImageUrl))';this.alt='Akce v T&#345;eb&#237;&#269;i';`">"
                 $distanceDetail = if ([double]$_.distanceKm -gt 0.04) { "<div class='detail'><strong>Vzd&#225;lenost:</strong> $([System.Net.WebUtility]::HtmlEncode(('{0:N1} km' -f $_.distanceKm)))</div>" } else { "" }
                 $preferredLink = Get-PreferredEventLink -Candidates @($_.link, $_.detailLink)
                 "<article class='card'>$image<div class='date'>$([System.Net.WebUtility]::HtmlEncode($_.startText))</div><h3>$([System.Net.WebUtility]::HtmlEncode($_.title))</h3><div class='detail'><strong>M&#237;sto:</strong> $([System.Net.WebUtility]::HtmlEncode($_.venue))</div><div class='detail'><strong>Obec:</strong> $([System.Net.WebUtility]::HtmlEncode($_.municipality))</div>$distanceDetail<div class='detail'><strong>Term&#237;n:</strong> $([System.Net.WebUtility]::HtmlEncode($_.dateLabel))</div>$summary<div class='links'><a class='btn' href='$([System.Net.WebUtility]::HtmlEncode($preferredLink))' target='_blank' rel='noreferrer'>Otev&#345;&#237;t detail</a></div></article>"
@@ -1214,6 +1512,12 @@ foreach ($source in @($config.sources | Where-Object { $_.type -eq "roxy_program
 
 foreach ($source in @($config.sources | Where-Object { $_.type -eq "trebiclive_program" })) {
     foreach ($item in @(Get-TrebicLiveItems -SourceKey $source.key -SourceLabel $source.label -Url $source.url)) {
+        $items.Add($item)
+    }
+}
+
+foreach ($source in @($config.sources | Where-Object { $_.type -eq "trebic_mesto_aktuality" })) {
+    foreach ($item in @(Get-TrebicMunicipalAktualityItems -SourceKey $source.key -SourceLabel $source.label -Url $source.url)) {
         $items.Add($item)
     }
 }

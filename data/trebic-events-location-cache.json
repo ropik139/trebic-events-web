@@ -11,6 +11,12 @@
                     "source":  "nominatim",
                     "display":  "Jemnice, SO POÚ Jemnice, SO ORP Moravské Budějovice, okres Třebíč, Kraj Vysočina, Jihovýchod, 675 31, Česko"
                 },
+    "mladonovice":  {
+                        "latitude":  49.0100291,
+                        "longitude":  15.6443687,
+                        "source":  "nominatim",
+                        "display":  "Mladoňovice, okres Třebíč, Kraj Vysočina, Jihovýchod, 675 32, Česko"
+                    },
     "moravske budejovice":  {
                                 "latitude":  49.0525768,
                                 "longitude":  15.8092797,
