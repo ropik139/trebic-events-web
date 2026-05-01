@@ -331,8 +331,20 @@ function Get-EventDedupeTitleKey {
     param([string]$Title)
 
     $key = Get-NormalizedPlaceKey -Value $Title
-    if ($key -match '\bbud prvnim\b' -and $key -match '\bnadace tomase bati\b') {
-        return 'bud prvnim vystava nadace tomase bati'
+    if ($key -match '\bbud prvnim\b') {
+        return 'bud prvnim'
+    }
+
+    if ($key -match '\bostre sledovane vlaky\b') {
+        return 'ostre sledovane vlaky'
+    }
+
+    if ($key -match '\bgenialni napad\b') {
+        return 'genialni napad'
+    }
+
+    if ($key -match '\bticho v koute\b') {
+        return 'ticho v koute'
     }
 
     $key
@@ -1234,41 +1246,40 @@ function Merge-EventItems {
         }
 
         $existing = $map[$item.dedupeKey]
-        $secondaryItem = $null
-        $otherItem = $null
-        if (($existing.sourceKey -eq "region_calendar" -or $existing.sourceKey -eq "trebiclive_program" -or $existing.sourceKey -eq "trebic_mesto_aktuality") -and $item.sourceKey -ne $existing.sourceKey) {
+        $existingScore = Get-EventQualityScore -Item $existing
+        $itemScore = Get-EventQualityScore -Item $item
+
+        if ($itemScore -gt $existingScore) {
+            $primaryItem = $item
             $secondaryItem = $existing
-            $otherItem = $item
-        } elseif (($item.sourceKey -eq "region_calendar" -or $item.sourceKey -eq "trebiclive_program" -or $item.sourceKey -eq "trebic_mesto_aktuality") -and $existing.sourceKey -ne $item.sourceKey) {
+        } else {
+            $primaryItem = $existing
             $secondaryItem = $item
-            $otherItem = $existing
         }
 
-        if ($null -ne $secondaryItem -and $null -ne $otherItem) {
-            $mergedStartAt = if ($otherItem.startAt.TimeOfDay.TotalMinutes -gt 0) { $otherItem.startAt } else { $secondaryItem.startAt }
-            $mergedEndAt = if ($otherItem.endAt.TimeOfDay.TotalMinutes -gt 0) { $otherItem.endAt } else { $secondaryItem.endAt }
-            $mergedImageUrl = if (-not [string]::IsNullOrWhiteSpace($secondaryItem.imageUrl)) { $secondaryItem.imageUrl } else { $otherItem.imageUrl }
-            $preferredLink = Get-PreferredEventLink -Candidates @($otherItem.detailLink, $otherItem.link, $secondaryItem.link, $secondaryItem.detailLink)
-            $map[$item.dedupeKey] = [pscustomobject]@{
-                sourceKey    = $otherItem.sourceKey
-                sourceLabel  = $otherItem.sourceLabel
-                title        = $otherItem.title
-                genre        = $otherItem.genre
-                municipality = $secondaryItem.municipality
-                venue        = if (-not [string]::IsNullOrWhiteSpace($otherItem.venue)) { $otherItem.venue } else { $secondaryItem.venue }
-                startAt      = $mergedStartAt
-                endAt        = $mergedEndAt
-                startText    = $mergedStartAt.ToString("d. M. yyyy HH:mm")
-                endText      = $mergedEndAt.ToString("d. M. yyyy HH:mm")
-                dateLabel    = $secondaryItem.dateLabel
-                timeLabel    = $otherItem.timeLabel
-                summary      = if (-not [string]::IsNullOrWhiteSpace($secondaryItem.summary)) { $secondaryItem.summary } else { $otherItem.summary }
-                keywords     = $secondaryItem.keywords
-                link         = $preferredLink
-                detailLink   = $preferredLink
-                imageUrl     = $mergedImageUrl
-                dedupeKey    = $item.dedupeKey
-            }
+        $mergedStartAt = if ($primaryItem.startAt.TimeOfDay.TotalMinutes -gt 0 -or $secondaryItem.startAt.TimeOfDay.TotalMinutes -eq 0) { $primaryItem.startAt } else { $secondaryItem.startAt }
+        $mergedEndAt = if ($primaryItem.endAt.TimeOfDay.TotalMinutes -gt 0 -or $secondaryItem.endAt.TimeOfDay.TotalMinutes -eq 0) { $primaryItem.endAt } else { $secondaryItem.endAt }
+        $preferredLink = Get-PreferredEventLink -Candidates @($primaryItem.detailLink, $primaryItem.link, $secondaryItem.detailLink, $secondaryItem.link)
+
+        $map[$item.dedupeKey] = [pscustomobject]@{
+            sourceKey    = $primaryItem.sourceKey
+            sourceLabel  = $primaryItem.sourceLabel
+            title        = $primaryItem.title
+            genre        = $primaryItem.genre
+            municipality = if (-not [string]::IsNullOrWhiteSpace($primaryItem.municipality)) { $primaryItem.municipality } else { $secondaryItem.municipality }
+            venue        = if (-not [string]::IsNullOrWhiteSpace($primaryItem.venue)) { $primaryItem.venue } else { $secondaryItem.venue }
+            startAt      = $mergedStartAt
+            endAt        = $mergedEndAt
+            startText    = $mergedStartAt.ToString("d. M. yyyy HH:mm")
+            endText      = $mergedEndAt.ToString("d. M. yyyy HH:mm")
+            dateLabel    = if (-not [string]::IsNullOrWhiteSpace($primaryItem.dateLabel)) { $primaryItem.dateLabel } else { $secondaryItem.dateLabel }
+            timeLabel    = if (-not [string]::IsNullOrWhiteSpace($primaryItem.timeLabel)) { $primaryItem.timeLabel } else { $secondaryItem.timeLabel }
+            summary      = if (-not [string]::IsNullOrWhiteSpace($primaryItem.summary)) { $primaryItem.summary } else { $secondaryItem.summary }
+            keywords     = if ($null -ne $primaryItem.keywords -and @($primaryItem.keywords).Count -gt 0) { $primaryItem.keywords } else { $secondaryItem.keywords }
+            link         = $preferredLink
+            detailLink   = $preferredLink
+            imageUrl     = if (-not [string]::IsNullOrWhiteSpace($primaryItem.imageUrl)) { $primaryItem.imageUrl } else { $secondaryItem.imageUrl }
+            dedupeKey    = $item.dedupeKey
         }
     }
 

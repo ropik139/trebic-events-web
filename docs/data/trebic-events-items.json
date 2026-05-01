@@ -1,5 +1,5 @@
 ﻿{
-    "generatedAt":  "2026-05-01T17:13:02.6549659",
+    "generatedAt":  "2026-05-01T17:42:50.5686333",
     "center":  {
                    "name":  "Trebic",
                    "latitude":  49.2151907,
@@ -9,10 +9,10 @@
     "horizonDays":  14,
     "items":  [
                   {
-                      "title":  "DĚTSKÉ PROHLÍDKY BAZILIKY SV. PROKOPA",
-                      "genre":  "Ostatni kultura",
+                      "title":  "Dětské prohlídky baziliky sv. Prokopa",
+                      "genre":  "Ostatni",
                       "municipality":  "Třebíč",
-                      "venue":  "Bazilika sv. Prokopa",
+                      "venue":  "Bazilika svatého Prokopa, Třebíč",
                       "startAt":  "2026-05-01T00:00:00.0000000",
                       "endAt":  "2026-05-01T23:59:59.0000000",
                       "dateLabel":  "01.05.2026",
@@ -21,7 +21,7 @@
                       "link":  "https://www.mkstrebic.cz/ostatni/detske-prohlidky-baziliky-sv-prokopa/",
                       "detailLink":  "https://www.mkstrebic.cz/ostatni/detske-prohlidky-baziliky-sv-prokopa/",
                       "imageUrl":  "assets/images/7e9f5194b88a11e7241622ba.jpg",
-                      "sourceLabel":  "MKS Trebic"
+                      "sourceLabel":  "Regionalni kalendar Trebicsko-Moravska Vysocina"
                   },
                   {
                       "title":  "Opravna duší",
@@ -55,48 +55,33 @@
                   },
                   {
                       "title":  "Ticho v koutě",
-                      "genre":  "Prednasky a workshopy",
-                      "municipality":  "Trebic",
-                      "venue":  "Třebíč - Muzeum Třebíč",
+                      "genre":  "Vystavy",
+                      "municipality":  "Třebíč",
+                      "venue":  "Muzeum Vysočiny Třebíč, galerie Tympanon",
                       "startAt":  "2026-03-27T00:00:00.0000000",
                       "endAt":  "2026-05-10T23:59:59.0000000",
-                      "dateLabel":  "27.3.",
+                      "dateLabel":  "27.03.2026 - 10.05.2026",
                       "summary":  "Lenka Zadražilová rozličnými způsoby pracuje s prachem – od nanášení dřevěných pilin na dřevěné desky, přes malování interiéru truhlářské dílny prachem ze dřeva až po zachycení atmosféry pokojů vlastní rodiny pomocí prachu z vysavače. Výsledkem jsou díla s konkrétními motivy i zcela abstraktní malby. Výstupem tvůrčího procesu mohou být také objekty, instalace, záznamy procesu bádání. \n\n \n \n\n \n Slavnostní zahájení výstavy : čtvrtek 26. 3. 2026 v 17 hodin, hudební doprovod: Petr Frenciz",
                       "distanceKm":  0,
-                      "link":  "https://www.unesco-czech.cz/900_727728_ticho-v-koute",
-                      "detailLink":  "https://www.unesco-czech.cz/900_727728_ticho-v-koute",
-                      "imageUrl":  "assets/images/c544cbf4b788bdc52a13a806.jpg",
-                      "sourceLabel":  "UNESCO Czech Trebic"
-                  },
-                  {
-                      "title":  "Ticho v koutě – Lenka Zadražilová",
-                      "genre":  "Ostatni",
-                      "municipality":  "Třebíč",
-                      "venue":  "Galerie Tympanon - Zámek 1, Třebíč",
-                      "startAt":  "2026-03-27T00:00:00.0000000",
-                      "endAt":  "2026-05-10T23:59:59.0000000",
-                      "dateLabel":  "Od: 27.03.2026 Do: 10.05.2026",
-                      "summary":  "",
-                      "distanceKm":  0,
-                      "link":  "http://browsehappy.com/",
-                      "detailLink":  "https://www.trebiclive.cz/akce/13291-ticho-v-koute-lenka-zadrazilova/",
-                      "imageUrl":  "assets/images/17ba43e1375c22977756a458.jpg",
-                      "sourceLabel":  "TrebicLive.cz"
+                      "link":  "https://www.muzeumtr.cz/uvod/zpravy/1325/ticho-v-koute-lenka-zadrazilova",
+                      "detailLink":  "https://www.muzeumtr.cz/uvod/zpravy/1325/ticho-v-koute-lenka-zadrazilova",
+                      "imageUrl":  "assets/images/f857ea8a2651faf7791f29aa.jpg",
+                      "sourceLabel":  "Regionalni kalendar Trebicsko-Moravska Vysocina"
                   },
                   {
                       "title":  "Jarní workshopy modrotisku",
                       "genre":  "Prednasky a workshopy",
                       "municipality":  "Třebíč",
-                      "venue":  "Trebic",
+                      "venue":  "Šmeralův statek, Třebíč",
                       "startAt":  "2026-02-23T00:00:00.0000000",
                       "endAt":  "2026-05-19T23:59:59.0000000",
                       "dateLabel":  "23.02.2026 - 19.05.2026",
                       "summary":  "Pondělí 23. února 2026 \n\n \n 17-20 hodin \n\n \n \n\n \n Středa 25. března 2026 \n\n \n 17-20 hodin \n\n \n \n\n \n Středa 22. dubna 2026 \n\n \n 17-20 hodin \n\n \n \n\n \n Úterý 19. května 2026 \n\n \n 17-20 hodin \n\n \n \n\n \n Cena : 350 Kč \n\n \n \n\n \n Přijďte si užít pohodové podvečery v Centru tradiční lidové kultury a vyzkoušejte si tradiční modrotisk. \n\n \n K dispozici budete mít 1 m bavlněného plátna šíře 80 cm, tiskařskou reservu a modrotiskové formy (razítka), šablony, výtvarné potřeby a další potřebné věci. Workshop trvá 2-3 hodiny. \n\n \n Šmeralův statek (Centrum tradiční lidové kultury), Cyrilometodějská 48/7, Třebíč \n\n \n Přihlašování probíhá zakoupením vstupenky přes smsticket.cz (QR kódy naleznete na plakátu výše).",
                       "distanceKm":  0,
-                      "link":  "https://www.trebic.cz/kam%2Dv%2Dtrebici%2Dv%2Dnasledujicich%2Ddnech/d-72937",
-                      "detailLink":  "https://www.trebic.cz/kam%2Dv%2Dtrebici%2Dv%2Dnasledujicich%2Ddnech/d-72937",
+                      "link":  "https://www.centrumtlk.cz/uvod/zpravy",
+                      "detailLink":  "https://www.centrumtlk.cz/uvod/zpravy",
                       "imageUrl":  "assets/images/848592b20c4cf617720642a2.jpg",
-                      "sourceLabel":  "Mesto Trebic - Aktuality"
+                      "sourceLabel":  "Regionalni kalendar Trebicsko-Moravska Vysocina"
                   },
                   {
                       "title":  "Buď prvním",
@@ -104,12 +89,12 @@
                       "municipality":  "Třebíč",
                       "venue":  "Městská knihovna Třebíč",
                       "startAt":  "2026-04-15T00:00:00.0000000",
-                      "endAt":  "2026-05-31T00:00:00.0000000",
+                      "endAt":  "2026-05-31T23:59:59.0000000",
                       "dateLabel":  "15.04.2026 - 31.05.2026",
                       "summary":  "Nestihli jste navštívit výstavu „Buď prvním!“ v Alternátoru? \n\n \n Přijďte si výstavu Nadace Tomáše Bati prohlédnout do Městské knihovny Hasskova. \n\n \n Výstava je přístupná zdarma až do konce května.",
                       "distanceKm":  0,
-                      "link":  "https://kalendar.trebicsko-moravskavysocina.cz/iframe.php?cid=2925",
-                      "detailLink":  "https://kalendar.trebicsko-moravskavysocina.cz/iframe.php?cid=2925",
+                      "link":  "https://www.unesco-czech.cz/900_727693_vystava-nadace-tomase-bati-bud-prvnim",
+                      "detailLink":  "https://www.unesco-czech.cz/900_727693_vystava-nadace-tomase-bati-bud-prvnim",
                       "imageUrl":  "assets/images/233582ecff95d3cbe9638348.jpg",
                       "sourceLabel":  "Regionalni kalendar Trebicsko-Moravska Vysocina"
                   },
@@ -129,21 +114,6 @@
                       "sourceLabel":  "Mesto Trebic - Aktuality"
                   },
                   {
-                      "title":  "Výstava Nadace Tomáše Bati - Buď prvním",
-                      "genre":  "Vystavy",
-                      "municipality":  "Třebíč",
-                      "venue":  "Městská knihovna v Třebíči (Třebíč)",
-                      "startAt":  "2026-04-15T00:00:00.0000000",
-                      "endAt":  "2026-05-31T23:59:59.0000000",
-                      "dateLabel":  "st 15.4.2026 - ne 31.5.2026",
-                      "summary":  "",
-                      "distanceKm":  0,
-                      "link":  "https://www.unesco-czech.cz/900_727693_vystava-nadace-tomase-bati-bud-prvnim",
-                      "detailLink":  "https://www.unesco-czech.cz/900_727693_vystava-nadace-tomase-bati-bud-prvnim",
-                      "imageUrl":  "assets/images/368c6c78f49bc66c5240a745.jpg",
-                      "sourceLabel":  "UNESCO Czech Trebic"
-                  },
-                  {
                       "title":  "DIALOG TVARŮ A FOREM",
                       "genre":  "Ostatni",
                       "municipality":  "Třebíč",
@@ -159,49 +129,49 @@
                       "sourceLabel":  "TrebicLive.cz"
                   },
                   {
-                      "title":  "Umění v procesu",
-                      "genre":  "Ostatni",
+                      "title":  "UMĚNÍ V PROCESU",
+                      "genre":  "Vystavy",
                       "municipality":  "Třebíč",
-                      "venue":  "Trebic",
+                      "venue":  "Výstavní síň Předzámčí",
                       "startAt":  "2026-04-30T00:00:00.0000000",
                       "endAt":  "2026-06-07T23:59:59.0000000",
                       "dateLabel":  "30.04.2026 - 07.06.2026",
                       "summary":  "Výstava a vernisáž studentských prací Sofie Samuelové a Robina Slabého \n\n \n První ze série chystaných výstav Šance talentům \n\n \n Vernisáž : 29. dubna 2026 v 17:00",
                       "distanceKm":  0,
-                      "link":  "https://www.trebic.cz/kam%2Dv%2Dtrebici%2Dv%2Dnasledujicich%2Ddnech/d-74081",
-                      "detailLink":  "https://www.trebic.cz/kam%2Dv%2Dtrebici%2Dv%2Dnasledujicich%2Ddnech/d-74081",
+                      "link":  "https://www.trebiclive.cz/akce/13720-umeni-v-procesu/",
+                      "detailLink":  "https://www.trebiclive.cz/akce/13720-umeni-v-procesu/",
                       "imageUrl":  "assets/images/b51b125273cf83da0eef71a7.jpg",
-                      "sourceLabel":  "Mesto Trebic - Aktuality"
+                      "sourceLabel":  "Regionalni kalendar Trebicsko-Moravska Vysocina"
                   },
                   {
-                      "title":  "3-2-1 start",
-                      "genre":  "Ostatni",
+                      "title":  "3-2-1 Start",
+                      "genre":  "Pro deti",
                       "municipality":  "Třebíč",
-                      "venue":  "Trebic",
+                      "venue":  "Hvězdárna a planetárium Třebíč",
                       "startAt":  "2026-04-10T00:00:00.0000000",
                       "endAt":  "2026-06-27T23:59:59.0000000",
                       "dateLabel":  "10.04.2026 - 27.06.2026",
                       "summary":  "Křeček Elon najde na své zahrádce robota, který spadl z vesmírné lodi. Ta se ale chystá druhý den odletět. Podaří se Elonovi překonat všechny fyzikální překážky, aby dostal robota do vesmíru včas? \n\n \n 3-2-1 Start! je dobrodružný animovaný film o odvaze a vynalézavosti, kterou potřebujete nejen při cestě do vesmíru, ale i při návratu zpátky na Zem. \n\n \n \n\n \n V pátek od 10. dubna do 26. června 2026 od 15:00 hodin \n\n \n V sobotu od 11. dubna do 27. června 2026 od 16:30 hodin \n\n \n \n\n \n Vhodné pro širokou veřejnost, děti 6+ \n\n \n Vstupné : 100 Kč \n\n \n V případě platby na místě lze platit pouze v hotovosti \n\n \n \n\n \n Délka programu cca 60 minut , program se skládá z komentované části a filmu",
                       "distanceKm":  0,
-                      "link":  "https://www.trebic.cz/kam%2Dv%2Dtrebici%2Dv%2Dnasledujicich%2Ddnech/d-73710",
-                      "detailLink":  "https://www.trebic.cz/kam%2Dv%2Dtrebici%2Dv%2Dnasledujicich%2Ddnech/d-73710",
+                      "link":  "https://www.planetariumtrebic.cz/pro-verejnost/3-2-1-start/",
+                      "detailLink":  "https://www.planetariumtrebic.cz/pro-verejnost/3-2-1-start/",
                       "imageUrl":  "assets/images/6f87377f60c8912ec0cb4eb4.png",
-                      "sourceLabel":  "Mesto Trebic - Aktuality"
+                      "sourceLabel":  "Regionalni kalendar Trebicsko-Moravska Vysocina"
                   },
                   {
-                      "title":  "Vzhůru na měsíc",
-                      "genre":  "Ostatni",
+                      "title":  "Vzhůru na Měsíc",
+                      "genre":  "Pro deti",
                       "municipality":  "Třebíč",
-                      "venue":  "Trebic",
+                      "venue":  "Hvězdárna a planetárium Třebíč",
                       "startAt":  "2026-04-10T00:00:00.0000000",
                       "endAt":  "2026-06-27T23:59:59.0000000",
                       "dateLabel":  "10.04.2026 - 27.06.2026",
                       "summary":  "Program NASA Artemis pro 21. století, pojmenovaný po řecké bohyni Měsíce a dvojčeti Apollóna, je dalším krokem v naší misi prozkoumávat vesmír. \n\n \n \n\n \n V pátek a v sobotu od 10. dubna 2026 do 27. června 2026 od 19:30 hodin \n\n \n \n\n \n Vhodné pro širokou veřejnost, děti 8+ \n\n \n Vstupné : 100 Kč \n\n \n V případě platby na místě lze platit pouze v hotovosti \n\n \n \n\n \n Délka programu cca 60 minut, program se skládá z komentované části a filmu",
                       "distanceKm":  0,
-                      "link":  "https://www.trebic.cz/kam%2Dv%2Dtrebici%2Dv%2Dnasledujicich%2Ddnech/d-73710",
-                      "detailLink":  "https://www.trebic.cz/kam%2Dv%2Dtrebici%2Dv%2Dnasledujicich%2Ddnech/d-73710",
+                      "link":  "https://www.planetariumtrebic.cz/pro-verejnost/vzhuru-na-mesic/",
+                      "detailLink":  "https://www.planetariumtrebic.cz/pro-verejnost/vzhuru-na-mesic/",
                       "imageUrl":  "assets/images/fb8edbc775516725d5a6b1dd.png",
-                      "sourceLabel":  "Mesto Trebic - Aktuality"
+                      "sourceLabel":  "Regionalni kalendar Trebicsko-Moravska Vysocina"
                   },
                   {
                       "title":  "Fluorit",
@@ -281,62 +251,62 @@
                   {
                       "title":  "Třebíč očima architekta",
                       "genre":  "Ostatni",
-                      "municipality":  "Trebic",
-                      "venue":  "Městská knihovna v Třebíči (Třebíč)",
+                      "municipality":  "Třebíč",
+                      "venue":  "Městská knihovna Třebíč",
                       "startAt":  "2026-05-04T09:00:00.0000000",
-                      "endAt":  "2026-05-04T23:59:59.0000000",
-                      "dateLabel":  "4.5.",
+                      "endAt":  "2026-05-04T11:00:00.0000000",
+                      "dateLabel":  "04.05.2026",
                       "summary":  "Opakování cyklu z roku 2015 s bývalým městským architektem Ing. arch. Luborem Herzánem .",
                       "distanceKm":  0,
-                      "link":  "https://www.unesco-czech.cz/900_727730_trebic-ocima-architekta",
-                      "detailLink":  "https://www.unesco-czech.cz/900_727730_trebic-ocima-architekta",
-                      "imageUrl":  "assets/images/e7a161375a1fdfbb6ccf371e.png",
-                      "sourceLabel":  "UNESCO Czech Trebic"
+                      "link":  "https://www.knihovnatr.cz/cze/kalendar-akci/t%C5%99eb%C3%ADa%EF%BF%BD-oa%EF%BF%BDima-architekta-3-a%EF%BF%BD%C3%A1st-horka-domky-ing-arch-lubor-herz%C3%A1n__5429/",
+                      "detailLink":  "https://www.knihovnatr.cz/cze/kalendar-akci/t%C5%99eb%C3%ADa%EF%BF%BD-oa%EF%BF%BDima-architekta-3-a%EF%BF%BD%C3%A1st-horka-domky-ing-arch-lubor-herz%C3%A1n__5429/",
+                      "imageUrl":  "assets/images/d3f74a14d07e07978a2480ca.png",
+                      "sourceLabel":  "Regionalni kalendar Trebicsko-Moravska Vysocina"
                   },
                   {
                       "title":  "Mozkoherna - odhalte tajemství mozku",
                       "genre":  "Ostatni",
-                      "municipality":  "Trebic",
-                      "venue":  "Dům dětí a mládeže (Třebíč)",
+                      "municipality":  "Třebíč",
+                      "venue":  "DDM Třebíč",
                       "startAt":  "2026-05-05T16:00:00.0000000",
-                      "endAt":  "2026-05-05T23:59:59.0000000",
-                      "dateLabel":  "5.5.",
+                      "endAt":  "2026-05-05T17:00:00.0000000",
+                      "dateLabel":  "05.05.2026",
                       "summary":  "",
                       "distanceKm":  0,
                       "link":  "https://www.unesco-czech.cz/900_727712_mozkoherna-odhalte-tajemstvi-mozku",
                       "detailLink":  "https://www.unesco-czech.cz/900_727712_mozkoherna-odhalte-tajemstvi-mozku",
-                      "imageUrl":  "assets/images/41109897162b493ff8beea6a.jpg",
-                      "sourceLabel":  "UNESCO Czech Trebic"
+                      "imageUrl":  "assets/images/3fbfbacda7319b4225ffe738.jpg",
+                      "sourceLabel":  "Regionalni kalendar Trebicsko-Moravska Vysocina"
                   },
                   {
                       "title":  "Koncert klavírního oddělení II.",
                       "genre":  "Koncerty",
-                      "municipality":  "Trebic",
-                      "venue":  "Pasáž (Třebíč)",
+                      "municipality":  "Třebíč",
+                      "venue":  "Foyer divadla Pasáž, Třebíč",
                       "startAt":  "2026-05-05T17:00:00.0000000",
-                      "endAt":  "2026-05-05T23:59:59.0000000",
-                      "dateLabel":  "5.5.",
+                      "endAt":  "2026-05-05T19:00:00.0000000",
+                      "dateLabel":  "05.05.2026",
                       "summary":  "",
                       "distanceKm":  0,
                       "link":  "https://www.unesco-czech.cz/900_727706_koncert-klavirniho-oddeleni-ii",
                       "detailLink":  "https://www.unesco-czech.cz/900_727706_koncert-klavirniho-oddeleni-ii",
-                      "imageUrl":  "assets/images/52b09803e5a0b5bf9d765dc3.jpg",
-                      "sourceLabel":  "UNESCO Czech Trebic"
+                      "imageUrl":  "assets/images/cfad8b8b8e6106ab15464a4e.jpg",
+                      "sourceLabel":  "Regionalni kalendar Trebicsko-Moravska Vysocina"
                   },
                   {
                       "title":  "Toulky Moravským Toskánskem",
                       "genre":  "Vystavy",
-                      "municipality":  "Trebic",
-                      "venue":  "Městská knihovna v Třebíči (Třebíč)",
+                      "municipality":  "Třebíč",
+                      "venue":  "Městská knihovna Třebíč",
                       "startAt":  "2026-05-05T17:00:00.0000000",
-                      "endAt":  "2026-05-05T23:59:59.0000000",
-                      "dateLabel":  "5.5.",
+                      "endAt":  "2026-05-05T19:00:00.0000000",
+                      "dateLabel":  "05.05.2026",
                       "summary":  "Vernisáž výstavy třebíčského fotografa Jaroslava Hedbávného spojená s prezentací fotografií, které vznikly v nádherné krajině Moravského Toskánska.",
                       "distanceKm":  0,
-                      "link":  "https://www.unesco-czech.cz/900_727729_toulky-moravskym-toskanskem",
-                      "detailLink":  "https://www.unesco-czech.cz/900_727729_toulky-moravskym-toskanskem",
-                      "imageUrl":  "assets/images/dea0d185a8263a8b1072a0a6.png",
-                      "sourceLabel":  "UNESCO Czech Trebic"
+                      "link":  "https://www.knihovnatr.cz/cze/kalendar-akci/toulky-moravsk%C3%BDm-tosk%C3%A1nskem-ing-jaroslav-hedb%C3%A1vn%C3%BD__5428/",
+                      "detailLink":  "https://www.knihovnatr.cz/cze/kalendar-akci/toulky-moravsk%C3%BDm-tosk%C3%A1nskem-ing-jaroslav-hedb%C3%A1vn%C3%BD__5428/",
+                      "imageUrl":  "assets/images/0fd91d36fcab491c047fd3cb.png",
+                      "sourceLabel":  "Regionalni kalendar Trebicsko-Moravska Vysocina"
                   },
                   {
                       "title":  "NĚKDO TO RÁD V PLZNI",
@@ -354,21 +324,6 @@
                       "sourceLabel":  "MKS Trebic"
                   },
                   {
-                      "title":  "Ostře sledované vlaky",
-                      "genre":  "Divadlo",
-                      "municipality":  "Třebíč",
-                      "venue":  "Pasáž (Třebíč)",
-                      "startAt":  "2026-05-06T00:00:00.0000000",
-                      "endAt":  "2026-05-06T23:59:59.0000000",
-                      "dateLabel":  "st 6.5.2026 19:00",
-                      "summary":  "Dramatizace novely Bohumila Hrabala, kterou proslavil oscarový film Jiřího Menzela. Tragikomedie tělesného a lidského dospívání Miloše Hrmy na malém středočeském...",
-                      "distanceKm":  0,
-                      "link":  "https://www.unesco-czech.cz/900_727699_ostre-sledovane-vlaky",
-                      "detailLink":  "https://www.unesco-czech.cz/900_727699_ostre-sledovane-vlaky",
-                      "imageUrl":  "assets/images/792d4c8e327f1c285776a1d3.jpg",
-                      "sourceLabel":  "UNESCO Czech Trebic"
-                  },
-                  {
                       "title":  "Divadlo pod Palmovkou Praha: OSTŘE SLEDOVANÉ VLAKY",
                       "genre":  "Divadlo",
                       "municipality":  "Třebíč",
@@ -381,7 +336,7 @@
                       "link":  "https://www.mkstrebic.cz/divadlo/ostre-sledovane-vlaky/",
                       "detailLink":  "https://www.mkstrebic.cz/divadlo/ostre-sledovane-vlaky/",
                       "imageUrl":  "assets/images/49bda94e6c03107adf1aed5f.jpg",
-                      "sourceLabel":  "MKS Trebic"
+                      "sourceLabel":  "Regionalni kalendar Trebicsko-Moravska Vysocina"
                   },
                   {
                       "title":  "DRAMA",
@@ -402,37 +357,37 @@
                       "title":  "Od kresby k malbě",
                       "genre":  "Ostatni",
                       "municipality":  "Třebíč",
-                      "venue":  "Zámek Třebíč (Třebíč)",
+                      "venue":  "Muzeum Vysočiny Třebíč, zámek",
                       "startAt":  "2026-05-07T09:00:00.0000000",
-                      "endAt":  "2026-05-07T23:59:59.0000000",
+                      "endAt":  "2026-05-07T11:30:00.0000000",
                       "dateLabel":  "07.05.2026",
                       "summary":  "Výtvarný kroužek pro seniory. \n\n \n \n\n \n Cena : 1000 Kč \n\n \n Kapacita : 12 osob \n\n \n \n\n \n Přihlášení : Eva Novotná \n\n \n email : e.novotna@muzeumtr.cz \n\n \n tel : 568 408 897",
                       "distanceKm":  0,
-                      "link":  "https://www.unesco-czech.cz/900_726667_od-kresby-k-malbe",
-                      "detailLink":  "https://www.unesco-czech.cz/900_726667_od-kresby-k-malbe",
+                      "link":  "https://www.muzeumtr.cz/uvod/zpravy/1323/vytvarny-krouzek-pro-seniory",
+                      "detailLink":  "https://www.muzeumtr.cz/uvod/zpravy/1323/vytvarny-krouzek-pro-seniory",
                       "imageUrl":  "assets/images/985177bf9001b9bd6ec363e9.jpg",
-                      "sourceLabel":  "UNESCO Czech Trebic"
+                      "sourceLabel":  "Regionalni kalendar Trebicsko-Moravska Vysocina"
                   },
                   {
                       "title":  "Brusel Belgie",
                       "genre":  "Ostatni",
                       "municipality":  "Třebíč",
-                      "venue":  "Městská knihovna v Třebíči (Třebíč)",
+                      "venue":  "Městská knihovna Třebíč",
                       "startAt":  "2026-05-07T17:00:00.0000000",
-                      "endAt":  "2026-05-07T23:59:59.0000000",
+                      "endAt":  "2026-05-07T19:00:00.0000000",
                       "dateLabel":  "07.05.2026",
                       "summary":  "Věru Jourovou není třeba třebíčskému publiku dlouze představovat - česká a evropská politička působila a žila v Bruselu v letech 2014 až 2024 ve významných funkcích.",
                       "distanceKm":  0,
-                      "link":  "https://www.unesco-czech.cz/900_727692_brusel-belgie",
-                      "detailLink":  "https://www.unesco-czech.cz/900_727692_brusel-belgie",
+                      "link":  "https://www.knihovnatr.cz/cze/kalendar-akci/francouzsk%C3%BD-klub-2026-brusel-belgie-va%EF%BF%BDra-jourov%C3%A1__5434/",
+                      "detailLink":  "https://www.knihovnatr.cz/cze/kalendar-akci/francouzsk%C3%BD-klub-2026-brusel-belgie-va%EF%BF%BDra-jourov%C3%A1__5434/",
                       "imageUrl":  "assets/images/4447563ab5f3a39e1767d039.png",
-                      "sourceLabel":  "UNESCO Czech Trebic"
+                      "sourceLabel":  "Regionalni kalendar Trebicsko-Moravska Vysocina"
                   },
                   {
-                      "title":  "PROHLÍDKY TRPASLIČÍ GALERIE",
-                      "genre":  "Ostatni kultura",
+                      "title":  "Prohlídky trpasličí galerie",
+                      "genre":  "Vystavy",
                       "municipality":  "Třebíč",
-                      "venue":  "Bazilika sv. Prokopa",
+                      "venue":  "Bazilika svatého Prokopa, Třebíč",
                       "startAt":  "2026-05-08T00:00:00.0000000",
                       "endAt":  "2026-05-08T23:59:59.0000000",
                       "dateLabel":  "08.05.2026",
@@ -441,22 +396,22 @@
                       "link":  "https://www.mkstrebic.cz/ostatni/prohlidky-trpaslici-galerie/",
                       "detailLink":  "https://www.mkstrebic.cz/ostatni/prohlidky-trpaslici-galerie/",
                       "imageUrl":  "assets/images/89640d131f933b3bcc4d6e8c.jpg",
-                      "sourceLabel":  "MKS Trebic"
+                      "sourceLabel":  "Regionalni kalendar Trebicsko-Moravska Vysocina"
                   },
                   {
                       "title":  "OSLAVY OSVOBOZENÍ",
-                      "genre":  "Ostatni kultura",
+                      "genre":  "Ostatni",
                       "municipality":  "Třebíč",
                       "venue":  "Hrádek",
                       "startAt":  "2026-05-08T16:00:00.0000000",
-                      "endAt":  "2026-05-08T23:59:59.0000000",
+                      "endAt":  "2026-05-08T18:30:00.0000000",
                       "dateLabel":  "08.05.2026",
                       "summary":  "16:00 Hudební vystoupení swing \u0026 jazz kapely Bee Band 16:25 Taneční obor ZUŠ Třebíč 16.35 Ukázky činnosti příslušníků 22. vrtulníkového letectva Náměšť nad Oslavou 16:50 Projev starosty města 17:00 Seskok výsadkářů z letecké základny Náměšť nad Oslavou 17:30 Taneční obor ZUŠ Třebíč 17:40 Hudební vystoupení swing \u0026 jazz kapely Bee Band \n\n \n \n\n \n \n\n Cena zdarma",
                       "distanceKm":  0,
                       "link":  "https://www.mkstrebic.cz/ostatni/oslavy-osvobozeni/",
                       "detailLink":  "https://www.mkstrebic.cz/ostatni/oslavy-osvobozeni/",
                       "imageUrl":  "assets/images/cbc0084d67e010f82be2c639.png",
-                      "sourceLabel":  "MKS Trebic"
+                      "sourceLabel":  "Regionalni kalendar Trebicsko-Moravska Vysocina"
                   },
                   {
                       "title":  "SPASITEL",
@@ -474,38 +429,38 @@
                       "sourceLabel":  "MKS Trebic"
                   },
                   {
-                      "title":  "DEN OTEVŘENÝCH MLÝNŮ",
-                      "genre":  "Ostatni kultura",
+                      "title":  "Den otevřených mlýnů",
+                      "genre":  "Ostatni",
                       "municipality":  "Třebíč",
-                      "venue":  "Větrný mlýn Třebíč",
+                      "venue":  "Větrný mlýn, Třebíč",
                       "startAt":  "2026-05-09T10:00:00.0000000",
-                      "endAt":  "2026-05-09T13:00:00.0000000",
+                      "endAt":  "2026-05-09T17:00:00.0000000",
                       "dateLabel":  "09.05.2026",
                       "summary":  "II. ročník celostátní akce \n\n \n \n\n \n Akce je pořádána při příležitosti 910. výročí vzniku mlynářského znaku 13. května 1116 \n\n \n \n\n \n Otevřeno : 10:00-12:00, 12:30-17:00 \n\n \n Komentované prohlídky ve 13:00 a 14:00 \n\n \n Točení lopatkami mlýna ve 13:30 a 14:30 \n\n \n \n\n \n Vstup zdarma",
                       "distanceKm":  0,
-                      "link":  "https://www.mkstrebic.cz/ostatni/den-otevrenych-mlynu/",
-                      "detailLink":  "https://www.mkstrebic.cz/ostatni/den-otevrenych-mlynu/",
+                      "link":  "https://www.visittrebic.eu/pamatky/vetrny-mlyn/",
+                      "detailLink":  "https://www.visittrebic.eu/pamatky/vetrny-mlyn/",
                       "imageUrl":  "assets/images/20ab295334a934f1df9e1bbe.jpg",
-                      "sourceLabel":  "MKS Trebic"
+                      "sourceLabel":  "Regionalni kalendar Trebicsko-Moravska Vysocina"
                   },
                   {
                       "title":  "Akademie",
                       "genre":  "Ostatni",
                       "municipality":  "Třebíč",
-                      "venue":  "Dům dětí a mládeže (Třebíč)",
+                      "venue":  "DDM Třebíč, Amfiteátr u budovy B",
                       "startAt":  "2026-05-10T14:00:00.0000000",
-                      "endAt":  "2026-05-10T23:59:59.0000000",
+                      "endAt":  "2026-05-10T16:30:00.0000000",
                       "dateLabel":  "10.05.2026",
                       "summary":  "Vystoupení tanečních a hudebních kroužků. \n\n \n Ukázka činnosti ostatních kroužků. \n\n \n Fotokoutek, občerstvení",
                       "distanceKm":  0,
                       "link":  "https://www.unesco-czech.cz/900_727690_akademie",
                       "detailLink":  "https://www.unesco-czech.cz/900_727690_akademie",
                       "imageUrl":  "assets/images/cd5010ac053c5056f3ba076f.png",
-                      "sourceLabel":  "UNESCO Czech Trebic"
+                      "sourceLabel":  "Regionalni kalendar Trebicsko-Moravska Vysocina"
                   },
                   {
                       "title":  "Divadlo Krapet Praha: MAXIPES FÍK",
-                      "genre":  "Pro deti",
+                      "genre":  "Divadlo",
                       "municipality":  "Třebíč",
                       "venue":  "Divadlo Pasáž",
                       "startAt":  "2026-05-10T16:00:00.0000000",
@@ -516,7 +471,22 @@
                       "link":  "https://www.mkstrebic.cz/porady-pro-deti-a-mladez/maxipes-fik/",
                       "detailLink":  "https://www.mkstrebic.cz/porady-pro-deti-a-mladez/maxipes-fik/",
                       "imageUrl":  "assets/images/e2e70b5f49c524f6318d4626.jpg",
-                      "sourceLabel":  "MKS Trebic"
+                      "sourceLabel":  "Regionalni kalendar Trebicsko-Moravska Vysocina"
+                  },
+                  {
+                      "title":  "Návrat ztraceného syna",
+                      "genre":  "Ostatni",
+                      "municipality":  "Třebíč",
+                      "venue":  "Národní dům, Třebíč",
+                      "startAt":  "2026-05-10T17:00:00.0000000",
+                      "endAt":  "2026-05-10T19:00:00.0000000",
+                      "dateLabel":  "10.05.2026",
+                      "summary":  "Mládež třebíčských farností srdečně zve na 104. nokturno, které se ponese v duchu muzikálu Návrat ztraceného syna .",
+                      "distanceKm":  0,
+                      "link":  "https://www.kgtrebic.cz/novinky/navrat-ztraceneho-syna/?fbclid=IwY2xjawRK2YFleHRuA2FlbQIxMQBzcnRjBmFwcF9pZAEwAAEe_pwDkHqwdefm_Uf3YLttEr58vObEKmWfbE4IQDz3n65R31iKJ5NMf5u20to_aem_n2XIwPs493RRJUoXXXwbKA",
+                      "detailLink":  "https://www.kgtrebic.cz/novinky/navrat-ztraceneho-syna/?fbclid=IwY2xjawRK2YFleHRuA2FlbQIxMQBzcnRjBmFwcF9pZAEwAAEe_pwDkHqwdefm_Uf3YLttEr58vObEKmWfbE4IQDz3n65R31iKJ5NMf5u20to_aem_n2XIwPs493RRJUoXXXwbKA",
+                      "imageUrl":  "assets/images/a2344c51fcda38a46473d932.jpg",
+                      "sourceLabel":  "Regionalni kalendar Trebicsko-Moravska Vysocina"
                   },
                   {
                       "title":  "SUPER MARIO GALAKTICKÝ FILM",
@@ -534,34 +504,19 @@
                       "sourceLabel":  "MKS Trebic"
                   },
                   {
-                      "title":  "Návrat ztraceného syna",
-                      "genre":  "Ostatni",
-                      "municipality":  "Třebíč",
-                      "venue":  "Galerie Franta (Třebíč)",
-                      "startAt":  "2026-05-10T17:00:00.0000000",
-                      "endAt":  "2026-05-10T23:59:59.0000000",
-                      "dateLabel":  "10.05.2026",
-                      "summary":  "Mládež třebíčských farností srdečně zve na 104. nokturno, které se ponese v duchu muzikálu Návrat ztraceného syna .",
-                      "distanceKm":  0,
-                      "link":  "https://www.unesco-czech.cz/900_727714_navrat-ztraceneho-syna",
-                      "detailLink":  "https://www.unesco-czech.cz/900_727714_navrat-ztraceneho-syna",
-                      "imageUrl":  "assets/images/a2344c51fcda38a46473d932.jpg",
-                      "sourceLabel":  "UNESCO Czech Trebic"
-                  },
-                  {
                       "title":  "Od odsunu ke smíření: Češi a Němci po roce 1945",
                       "genre":  "Prednasky a workshopy",
                       "municipality":  "Třebíč",
-                      "venue":  "Městská knihovna v Třebíči (Třebíč)",
+                      "venue":  "Městská knihovna Třebíč",
                       "startAt":  "2026-05-11T10:00:00.0000000",
-                      "endAt":  "2026-05-11T23:59:59.0000000",
+                      "endAt":  "2026-05-11T12:00:00.0000000",
                       "dateLabel":  "11.05.2026",
                       "summary":  "Předání Pamětních listům posluchačům VU3V – kurz Němci a Češi: Společná cesta dějinami.",
                       "distanceKm":  0,
-                      "link":  "https://www.unesco-czech.cz/900_727716_od-odsunu-ke-smireni-cesi-a-nemci-po-roce-1945",
-                      "detailLink":  "https://www.unesco-czech.cz/900_727716_od-odsunu-ke-smireni-cesi-a-nemci-po-roce-1945",
+                      "link":  "https://www.knihovnatr.cz/cze/kalendar-akci/od-odsunu-ke-sm%C3%AD%C5%99en%C3%AD-a%EF%BF%BDe%C5%A1i-a-na%EF%BF%BDmci-po-roce-1945-doc-ing-phdr-petr-kokaisl-phd-prof-h-c__5430/",
+                      "detailLink":  "https://www.knihovnatr.cz/cze/kalendar-akci/od-odsunu-ke-sm%C3%AD%C5%99en%C3%AD-a%EF%BF%BDe%C5%A1i-a-na%EF%BF%BDmci-po-roce-1945-doc-ing-phdr-petr-kokaisl-phd-prof-h-c__5430/",
                       "imageUrl":  "assets/images/adc4a1f08b88f8e71f941368.png",
-                      "sourceLabel":  "UNESCO Czech Trebic"
+                      "sourceLabel":  "Regionalni kalendar Trebicsko-Moravska Vysocina"
                   },
                   {
                       "title":  "MONIKA ABSOLONOVÁ \u0026 VLASTNÍ BAND",
@@ -576,22 +531,22 @@
                       "link":  "https://www.mkstrebic.cz/koncerty/monika-absolonova-vlastni-band/",
                       "detailLink":  "https://www.mkstrebic.cz/koncerty/monika-absolonova-vlastni-band/",
                       "imageUrl":  "assets/images/6c979daf880569cabf789795.png",
-                      "sourceLabel":  "MKS Trebic"
+                      "sourceLabel":  "Regionalni kalendar Trebicsko-Moravska Vysocina"
                   },
                   {
-                      "title":  "Tajemství starých lahví / výstava a doprovodné přednášky",
+                      "title":  "TAJEMSTVÍ STARÝCH LAHVÍ / Výstava a doprovodné přednášky",
                       "genre":  "Vystavy",
                       "municipality":  "Třebíč",
-                      "venue":  "Městská knihovna v Třebíči (Třebíč)",
+                      "venue":  "Městská knihovna Třebíč",
                       "startAt":  "2026-05-12T16:30:00.0000000",
-                      "endAt":  "2026-05-12T23:59:59.0000000",
+                      "endAt":  "2026-05-12T19:00:00.0000000",
                       "dateLabel":  "12.05.2026",
                       "summary":  "Výstava vznikla ve spolupráci Muzea Vysočiny Třebíč, Státního okresního archivu Třebíč, správce Virtuálního muzea staré Třebíče Zdeňka Pruknera a Městské knihovny v Třebíči. \n\n \n Návštěvníci výstavy zakusí atmosféru zaniklých třebíčských hostinců a náleven, výstava představí prostřednictvím dobových předmětů a archivních dokumentů osudy rodin, které vynikly v oboru výroby oblíbených nápojů. Autoři připomenou také příběhy těch, kteří místní šenky vyhledávali.",
                       "distanceKm":  0,
-                      "link":  "https://www.unesco-czech.cz/900_727727_tajemstvi-starych-lahvi-vystava-a-doprovodne-prednasky",
-                      "detailLink":  "https://www.unesco-czech.cz/900_727727_tajemstvi-starych-lahvi-vystava-a-doprovodne-prednasky",
+                      "link":  "https://www.knihovnatr.cz/cze/kalendar-akci/tajemstv%C3%8D-star%C3%9Dch-lahv%C3%8D-v%C3%BDstava-a-doprovodn%EF%BF%BDs-p%C5%99edn%C3%A1%C5%A1ky__5432/",
+                      "detailLink":  "https://www.knihovnatr.cz/cze/kalendar-akci/tajemstv%C3%8D-star%C3%9Dch-lahv%C3%8D-v%C3%BDstava-a-doprovodn%EF%BF%BDs-p%C5%99edn%C3%A1%C5%A1ky__5432/",
                       "imageUrl":  "assets/images/317a37eb0c4be5b9f7c22852.png",
-                      "sourceLabel":  "UNESCO Czech Trebic"
+                      "sourceLabel":  "Regionalni kalendar Trebicsko-Moravska Vysocina"
                   },
                   {
                       "title":  "LUBOŠ POSPÍŠIL \u0026 5P",
@@ -624,34 +579,19 @@
                       "sourceLabel":  "MKS Trebic"
                   },
                   {
-                      "title":  "Geniální nápad",
-                      "genre":  "Ostatni",
-                      "municipality":  "Třebíč",
-                      "venue":  "Pasáž (Třebíč)",
-                      "startAt":  "2026-05-13T00:00:00.0000000",
-                      "endAt":  "2026-05-13T23:59:59.0000000",
-                      "dateLabel":  "st 13.5.2026 19:00",
-                      "summary":  "Režie: Pavel Šimák Překlad: Petr Christov Kostýmy: Miroslav Král Hrají: Arnaud Martin Pechlát Thomas, Cédric, Jules David Gránský Marion Markéta Děrgelová Catherine Zuzana...",
-                      "distanceKm":  0,
-                      "link":  "https://www.unesco-czech.cz/900_727698_genialni-napad",
-                      "detailLink":  "https://www.unesco-czech.cz/900_727698_genialni-napad",
-                      "imageUrl":  "assets/images/1b9db38714da6ee5cc20f343.jpg",
-                      "sourceLabel":  "UNESCO Czech Trebic"
-                  },
-                  {
                       "title":  "Ujíždíme na kolečkách",
                       "genre":  "Ostatni",
                       "municipality":  "Třebíč",
-                      "venue":  "Dětské dopravní hřiště Třebíč (Třebíč)",
+                      "venue":  "Dětské dopravní hřiště",
                       "startAt":  "2026-05-13T15:00:00.0000000",
-                      "endAt":  "2026-05-13T23:59:59.0000000",
+                      "endAt":  "2026-05-13T17:00:00.0000000",
                       "dateLabel":  "13.05.2026",
                       "summary":  "",
                       "distanceKm":  0,
                       "link":  "https://www.unesco-czech.cz/900_727731_ujizdime-na-koleckach",
                       "detailLink":  "https://www.unesco-czech.cz/900_727731_ujizdime-na-koleckach",
                       "imageUrl":  "assets/images/6207a832e675a44ee7b3b8f5.jpg",
-                      "sourceLabel":  "UNESCO Czech Trebic"
+                      "sourceLabel":  "Regionalni kalendar Trebicsko-Moravska Vysocina"
                   },
                   {
                       "title":  "Divadlo Palace Praha: GENIÁLNÍ NÁPAD",
@@ -666,7 +606,7 @@
                       "link":  "https://www.mkstrebic.cz/divadlo/genialni-napad/",
                       "detailLink":  "https://www.mkstrebic.cz/divadlo/genialni-napad/",
                       "imageUrl":  "assets/images/b1a227635aeb35b10a9217ee.jpg",
-                      "sourceLabel":  "MKS Trebic"
+                      "sourceLabel":  "Regionalni kalendar Trebicsko-Moravska Vysocina"
                   },
                   {
                       "title":  "BÉÉ TEAM NA STOPĚ",
@@ -696,7 +636,7 @@
                       "link":  "https://www.mkstrebic.cz/koncerty/vera-veselkova-klarinet-linda-coganova-klavir/",
                       "detailLink":  "https://www.mkstrebic.cz/koncerty/vera-veselkova-klarinet-linda-coganova-klavir/",
                       "imageUrl":  "assets/images/4cb454acce42110470e15523.jpg",
-                      "sourceLabel":  "MKS Trebic"
+                      "sourceLabel":  "Regionalni kalendar Trebicsko-Moravska Vysocina"
                   },
                   {
                       "title":  "HIGHLANDERZ x BASSÍDKA CREW",
@@ -717,16 +657,16 @@
                       "title":  "Mechové obrázky",
                       "genre":  "Ostatni",
                       "municipality":  "Třebíč",
-                      "venue":  "Dům dětí a mládeže (Třebíč)",
+                      "venue":  "DDM Třebíč",
                       "startAt":  "2026-05-15T16:00:00.0000000",
-                      "endAt":  "2026-05-15T23:59:59.0000000",
+                      "endAt":  "2026-05-15T18:00:00.0000000",
                       "dateLabel":  "15.05.2026",
                       "summary":  "Na akci je třeba se předem nahlásit: \n\n \n klikova@ddmtrebic.cz \n\n \n 604 662 144",
                       "distanceKm":  0,
                       "link":  "https://www.unesco-czech.cz/900_727709_mechove-obrazky",
                       "detailLink":  "https://www.unesco-czech.cz/900_727709_mechove-obrazky",
                       "imageUrl":  "assets/images/3cec1f59a78ee4c72d572ed5.jpg",
-                      "sourceLabel":  "UNESCO Czech Trebic"
+                      "sourceLabel":  "Regionalni kalendar Trebicsko-Moravska Vysocina"
                   }
               ]
 }

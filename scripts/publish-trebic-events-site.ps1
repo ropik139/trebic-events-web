@@ -73,6 +73,10 @@ Ensure-Directory -Path $siteDataPath
 Copy-Item -LiteralPath $reportPath -Destination (Join-Path $siteRoot "index.html") -Force
 $reportAssetsPath = Join-Path (Split-Path -Parent $reportPath) "assets"
 if (Test-Path -LiteralPath $reportAssetsPath) {
+    $siteAssetsPath = Join-Path $siteRoot "assets"
+    if (Test-Path -LiteralPath $siteAssetsPath) {
+        Remove-Item -LiteralPath $siteAssetsPath -Recurse -Force
+    }
     Copy-Item -LiteralPath $reportAssetsPath -Destination $siteRoot -Recurse -Force
 }
 if (Test-Path -LiteralPath $pdfPath) {
