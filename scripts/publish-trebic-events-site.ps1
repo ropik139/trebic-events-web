@@ -71,6 +71,10 @@ Ensure-Directory -Path $siteRoot
 Ensure-Directory -Path $siteDataPath
 
 Copy-Item -LiteralPath $reportPath -Destination (Join-Path $siteRoot "index.html") -Force
+$reportAssetsPath = Join-Path (Split-Path -Parent $reportPath) "assets"
+if (Test-Path -LiteralPath $reportAssetsPath) {
+    Copy-Item -LiteralPath $reportAssetsPath -Destination $siteRoot -Recurse -Force
+}
 if (Test-Path -LiteralPath $pdfPath) {
     Copy-Item -LiteralPath $pdfPath -Destination (Join-Path $siteRoot "trebic-events.pdf") -Force
 }

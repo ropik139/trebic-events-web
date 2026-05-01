@@ -112,6 +112,135 @@ function Resolve-AbsoluteUrl {
     [System.Uri]::new([System.Uri]::new($BaseUrl), $Url).AbsoluteUri
 }
 
+function Get-StableHash {
+    param([string]$Value)
+
+    $sha = [System.Security.Cryptography.SHA256]::Create()
+    try {
+        $bytes = [System.Text.Encoding]::UTF8.GetBytes($Value)
+        ($sha.ComputeHash($bytes) | ForEach-Object { $_.ToString("x2") }) -join ""
+    } finally {
+        $sha.Dispose()
+    }
+}
+
+function Get-ImageExtensionFromUrl {
+    param([string]$Url)
+
+    try {
+        $uri = [System.Uri]$Url
+        $extension = [System.IO.Path]::GetExtension($uri.AbsolutePath).ToLowerInvariant()
+    } catch {
+        return ""
+    }
+
+    if (@(".jpg", ".jpeg", ".png", ".webp", ".gif") -contains $extension) {
+        return $extension
+    }
+
+    ""
+}
+
+function Get-ImageExtensionFromContentType {
+    param([string]$ContentType)
+
+    if ($ContentType -match "image/jpeg") { return ".jpg" }
+    if ($ContentType -match "image/png") { return ".png" }
+    if ($ContentType -match "image/webp") { return ".webp" }
+    if ($ContentType -match "image/gif") { return ".gif" }
+    ""
+}
+
+function Get-EventImageReferer {
+    param([string]$Url)
+
+    if ($Url -match '^https?://www\.czecot\.com/') {
+        return "https://www.unesco-czech.cz/"
+    }
+
+    ""
+}
+
+function Get-LocalEventImageUrl {
+    param(
+        [string]$Url,
+        [string]$AssetDirectory
+    )
+
+    if ([string]::IsNullOrWhiteSpace($Url)) { return "" }
+    if ($Url -match '^(data:|assets/)') { return $Url }
+    if ($Url -notmatch '^https?://') { return $Url }
+
+    Ensure-Directory -Path $AssetDirectory
+
+    $hash = (Get-StableHash -Value $Url).Substring(0, 24)
+    $existing = Get-ChildItem -LiteralPath $AssetDirectory -Filter "$hash.*" -File -ErrorAction SilentlyContinue | Select-Object -First 1
+    if ($null -ne $existing) {
+        return "assets/images/$($existing.Name)"
+    }
+
+    $headers = @{
+        "User-Agent" = "Mozilla/5.0"
+        "Accept"     = "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8"
+    }
+    $referer = Get-EventImageReferer -Url $Url
+    if (-not [string]::IsNullOrWhiteSpace($referer)) {
+        $headers["Referer"] = $referer
+    }
+
+    try {
+        $response = Invoke-WebRequest -Uri $Url -TimeoutSec 20 -MaximumRedirection 5 -UseBasicParsing -Headers $headers
+        $contentType = ($response.Headers["Content-Type"] -join ";")
+        $extension = Get-ImageExtensionFromContentType -ContentType $contentType
+        if ([string]::IsNullOrWhiteSpace($extension)) {
+            $extension = Get-ImageExtensionFromUrl -Url $Url
+        }
+
+        if ([string]::IsNullOrWhiteSpace($extension) -or $null -eq $response.Content -or $response.Content.Length -eq 0) {
+            throw "Obrazek se nepodarilo overit jako obrazkovy soubor."
+        }
+
+        $targetPath = Join-Path $AssetDirectory "$hash$extension"
+        [System.IO.File]::WriteAllBytes($targetPath, [byte[]]$response.Content)
+        "assets/images/$hash$extension"
+    } catch {
+        ""
+    }
+}
+
+function Set-LocalEventImageUrls {
+    param(
+        [object[]]$Items,
+        [string]$AssetDirectory
+    )
+
+    foreach ($item in $Items) {
+        $item.imageUrl = Get-LocalEventImageUrl -Url $item.imageUrl -AssetDirectory $AssetDirectory
+    }
+}
+
+function Remove-UnusedLocalEventImages {
+    param(
+        [object[]]$Items,
+        [string]$AssetDirectory
+    )
+
+    if (-not (Test-Path -LiteralPath $AssetDirectory)) { return }
+
+    $usedNames = @{}
+    foreach ($item in $Items) {
+        if ($item.imageUrl -match '^assets/images/(?<name>[^/]+)$') {
+            $usedNames[$Matches["name"]] = $true
+        }
+    }
+
+    Get-ChildItem -LiteralPath $AssetDirectory -File | Where-Object {
+        -not $usedNames.ContainsKey($_.Name)
+    } | ForEach-Object {
+        Remove-Item -LiteralPath $_.FullName -Force
+    }
+}
+
 function Get-FirstMatchValue {
     param(
         [string]$Text,
@@ -1405,7 +1534,8 @@ function Convert-ItemsToHtml {
   <text x='92' y='392' fill='rgba(255,255,255,.84)' font-family='Segoe UI, Arial, sans-serif' font-size='34' font-weight='600'>kulturn&#237; p&#345;ehled m&#283;sta a okol&#237;</text>
 </svg>
 "@
-    $defaultImageUrl = "data:image/svg+xml;charset=UTF-8,$([System.Uri]::EscapeDataString($defaultImageSvg))"
+    $defaultImagePayload = [System.Uri]::EscapeDataString($defaultImageSvg) -replace "'", "%27"
+    $defaultImageUrl = "data:image/svg+xml;charset=UTF-8,$defaultImagePayload"
 
     $css = @"
 :root{--bg:#f7f2e9;--card:#fffdfa;--ink:#1d2a34;--muted:#66727f;--accent:#0d7a70;--accent-2:#d55a1f;--line:#eadfce;--hero-a:#0d7a70;--hero-b:#cf5a22}
@@ -1494,7 +1624,7 @@ body{margin:0;font-family:'Segoe UI',Arial,sans-serif;color:var(--ink);backgroun
                 }
                 $imageSource = if ([string]::IsNullOrWhiteSpace($_.imageUrl)) { $defaultImageUrl } else { $_.imageUrl }
                 $imageAlt = if ([string]::IsNullOrWhiteSpace($_.imageUrl)) { "Akce v T&#345;eb&#237;&#269;i" } else { [System.Net.WebUtility]::HtmlEncode($_.title) }
-                $image = "<img class='thumb' src='$([System.Net.WebUtility]::HtmlEncode($imageSource))' alt='$imageAlt' onerror=`"this.onerror=null;this.src='$([System.Net.WebUtility]::HtmlEncode($defaultImageUrl))';this.alt='Akce v T&#345;eb&#237;&#269;i';`">"
+                $image = "<img class='thumb' src='$([System.Net.WebUtility]::HtmlEncode($imageSource))' alt='$imageAlt' referrerpolicy='no-referrer' onerror=`"this.onerror=null;this.src='$([System.Net.WebUtility]::HtmlEncode($defaultImageUrl))';this.alt='Akce v T&#345;eb&#237;&#269;i';`">"
                 $distanceDetail = if ([double]$_.distanceKm -gt 0.04) { "<div class='detail'><strong>Vzd&#225;lenost:</strong> $([System.Net.WebUtility]::HtmlEncode(('{0:N1} km' -f $_.distanceKm)))</div>" } else { "" }
                 $preferredLink = Get-PreferredEventLink -Candidates @($_.link, $_.detailLink)
                 "<article class='card'>$image<div class='date'>$([System.Net.WebUtility]::HtmlEncode($_.startText))</div><h3>$([System.Net.WebUtility]::HtmlEncode($_.title))</h3><div class='detail'><strong>M&#237;sto:</strong> $([System.Net.WebUtility]::HtmlEncode($_.venue))</div><div class='detail'><strong>Obec:</strong> $([System.Net.WebUtility]::HtmlEncode($_.municipality))</div>$distanceDetail<div class='detail'><strong>Term&#237;n:</strong> $([System.Net.WebUtility]::HtmlEncode($_.dateLabel))</div>$summary<div class='links'><a class='btn' href='$([System.Net.WebUtility]::HtmlEncode($preferredLink))' target='_blank' rel='noreferrer'>Otev&#345;&#237;t detail</a></div></article>"
@@ -1704,6 +1834,9 @@ foreach ($item in $sortedMergedItems) {
 }
 
 $finalItems = [System.Collections.Generic.List[object]]([object[]]((Remove-AggregateEventItems -Items ([object[]]$finalItems)) | Sort-Object sortAt, endAt, title))
+$imageAssetDirectory = Join-Path (Split-Path -Parent $reportPath) "assets\images"
+Set-LocalEventImageUrls -Items ([object[]]$finalItems) -AssetDirectory $imageAssetDirectory
+Remove-UnusedLocalEventImages -Items ([object[]]$finalItems) -AssetDirectory $imageAssetDirectory
 $generatedAtText = $now.ToString("d. M. yyyy HH:mm")
 $sourceLabels = [object[]]($config.sources | ForEach-Object { [string]$_.label })
 $reportHtml = Convert-ItemsToHtml -Items $finalItems -GeneratedAtText $generatedAtText -HorizonDays ([int]$config.horizonDays) -RadiusKm ([double]$config.radiusKm) -SourceLabels $sourceLabels -Now $now
