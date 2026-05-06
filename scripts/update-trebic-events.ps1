@@ -393,6 +393,14 @@ function Get-EventDedupeTitleKey {
         return 'ticho v koute'
     }
 
+    if ($key -match '\bmodrotisk') {
+        return 'workshop modrotisku'
+    }
+
+    if ($key -match '\bfluorit\b') {
+        return 'fluorit'
+    }
+
     $key
 }
 
@@ -403,6 +411,21 @@ function Get-EventDedupeKey {
     )
 
     "$($StartAt.ToString("yyyy-MM-dd"))|$(Get-EventDedupeTitleKey -Title $Title)"
+}
+
+function Get-EventSeriesDedupeKey {
+    param([object]$Item)
+
+    if ($null -eq $Item) { return "" }
+    $titleKey = Get-EventDedupeTitleKey -Title $Item.title
+    if ([string]::IsNullOrWhiteSpace($titleKey)) { return "" }
+
+    $durationDays = (New-TimeSpan -Start ([datetime]$Item.startAt).Date -End ([datetime]$Item.endAt).Date).TotalDays
+    if ($durationDays -ge 14) {
+        return "series|$titleKey"
+    }
+
+    ""
 }
 
 function Get-GenreDisplayHtml {
@@ -1415,6 +1438,12 @@ function Get-EventQualityScore {
 
     if (-not [string]::IsNullOrWhiteSpace($Item.imageUrl)) { $score += 1 }
 
+    $titleKey = Get-EventDedupeTitleKey -Title $Item.title
+    $durationDays = (New-TimeSpan -Start ([datetime]$Item.startAt).Date -End ([datetime]$Item.endAt).Date).TotalDays
+    if ($durationDays -ge 14 -and $titleKey -match 'workshop|modrotisk') {
+        $score -= 3
+    }
+
     $score
 }
 
@@ -1473,6 +1502,74 @@ function Remove-AggregateEventItems {
     $itemList = [object[]]$Items
     @($itemList | Where-Object {
         -not (Test-IsMunicipalAggregateItem -Item $_ -AllItems $itemList)
+    })
+}
+
+function Merge-LongRunningSeriesItems {
+    param([object[]]$Items)
+
+    $itemList = [object[]]$Items
+    $map = @{}
+    $result = New-Object System.Collections.Generic.List[object]
+
+    foreach ($item in $itemList) {
+        $seriesKey = Get-EventSeriesDedupeKey -Item $item
+        if ([string]::IsNullOrWhiteSpace($seriesKey)) {
+            $result.Add($item)
+            continue
+        }
+
+        if (-not $map.ContainsKey($seriesKey)) {
+            $map[$seriesKey] = $item
+            continue
+        }
+
+        $existing = $map[$seriesKey]
+        if ((Get-EventQualityScore -Item $item) -gt (Get-EventQualityScore -Item $existing)) {
+            $map[$seriesKey] = $item
+        }
+    }
+
+    foreach ($item in $map.Values) {
+        $result.Add($item)
+    }
+
+    @($result.ToArray())
+}
+
+function Test-IsCoveredByTimedItem {
+    param(
+        [object]$Item,
+        [object[]]$AllItems
+    )
+
+    if ($Item.startAt.TimeOfDay.TotalMinutes -gt 0) { return $false }
+
+    $itemTitleKey = Get-EventDedupeTitleKey -Title $Item.title
+    if ([string]::IsNullOrWhiteSpace($itemTitleKey)) { return $false }
+
+    foreach ($candidate in $AllItems) {
+        if ([object]::ReferenceEquals($candidate, $Item)) { continue }
+        if ((Get-EventDedupeTitleKey -Title $candidate.title) -ne $itemTitleKey) { continue }
+        $candidateHasConcreteTimeOrDetail = $candidate.startAt.TimeOfDay.TotalMinutes -gt 0 -or ($itemTitleKey -match 'workshop|modrotisk' -and (Get-EventQualityScore -Item $candidate) -gt (Get-EventQualityScore -Item $Item))
+        if (-not $candidateHasConcreteTimeOrDetail) { continue }
+        $itemStartDate = ([datetime]$Item.startAt).Date
+        $itemEndDate = ([datetime]$Item.endAt).Date
+        $candidateStartDate = ([datetime]$candidate.startAt).Date
+        if ($itemStartDate -le $candidateStartDate -and $candidateStartDate -le $itemEndDate) {
+            return $true
+        }
+    }
+
+    $false
+}
+
+function Remove-DateRangeItemsCoveredByTimedItems {
+    param([object[]]$Items)
+
+    $itemList = [object[]]$Items
+    @($itemList | Where-Object {
+        -not (Test-IsCoveredByTimedItem -Item $_ -AllItems $itemList)
     })
 }
 
@@ -1890,7 +1987,7 @@ foreach ($item in $sortedMergedItems) {
     })
 }
 
-$finalItems = [System.Collections.Generic.List[object]]([object[]]((Remove-AggregateEventItems -Items ([object[]]$finalItems)) | Sort-Object sortAt, endAt, title))
+$finalItems = [System.Collections.Generic.List[object]]([object[]]((Remove-DateRangeItemsCoveredByTimedItems -Items (Merge-LongRunningSeriesItems -Items (Remove-AggregateEventItems -Items ([object[]]$finalItems)))) | Sort-Object sortAt, endAt, title))
 $imageAssetDirectory = Join-Path (Split-Path -Parent $reportPath) "assets\images"
 Set-LocalEventImageUrls -Items ([object[]]$finalItems) -AssetDirectory $imageAssetDirectory
 Remove-UnusedLocalEventImages -Items ([object[]]$finalItems) -AssetDirectory $imageAssetDirectory

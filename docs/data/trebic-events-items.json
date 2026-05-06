@@ -1,5 +1,5 @@
 ﻿{
-    "generatedAt":  "2026-05-06T18:35:52.8673117",
+    "generatedAt":  "2026-05-06T19:41:13.4111036",
     "center":  {
                    "name":  "Trebic",
                    "latitude":  49.2151907,
@@ -8,21 +8,6 @@
     "radiusKm":  10,
     "horizonDays":  14,
     "items":  [
-                  {
-                      "title":  "Ostře sledované vlaky",
-                      "genre":  "Divadlo",
-                      "municipality":  "Třebíč",
-                      "venue":  "Pasáž (Třebíč)",
-                      "startAt":  "2026-05-06T00:00:00.0000000",
-                      "endAt":  "2026-05-06T23:59:59.0000000",
-                      "dateLabel":  "st 6.5.2026 19:00",
-                      "summary":  "Dramatizace novely Bohumila Hrabala, kterou proslavil oscarový film Jiřího Menzela. Tragikomedie tělesného a lidského dospívání Miloše Hrmy na malém středočeském...",
-                      "distanceKm":  0,
-                      "link":  "https://www.unesco-czech.cz/900_727699_ostre-sledovane-vlaky",
-                      "detailLink":  "https://www.unesco-czech.cz/900_727699_ostre-sledovane-vlaky",
-                      "imageUrl":  "assets/images/68dd3a7235408df50844cc54.jpg",
-                      "sourceLabel":  "UNESCO Czech Trebic"
-                  },
                   {
                       "title":  "Ticho v koutě",
                       "genre":  "Prednasky a workshopy",
@@ -51,21 +36,6 @@
                       "link":  "https://www.trebic.cz/assets/File.ashx?id_org=16973\u0026amp;id_dokumenty=74212",
                       "detailLink":  "https://www.trebic.cz/kam%2Dv%2Dtrebici%2Dv%2Dnasledujicich%2Ddnech/d-74192",
                       "imageUrl":  "assets/images/c39c28f27ee04916d523bcff.jpg",
-                      "sourceLabel":  "Mesto Trebic - Aktuality"
-                  },
-                  {
-                      "title":  "Jarní workshopy modrotisku",
-                      "genre":  "Prednasky a workshopy",
-                      "municipality":  "Trebic",
-                      "venue":  "Trebic",
-                      "startAt":  "2026-02-23T00:00:00.0000000",
-                      "endAt":  "2026-05-19T23:59:59.0000000",
-                      "dateLabel":  "23.2.-19.5.",
-                      "summary":  "",
-                      "distanceKm":  0,
-                      "link":  "https://www.trebic.cz/kam%2Dv%2Dtrebici%2Dv%2Dnasledujicich%2Ddnech/d-72937",
-                      "detailLink":  "https://www.trebic.cz/kam%2Dv%2Dtrebici%2Dv%2Dnasledujicich%2Ddnech/d-72937",
-                      "imageUrl":  "assets/images/d3bb90751a367999025b0e25.jpg",
                       "sourceLabel":  "Mesto Trebic - Aktuality"
                   },
                   {
@@ -159,21 +129,6 @@
                       "sourceLabel":  "Mesto Trebic - Aktuality"
                   },
                   {
-                      "title":  "Fluorit",
-                      "genre":  "Ostatni",
-                      "municipality":  "Trebic",
-                      "venue":  "Trebic",
-                      "startAt":  "2026-05-01T00:00:00.0000000",
-                      "endAt":  "2026-06-28T23:59:59.0000000",
-                      "dateLabel":  "1.5.-28.6.",
-                      "summary":  "",
-                      "distanceKm":  0,
-                      "link":  "https://www.trebic.cz/assets/File.ashx?id_org=16973\u0026amp;id_dokumenty=74090",
-                      "detailLink":  "https://www.trebic.cz/kam%2Dv%2Dtrebici%2Dv%2Dnasledujicich%2Ddnech/d-74081",
-                      "imageUrl":  "assets/images/a6402f2198147f6bcc17e756.jpg",
-                      "sourceLabel":  "Mesto Trebic - Aktuality"
-                  },
-                  {
                       "title":  "Fluorit čili kaziwec",
                       "genre":  "Ostatni",
                       "municipality":  "Třebíč",
@@ -183,7 +138,7 @@
                       "dateLabel":  "Od: 01.05.2026 Do: 28.06.2026",
                       "summary":  "",
                       "distanceKm":  0,
-                      "link":  "http://browsehappy.com/",
+                      "link":  "https://www.trebiclive.cz/akce/13749-fluorit-cili-kaziwec/",
                       "detailLink":  "https://www.trebiclive.cz/akce/13749-fluorit-cili-kaziwec/",
                       "imageUrl":  "assets/images/60097265b53ba0e083fd6c36.jpg",
                       "sourceLabel":  "TrebicLive.cz"
@@ -741,21 +696,6 @@
                       "link":  "https://www.unesco-czech.cz/900_727710_miroslav-donutil-na-kus-reci",
                       "detailLink":  "https://www.unesco-czech.cz/900_727710_miroslav-donutil-na-kus-reci",
                       "imageUrl":  "assets/images/e78e7cfd094586291967345a.jpg",
-                      "sourceLabel":  "UNESCO Czech Trebic"
-                  },
-                  {
-                      "title":  "Workshop modrotisku",
-                      "genre":  "Prednasky a workshopy",
-                      "municipality":  "Třebíč",
-                      "venue":  "Centrum tradiční lidové kultury (Třebíč)",
-                      "startAt":  "2026-05-19T00:00:00.0000000",
-                      "endAt":  "2026-05-19T23:59:59.0000000",
-                      "dateLabel":  "út 19.5.2026 17:00 - 19.5.2026",
-                      "summary":  "Zveme vás do Centra tradiční lidové kultury v Třebíči na modrotiskový workshop, kde si s pomocí tzv. tiskařské reservy (popu) vytvoříte rozmanitými výtvarnými...",
-                      "distanceKm":  0,
-                      "link":  "https://www.unesco-czech.cz/900_727735_workshop-modrotisku",
-                      "detailLink":  "https://www.unesco-czech.cz/900_727735_workshop-modrotisku",
-                      "imageUrl":  "assets/images/1bf09c19055391589b6e1641.jpg",
                       "sourceLabel":  "UNESCO Czech Trebic"
                   }
               ]
