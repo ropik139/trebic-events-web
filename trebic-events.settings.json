@@ -28,6 +28,20 @@
       "url": "https://www.mkstrebic.cz/divadlo/"
     },
     {
+      "key": "mks_mesicni_prehledy",
+      "label": "MKS Trebic",
+      "type": "mks_category",
+      "genre": "Mesicni prehledy",
+      "url": "https://www.mkstrebic.cz/mesicni-prehledy/"
+    },
+    {
+      "key": "mks_info_pro_abonenty",
+      "label": "MKS Trebic",
+      "type": "mks_category",
+      "genre": "Info pro abonenty",
+      "url": "https://www.mkstrebic.cz/info-pro-abonenty/"
+    },
+    {
       "key": "mks_koncerty",
       "label": "MKS Trebic",
       "type": "mks_category",
@@ -52,22 +66,50 @@
       "key": "mks_deti",
       "label": "MKS Trebic",
       "type": "mks_category",
-      "genre": "Pro deti",
+      "genre": "Porady pro deti a mladez",
       "url": "https://www.mkstrebic.cz/porady-pro-deti-a-mladez/"
     },
     {
       "key": "mks_pronajmy",
       "label": "MKS Trebic",
       "type": "mks_category",
-      "genre": "",
-      "url": "https://www.mkstrebic.cz/pronajmy/"
+      "genre": "Akce jinych poradatelu",
+      "url": "https://www.mkstrebic.cz/akce-jinych-poradatelu/"
     },
     {
       "key": "mks_zabava",
       "label": "MKS Trebic",
       "type": "mks_category",
-      "genre": "Zabava a talk show",
+      "genre": "Zabavne porady",
       "url": "https://www.mkstrebic.cz/zabavne-porady/"
+    },
+    {
+      "key": "mks_klub_senioru",
+      "label": "MKS Trebic",
+      "type": "mks_category",
+      "genre": "Klub senioru",
+      "url": "https://www.mkstrebic.cz/klub-senioru/"
+    },
+    {
+      "key": "mks_trebicske_kulturni_leto",
+      "label": "MKS Trebic",
+      "type": "mks_category",
+      "genre": "Trebicske kulturni leto",
+      "url": "https://www.mkstrebic.cz/trebicske-kulturni-leto/"
+    },
+    {
+      "key": "mks_expozice_franta",
+      "label": "MKS Trebic",
+      "type": "mks_category",
+      "genre": "Expozice Franta",
+      "url": "https://www.mkstrebic.cz/expozice-franta/"
+    },
+    {
+      "key": "mks_jarmarky",
+      "label": "MKS Trebic",
+      "type": "mks_category",
+      "genre": "Jarmarky",
+      "url": "https://www.mkstrebic.cz/jarmarky/"
     },
     {
       "key": "mks_ostatni",

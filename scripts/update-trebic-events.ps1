@@ -5,6 +5,7 @@ param(
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
+$script:FailedSourceUrls = @{}
 
 function Resolve-ProjectPath {
     param([string]$Path)
@@ -72,7 +73,13 @@ function Write-JsonFile {
 
 function Get-StringContent {
     param([string]$Url)
-    (Invoke-WebRequest -UseBasicParsing -Headers @{ "User-Agent" = "CodexTrebicEvents/1.0" } -Uri $Url).Content
+    try {
+        (Invoke-WebRequest -UseBasicParsing -Headers @{ "User-Agent" = "CodexTrebicEvents/1.0" } -Uri $Url).Content
+    } catch {
+        $script:FailedSourceUrls[$Url] = $true
+        Write-Warning "Nepodarilo se nacist zdroj '$Url': $($_.Exception.Message)"
+        ""
+    }
 }
 
 function Decode-Html {
@@ -432,14 +439,24 @@ function Get-GenreDisplayHtml {
     param([string]$Genre)
 
     switch ($Genre) {
+        "Mesicni prehledy" { return "M&#283;s&#237;&#269;n&#237; p&#345;ehledy" }
         "Divadlo" { return "Divadlo" }
+        "Info pro abonenty" { return "Info pro abonenty" }
         "Koncerty" { return "Koncerty" }
+        "Zabavne porady" { return "Z&#225;bavn&#233; po&#345;ady" }
+        "Porady pro deti a mladez" { return "Po&#345;ady pro d&#283;ti a ml&#225;de&#382;" }
         "Vystavy" { return "V&#253;stavy" }
+        "Klub senioru" { return "Klub senior&#367;" }
         "Kino" { return "Kino" }
-        "Pro deti" { return "Pro d&#283;ti" }
+        "Pro deti" { return "Po&#345;ady pro d&#283;ti a ml&#225;de&#382;" }
         "Prednasky a workshopy" { return "P&#345;edn&#225;&#353;ky a workshopy" }
         "Festivaly a slavnosti" { return "Festivaly a slavnosti" }
-        "Zabava a talk show" { return "Z&#225;bava a talk show" }
+        "Zabava a talk show" { return "Z&#225;bavn&#233; po&#345;ady" }
+        "Akce jinych poradatelu" { return "Akce jin&#253;ch po&#345;adatel&#367;" }
+        "Trebicske kulturni leto" { return "T&#345;eb&#237;&#269;sk&#233; kulturn&#237; l&#233;to" }
+        "Expozice Franta" { return "EXPOZICE FRANTA" }
+        "Jarmarky" { return "JARMARKY" }
+        "Ostatni" { return "Ostatn&#237;" }
         "Ostatni kultura" { return "Ostatn&#237; kultura" }
         default { return "Ostatn&#237;" }
     }
@@ -459,6 +476,33 @@ function Get-GenreSlug {
     }
 
     $slug
+}
+
+function Get-GenreSortOrder {
+    param([string]$Genre)
+
+    switch ($Genre) {
+        "Mesicni prehledy" { return 10 }
+        "Divadlo" { return 20 }
+        "Info pro abonenty" { return 30 }
+        "Koncerty" { return 40 }
+        "Zabavne porady" { return 50 }
+        "Zabava a talk show" { return 50 }
+        "Porady pro deti a mladez" { return 60 }
+        "Pro deti" { return 60 }
+        "Vystavy" { return 70 }
+        "Klub senioru" { return 80 }
+        "Ostatni" { return 90 }
+        "Ostatni kultura" { return 90 }
+        "Akce jinych poradatelu" { return 100 }
+        "Trebicske kulturni leto" { return 110 }
+        "Expozice Franta" { return 120 }
+        "Jarmarky" { return 130 }
+        "Prednasky a workshopy" { return 140 }
+        "Festivaly a slavnosti" { return 150 }
+        "Kino" { return 160 }
+        default { return 900 }
+    }
 }
 
 function Parse-CzechDateText {
@@ -615,8 +659,18 @@ function Get-GenreFromText {
     $venueKey = Get-NormalizedPlaceKey -Value $Venue
     $linkKey = Get-NormalizedPlaceKey -Value $Link
 
+    if ($linkKey -match 'mesicni prehledy') { return 'Mesicni prehledy' }
+    if ($linkKey -match 'info pro abonenty') { return 'Info pro abonenty' }
+    if ($linkKey -match 'porady pro deti a mladez') { return 'Porady pro deti a mladez' }
+    if ($linkKey -match 'zabavne porady') { return 'Zabavne porady' }
+    if ($linkKey -match 'klub senioru') { return 'Klub senioru' }
+    if ($linkKey -match 'akce jinych poradatel') { return 'Akce jinych poradatelu' }
+    if ($linkKey -match 'trebicske kulturni leto') { return 'Trebicske kulturni leto' }
+    if ($linkKey -match 'expozice franta') { return 'Expozice Franta' }
+    if ($linkKey -match 'jarmark') { return 'Jarmarky' }
+
     if ($venueKey -match 'hvezdarna|planetarium') {
-        if ($haystack -match 'deti|rodin|animov') { return 'Pro deti' }
+        if ($haystack -match 'deti|rodin|animov') { return 'Porady pro deti a mladez' }
         if ($haystack -match 'prednask|prednasek|seminar|workshop|diln|kurz|beseda') { return 'Prednasky a workshopy' }
         return 'Ostatni'
     }
@@ -630,10 +684,12 @@ function Get-GenreFromText {
         @{ Pattern = 'divad|predstaveni|komedie'; Genre = 'Divadlo' },
         @{ Pattern = 'vystav|expozic|galeri|vernisaz|dernisaz'; Genre = 'Vystavy' },
         @{ Pattern = 'kino|projekce|promit'; Genre = 'Kino' },
-        @{ Pattern = 'deti|rodin|loutk|pohad'; Genre = 'Pro deti' },
+        @{ Pattern = 'deti|rodin|loutk|pohad'; Genre = 'Porady pro deti a mladez' },
         @{ Pattern = 'prednask|prednasek|seminar|workshop|diln|kurz|beseda'; Genre = 'Prednasky a workshopy' },
-        @{ Pattern = 'festival|slavnost|jarmark|food|trh'; Genre = 'Festivaly a slavnosti' },
-        @{ Pattern = 'show|stand up|talk|zabav'; Genre = 'Zabava a talk show' }
+        @{ Pattern = 'jarmark'; Genre = 'Jarmarky' },
+        @{ Pattern = 'festival|slavnost|food|trh'; Genre = 'Festivaly a slavnosti' },
+        @{ Pattern = 'show|stand up|talk|zabav|bavic|vypravec'; Genre = 'Zabavne porady' },
+        @{ Pattern = 'senior'; Genre = 'Klub senioru' }
     )
 
     foreach ($rule in $rules) {
@@ -788,6 +844,98 @@ function Get-MksCategoryItems {
     $items
 }
 
+function Get-UnescoDetailMetadata {
+    param([string]$Url)
+
+    $metadata = @{
+        type        = ""
+        dateText    = ""
+        externalUrl = ""
+    }
+
+    try {
+        $html = Get-StringContent -Url $Url
+    } catch {
+        return [pscustomobject]$metadata
+    }
+
+    $rowPattern = '<tr>\s*<th>(?<name>.*?)</th>\s*<td>(?<value>.*?)</td>\s*</tr>'
+    foreach ($row in [regex]::Matches($html, $rowPattern, [Text.RegularExpressions.RegexOptions]::Singleline)) {
+        $name = Get-NormalizedPlaceKey -Value $row.Groups["name"].Value
+        $valueHtml = $row.Groups["value"].Value
+        $valueText = Convert-HtmlFragmentToText -Html $valueHtml
+
+        switch ($name) {
+            "typ" { $metadata.type = $valueText }
+            "datum a cas konani" { $metadata.dateText = $valueText }
+            "url" {
+                $hrefMatch = [regex]::Match($valueHtml, 'href="(?<href>[^"]+)"', [Text.RegularExpressions.RegexOptions]::Singleline)
+                $metadata.externalUrl = if ($hrefMatch.Success) { [System.Net.WebUtility]::HtmlDecode($hrefMatch.Groups["href"].Value) } else { $valueText }
+            }
+        }
+    }
+
+    [pscustomobject]$metadata
+}
+
+function Get-MksGenreFromMetadata {
+    param(
+        [string]$Type,
+        [string]$ExternalUrl,
+        [string]$Title,
+        [string]$Summary,
+        [string]$Venue
+    )
+
+    $metadataText = Get-NormalizedPlaceKey -Value ("$Type $ExternalUrl $Title $Summary")
+
+    if ($metadataText -match 'talk show|one man|bavic|vypravec|zabavne porady') { return 'Zabavne porady' }
+    if ($metadataText -match 'porady pro deti a mladez|pohadka|loutk|deti') { return 'Porady pro deti a mladez' }
+    if ($metadataText -match 'divadlo|cinohra') { return 'Divadlo' }
+    if ($metadataText -match 'koncert|hudba|recital') { return 'Koncerty' }
+    if ($metadataText -match 'vystav|expozic|galeri') { return 'Vystavy' }
+    if ($metadataText -match 'jarmark') { return 'Jarmarky' }
+    if ($metadataText -match 'senior') { return 'Klub senioru' }
+
+    Get-GenreFromText -Title $Title -Keywords $Type -ShortCode "" -Summary $Summary -DeclaredGenre "" -Venue $Venue -Link $ExternalUrl
+}
+
+function Get-MksSectionPathFromGenre {
+    param([string]$Genre)
+
+    switch ($Genre) {
+        "Divadlo" { return "divadlo" }
+        "Koncerty" { return "koncerty" }
+        "Vystavy" { return "vystavy" }
+        "Porady pro deti a mladez" { return "porady-pro-deti-a-mladez" }
+        "Zabavne porady" { return "zabavne-porady" }
+        "Klub senioru" { return "klub-senioru" }
+        "Akce jinych poradatelu" { return "akce-jinych-poradatelu" }
+        "Trebicske kulturni leto" { return "trebicske-kulturni-leto" }
+        "Expozice Franta" { return "expozice-franta" }
+        "Jarmarky" { return "jarmarky" }
+        "Ostatni kultura" { return "ostatni" }
+        default { return "" }
+    }
+}
+
+function Get-MksDetailUrlFromMetadata {
+    param(
+        [string]$ExternalUrl,
+        [string]$Genre
+    )
+
+    if ($ExternalUrl -match '^https?://www\.mkstrebic\.cz/') { return $ExternalUrl }
+    if ($ExternalUrl -match '^https?://kalendar\.visittrebic\.eu/kalendar/(?<slug>[^/?#]+)/?') {
+        $section = Get-MksSectionPathFromGenre -Genre $Genre
+        if (-not [string]::IsNullOrWhiteSpace($section)) {
+            return "https://www.mkstrebic.cz/$section/$($Matches["slug"])/"
+        }
+    }
+
+    $ExternalUrl
+}
+
 function Get-UnescoItems {
     param(
         [string]$SourceKey,
@@ -803,7 +951,7 @@ function Get-UnescoItems {
     foreach ($match in $matches) {
         $dateText = Normalize-Whitespace -Value $match.Groups["date"].Value
         if ($dateText -match '(?<start>\d{1,2}\.\d{1,2}\.\d{4}(?:\s+\d{1,2}:\d{2})?).*?-\s*(?<end>\d{1,2}\.\d{1,2}\.\d{4})') {
-            $range = Parse-DateRange -Value ("{0} - {1}" -f $matches["start"], $matches["end"]) -StartTimeText "" -EndTimeText ""
+            $range = Parse-DateRange -Value ("{0} - {1}" -f $Matches["start"], $Matches["end"]) -StartTimeText "" -EndTimeText ""
         } else {
             $cleanDate = ($dateText -replace '^[^\d]+', '')
             $range = Parse-DateRange -Value $cleanDate -StartTimeText "" -EndTimeText ""
@@ -816,11 +964,29 @@ function Get-UnescoItems {
         $title = Normalize-Whitespace -Value $match.Groups["title"].Value
         $summary = Normalize-Whitespace -Value $match.Groups["summary"].Value
         $detailUrl = Resolve-AbsoluteUrl -Url $match.Groups["href"].Value -BaseUrl $Url
+        $detailMetadata = Get-UnescoDetailMetadata -Url $detailUrl
+        $detailDateText = Normalize-Whitespace -Value $detailMetadata.dateText
+        if ($detailDateText -match '(?<time>\d{1,2}:\d{2})') {
+            $timeText = $Matches["time"]
+            $dateOnlyText = ($detailDateText -replace '\d{1,2}:\d{2}', '').Trim()
+            $detailRange = Parse-DateRange -Value (($dateOnlyText -replace '^[^\d]+', '').Trim()) -StartTimeText $timeText -EndTimeText ""
+            if ($null -ne $detailRange) {
+                $range = $detailRange
+                $dateText = $detailDateText
+            }
+        }
+
+        $genre = Get-MksGenreFromMetadata -Type $detailMetadata.type -ExternalUrl $detailMetadata.externalUrl -Title $title -Summary $summary -Venue $placeText
+        $preferredLink = Get-MksDetailUrlFromMetadata -ExternalUrl $detailMetadata.externalUrl -Genre $genre
+        if ([string]::IsNullOrWhiteSpace($preferredLink)) {
+            $preferredLink = $detailUrl
+        }
+
         $items.Add([pscustomobject]@{
             sourceKey    = $SourceKey
             sourceLabel  = $SourceLabel
             title        = $title
-            genre        = Get-GenreFromText -Title $title -Keywords "" -ShortCode "" -Summary $summary -DeclaredGenre "" -Venue $placeText -Link $detailUrl
+            genre        = $genre
             municipality = $municipality
             venue        = $placeText
             startAt      = $range.startAt
@@ -830,9 +996,9 @@ function Get-UnescoItems {
             dateLabel    = $dateText
             timeLabel    = ""
             summary      = $summary
-            keywords     = ""
-            link         = $detailUrl
-            detailLink   = $detailUrl
+            keywords     = $detailMetadata.type
+            link         = $preferredLink
+            detailLink   = $preferredLink
             imageUrl     = Resolve-AbsoluteUrl -Url $match.Groups["image"].Value -BaseUrl $Url
             dedupeKey    = Get-EventDedupeKey -StartAt $range.startAt -Title $title
         })
@@ -1005,8 +1171,8 @@ function Get-TrebicLiveGenre {
         'kino' { return 'Kino' }
         'koncerty|vystoupeni' { return 'Koncerty' }
         'prednasky|workshop' { return 'Prednasky a workshopy' }
-        'pro rodiny a deti' { return 'Pro deti' }
-        'plesy|zabavy|kluby a disco' { return 'Zabava a talk show' }
+        'pro rodiny a deti' { return 'Porady pro deti a mladez' }
+        'plesy|zabavy|kluby a disco' { return 'Zabavne porady' }
         'vystavy' { return 'Vystavy' }
         'sport' { return 'Ostatni' }
         'seniori' { return 'Ostatni' }
@@ -1734,7 +1900,7 @@ body{margin:0;font-family:'Segoe UI',Arial,sans-serif;color:var(--ink);backgroun
 "@
 
     $itemList = [object[]]$Items
-    $genreGroups = @($itemList | Group-Object genre | Sort-Object Name)
+    $genreGroups = @($itemList | Group-Object genre | Sort-Object @{ Expression = { Get-GenreSortOrder -Genre $_.Name } }, Name)
     $nextItemsHtml = if ($itemList.Count -gt 0) {
         $nearestItems = $itemList | Where-Object { $_.startAt -ge $Now } | Sort-Object startAt, endAt, title | Select-Object -First 10
         $rows = ($nearestItems | ForEach-Object {
@@ -1880,6 +2046,12 @@ $reportPath = Resolve-PathFromBase -BasePath $configDirectory -RelativePath $con
 $itemsPath = Resolve-PathFromBase -BasePath $configDirectory -RelativePath $config.output.itemsPath
 $runLogPath = Resolve-PathFromBase -BasePath $configDirectory -RelativePath $config.output.runLogPath
 $locationCachePath = Resolve-PathFromBase -BasePath $configDirectory -RelativePath $config.output.locationCachePath
+$previousItemsPayload = Read-JsonFile -Path $itemsPath
+$previousPublishedItems = if ($null -ne $previousItemsPayload -and $null -ne $previousItemsPayload.items) {
+    [object[]]$previousItemsPayload.items
+} else {
+    @()
+}
 
 $knownPlaceMap = @{}
 foreach ($property in $config.knownPlaces.PSObject.Properties) {
@@ -1985,6 +2157,83 @@ foreach ($item in $sortedMergedItems) {
         sortAt       = $sortAt
         dedupeKey    = $item.dedupeKey
     })
+}
+
+if ($script:FailedSourceUrls.Count -gt 0 -and $previousPublishedItems.Count -gt 0) {
+    $currentKeys = @{}
+    foreach ($item in [object[]]$finalItems) {
+        if (-not [string]::IsNullOrWhiteSpace($item.dedupeKey)) {
+            $currentKeys[$item.dedupeKey] = $true
+        }
+    }
+
+    $restoredCount = 0
+    foreach ($cachedItem in $previousPublishedItems) {
+        if ($null -eq $cachedItem) { continue }
+        $cachedStartAt = [datetime]$cachedItem.startAt
+        $cachedEndAt = [datetime]$cachedItem.endAt
+        if ($cachedEndAt -lt $now -or $cachedStartAt -gt $windowEnd) { continue }
+
+        $cachedGenre = $cachedItem.genre
+        $cachedDateLabel = $cachedItem.dateLabel
+        $cachedLink = $cachedItem.link
+        $cachedDetailLink = $cachedItem.detailLink
+        if ($cachedLink -match '^https?://www\.unesco-czech\.cz/') {
+            $cachedMetadata = Get-UnescoDetailMetadata -Url $cachedLink
+            $cachedMetadataDateText = Normalize-Whitespace -Value $cachedMetadata.dateText
+            if ($cachedMetadataDateText -match '(?<time>\d{1,2}:\d{2})') {
+                $cachedTimeText = $Matches["time"]
+                $cachedDateTextWithoutTime = ($cachedMetadataDateText -replace '\d{1,2}:\d{2}', '').Trim()
+                $cachedRange = Parse-DateRange -Value (($cachedDateTextWithoutTime -replace '^[^\d]+', '').Trim()) -StartTimeText $cachedTimeText -EndTimeText ""
+                if ($null -ne $cachedRange) {
+                    $cachedStartAt = $cachedRange.startAt
+                    $cachedEndAt = $cachedRange.endAt
+                    $cachedDateLabel = $cachedMetadataDateText
+                }
+            }
+
+            $metadataGenre = Get-MksGenreFromMetadata -Type $cachedMetadata.type -ExternalUrl $cachedMetadata.externalUrl -Title $cachedItem.title -Summary $cachedItem.summary -Venue $cachedItem.venue
+            if (-not [string]::IsNullOrWhiteSpace($metadataGenre)) {
+                $cachedGenre = $metadataGenre
+            }
+
+            $metadataLink = Get-MksDetailUrlFromMetadata -ExternalUrl $cachedMetadata.externalUrl -Genre $cachedGenre
+            if (-not [string]::IsNullOrWhiteSpace($metadataLink)) {
+                $cachedLink = $metadataLink
+                $cachedDetailLink = $metadataLink
+            }
+        }
+
+        $cachedKey = Get-EventDedupeKey -StartAt $cachedStartAt -Title $cachedItem.title
+        if ($currentKeys.ContainsKey($cachedKey)) { continue }
+
+        $cachedSortAt = if ($cachedStartAt -lt $now) { $now } else { $cachedStartAt }
+        $finalItems.Add([pscustomobject]@{
+            sourceKey    = "previous_run_cache"
+            sourceLabel  = $cachedItem.sourceLabel
+            title        = $cachedItem.title
+            genre        = $cachedGenre
+            municipality = $cachedItem.municipality
+            venue        = $cachedItem.venue
+            startAt      = $cachedStartAt
+            endAt        = $cachedEndAt
+            sortAt       = $cachedSortAt
+            dateLabel    = $cachedDateLabel
+            timeLabel    = ""
+            summary      = $cachedItem.summary
+            distanceKm   = [double]$cachedItem.distanceKm
+            link         = $cachedLink
+            detailLink   = $cachedDetailLink
+            imageUrl     = $cachedItem.imageUrl
+            dedupeKey    = $cachedKey
+        })
+        $currentKeys[$cachedKey] = $true
+        $restoredCount++
+    }
+
+    if ($restoredCount -gt 0) {
+        Write-Warning "Kvuli vypadku zdroje pouzivam $restoredCount akci z posledni ulozene verze."
+    }
 }
 
 $finalItems = [System.Collections.Generic.List[object]]([object[]]((Remove-DateRangeItemsCoveredByTimedItems -Items (Merge-LongRunningSeriesItems -Items (Remove-AggregateEventItems -Items ([object[]]$finalItems)))) | Sort-Object sortAt, endAt, title))
