@@ -154,11 +154,56 @@ function Get-ImageExtensionFromContentType {
 function Get-EventImageReferer {
     param([string]$Url)
 
-    if ($Url -match '^https?://www\.czecot\.com/') {
+    if ($Url -match '^https?://www\.czecot\.(cz|com)/') {
         return "https://www.unesco-czech.cz/"
     }
 
     ""
+}
+
+function Get-HighResolutionImageUrl {
+    param([string]$Url)
+
+    if ([string]::IsNullOrWhiteSpace($Url)) { return "" }
+
+    $decodedUrl = [System.Net.WebUtility]::HtmlDecode($Url)
+    if ($decodedUrl -match '^https?://www\.czecot\.(?:cz|com)/images/(?:ac/)?(?:n/)?(?:\d+x\d+/)?(?<id>\d+)\.(?:jpg|jpeg|png|webp)(?:\?.*)?$') {
+        return "https://www.czecot.cz/results/zobrobr.php?w=ac&id=$($Matches["id"])&orig=1"
+    }
+
+    if ($decodedUrl -match '^https?://www\.mkstrebic\.cz/(?<prefix>data_\d+/)(?<id>\d+)mini(?<extension>\.(?:jpg|jpeg|png|webp))(?:\?.*)?$') {
+        return "https://www.mkstrebic.cz/$($Matches["prefix"])$($Matches["id"])normal$($Matches["extension"])"
+    }
+
+    $decodedUrl
+}
+
+function Get-ImageUrlPreferenceScore {
+    param([string]$Url)
+
+    if ([string]::IsNullOrWhiteSpace($Url)) { return 0 }
+    $candidate = Get-HighResolutionImageUrl -Url $Url
+    if ($candidate -match '^https?://www\.czecot\.cz/results/zobrobr\.php') { return 6 }
+    if ($candidate -match '/[^/]+normal\.(jpg|jpeg|png|webp)(\?.*)?$') { return 5 }
+    if ($candidate -notmatch '(100x100|240x240|mini\.)') { return 4 }
+    1
+}
+
+function Get-PreferredEventImageUrl {
+    param([string[]]$Candidates)
+
+    $bestUrl = ""
+    $bestScore = -1
+    foreach ($candidate in @($Candidates | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })) {
+        $normalized = Get-HighResolutionImageUrl -Url $candidate
+        $score = Get-ImageUrlPreferenceScore -Url $candidate
+        if ($score -gt $bestScore) {
+            $bestScore = $score
+            $bestUrl = $normalized
+        }
+    }
+
+    $bestUrl
 }
 
 function Get-LocalEventImageUrl {
@@ -168,6 +213,7 @@ function Get-LocalEventImageUrl {
     )
 
     if ([string]::IsNullOrWhiteSpace($Url)) { return "" }
+    $Url = Get-HighResolutionImageUrl -Url $Url
     if ($Url -match '^(data:|assets/)') { return $Url }
     if ($Url -notmatch '^https?://') { return $Url }
 
@@ -1278,7 +1324,7 @@ function Merge-EventItems {
             keywords     = if ($null -ne $primaryItem.keywords -and @($primaryItem.keywords).Count -gt 0) { $primaryItem.keywords } else { $secondaryItem.keywords }
             link         = $preferredLink
             detailLink   = $preferredLink
-            imageUrl     = if (-not [string]::IsNullOrWhiteSpace($primaryItem.imageUrl)) { $primaryItem.imageUrl } else { $secondaryItem.imageUrl }
+            imageUrl     = Get-PreferredEventImageUrl -Candidates @($primaryItem.imageUrl, $secondaryItem.imageUrl)
             dedupeKey    = $item.dedupeKey
         }
     }
