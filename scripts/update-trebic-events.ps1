@@ -2217,6 +2217,8 @@ if ($script:FailedSourceUrls.Count -gt 0 -and $previousPublishedItems.Count -gt 
             venue        = $cachedItem.venue
             startAt      = $cachedStartAt
             endAt        = $cachedEndAt
+            startText    = $cachedStartAt.ToString("d. M. yyyy HH:mm")
+            endText      = $cachedEndAt.ToString("d. M. yyyy HH:mm")
             sortAt       = $cachedSortAt
             dateLabel    = $cachedDateLabel
             timeLabel    = ""
@@ -2260,6 +2262,8 @@ $itemsPayload = [pscustomobject]@{
             venue        = $_.venue
             startAt      = $_.startAt.ToString("o")
             endAt        = $_.endAt.ToString("o")
+            startText    = $_.startText
+            endText      = $_.endText
             dateLabel    = $_.dateLabel
             summary      = $_.summary
             distanceKm   = $_.distanceKm
